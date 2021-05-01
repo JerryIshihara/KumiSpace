@@ -1,0 +1,58 @@
+@import "../style.less";
+
+.strm-card {
+    width: 22%;
+    min-width: 200px;
+    max-width: 400px;
+    margin: @margin-sm;
+    margin-bottom: @margin-md;
+    cursor: pointer;
+}
+
+.strm-card-image {
+    width: 100%;
+    aspect-ratio: 3.5/2;
+    object-fit: cover;
+}
+
+.strm-card-avatar-title-container {
+    width: 100%;
+    padding: @padding-sm 0;
+    display: flex;
+    flex-direction: row;
+    // flex: 1;
+}
+
+.strm-card-avatar {
+    flex-grow: 1;
+}
+
+.strm-card-title-container {
+    flex-grow: 1;
+    padding: 0 @padding-xs;
+    width: 100%;
+}
+
+.strm-card-moment {
+    width: 35%;
+    min-width: 200px;
+    // max-width: 800px;
+    margin: @margin-sm;
+    margin-bottom: @margin-md;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+.strm-card-moment-image {
+    width: 100%;
+    // aspect-ratio: 2/3;
+    object-fit: cover;
+}
+
+.strm-card-moment-avatar-title-container {
+    width: 100%;
+    padding: @padding-sm;
+    display: flex;
+    flex-direction: row;
+    // flex: 1;
+}

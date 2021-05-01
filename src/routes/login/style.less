@@ -1,0 +1,83 @@
+@import "../../App.less";
+
+
+
+.login-navbar-container {
+    width: 100%;
+    .vertical-center;
+}
+
+.login-form-container {
+    width: 100%;
+    .vertical-center;
+}
+
+.login-form {
+    width: 700px;
+    margin: 30px 0;
+    padding: 0 !important;
+    .vertical-center;
+    border: none;
+    border-radius: @border-radius-base;
+    .shadow;
+}
+
+.login-form-tabs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.login-form-tab {
+    width: 50%;
+    padding: @screen-padding;
+    border: none;
+    border-radius: @border-radius-base;
+    background: @gray-3;
+    .vertical-center;
+    cursor: pointer;
+}
+.login-form-tab > span{
+    font-size: 20px;
+    color: @text-color-secondary;
+}
+.login-form-tab-hover {
+    background: none;
+}
+.login-form-tab-hover span{
+    color: @text-color;
+}
+.login-form-tab:hover{
+    .login-form-tab-hover;
+}
+// .login-form-tab:hover span{
+//     color: @primary-color;
+// }
+.login-form-content {
+    width: 100%;
+    .vertical-center;
+    padding: @screen-padding;
+}
+.login-form-content > * {
+    margin: 20px;
+}
+.login-form-title {
+    font-size: 30px;
+}
+
+.login-form-fields {
+    width: 500px;
+}
+.login-form-field {
+    width: 100%;
+}
+
+.login-form-submit {
+    background: @primary-6 !important;
+    border: @primary-6 !important;
+}
+
+.login-form-submit:hover {
+    background: @primary-5 !important;
+    border-color: @primary-5 !important;
+}

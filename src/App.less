@@ -1,0 +1,50 @@
+@import '~antd/dist/antd.less';
+@import '~antd/lib/style/themes/default.less';
+@import 'themes/color/colors.less';
+@import "themes/shadow.less";
+
+// GLOBAL
+@theme-color: #e02d6f;
+@screen-width:     70%;
+@screen-min-width: 1000px;
+@screen-padding:   10px;
+@navbar-height:    64px;
+
+.vertical-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.horizontal-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.page-body-container {
+  width: @screen-width;
+  min-width: @screen-min-width;
+  padding: @screen-padding;
+  display: flex;
+  flex-direction: column;
+}
+.page-body-container > * {
+  margin-bottom: 70px !important;
+  padding: @screen-padding;
+}
+
+// index.tsx
+
+.body-center {
+  width: 100%;
+  // height: 100%;
+  .vertical-center;
+}
+
+// .body {
+//   width: @screen-width;
+//   min-width: @screen-min-width;
+// }
+// .body > * {
+//   padding: @screen-padding;
+// }
