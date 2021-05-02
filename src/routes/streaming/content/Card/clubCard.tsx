@@ -12,7 +12,7 @@ const ClubCard: React.FC = () => {
 			<img className="strm-card-image" alt="alt" src={event_img} />
 			<div className="strm-card-avatar-title-container">
 				<div className="strm-card-avatar">
-					<Avatar size={45} icon={<UserOutlined />} />
+					<Avatar size={40} icon={<UserOutlined />} />
 				</div>
 				<div className="strm-card-title-container">
 					<TextEllipsis numLines={2}>

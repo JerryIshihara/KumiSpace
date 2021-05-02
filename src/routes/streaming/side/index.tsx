@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
+import * as uuid from "uuid";
 import "./style.less";
 
 import { Menu, Avatar } from "antd";
@@ -11,8 +12,9 @@ import {
 } from "@ant-design/icons";
 import { RiGroupFill } from "react-icons/ri";
 
-// const { SubMenu } = Menu;
-// import SideButton from "./sideButton";
+const PARTICIPATIONS = [...Array(20).keys()].map(i => {
+	return { name: `U of T Clubs ${i}`, id: uuid.v4() };
+});
 
 interface Props extends RouteComponentProps {}
 
@@ -71,32 +73,22 @@ const Side: React.FC<Props> = props => {
 					</Menu.Item>
 					<Menu.Divider />
 					<Menu.ItemGroup key="sub2" title="Participations">
-						<Menu.Item
-							key="5"
-							icon={
-								<Avatar
-									className="ant-menu-item-icon"
-									size={26}
-									icon={<UserOutlined size={14} />}
-									style={{ cursor: "pointer", verticalAlign: "middle" }}
-								/>
-							}
-						>
-							U-of-T Club
-						</Menu.Item>
-						<Menu.Item
-							key="6"
-							icon={
-								<Avatar
-									className="ant-menu-item-icon"
-									size={26}
-									icon={<UserOutlined size={14} />}
-									style={{ cursor: "pointer", verticalAlign: "middle" }}
-								/>
-							}
-						>
-							U-of-T Club
-						</Menu.Item>
+						{PARTICIPATIONS.map(club => (
+							<Menu.Item
+								key={club.id}
+								icon={
+									<Avatar
+										className="ant-menu-item-icon"
+										size={26}
+										icon={<UserOutlined size={14} />}
+										style={{ cursor: "pointer", verticalAlign: "middle" }}
+									/>
+								}
+								onClick={ () => props.history.push(`/club/${club.id}`)}
+							>
+								{club.name}
+							</Menu.Item>
+						))}
 					</Menu.ItemGroup>
 				</Menu>
 			</div>

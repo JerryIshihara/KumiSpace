@@ -1,0 +1,48 @@
+@import "../style.less";
+@mp-prefix: ~".main-page";
+@banner-height: 200px;
+
+@{mp-prefix} {
+    width: 80%;
+    min-width: 400px;
+    .vertical-center;
+}
+
+@{mp-prefix}-club {
+    &-block {
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 2 * @border-radius-base;
+        overflow: hidden;
+    }
+    &-header {
+        &-banner {
+            width: 100%;
+            height: @banner-height;
+            object-fit: cover;
+            // border-radius: @border-radius-base;
+        }
+        &-info {
+            &-container {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                padding: 0 @padding-md;
+            }
+            &-avatar {
+                margin-top: -32px;
+                padding: @padding-xss;
+                border-radius: 2 * @border-radius-base;
+                background-color: #ffffff;
+            }
+            &-profile {
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                    padding: @padding-xs @padding-md;
+                }
+
+            }
+        }
+    }
+}

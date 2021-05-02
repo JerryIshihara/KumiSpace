@@ -3,7 +3,8 @@ import { Route } from "react-router-dom";
 import "./style.less";
 
 import {ClubCard} from "./Card";
-import {Moments, Clubs, Events} from "./feed";
+import { Moments, Clubs, Events } from "./feed";
+import { ClubPage } from './main';
 
 const Content: React.FC = () => {
 	return (
@@ -22,6 +23,9 @@ const Content: React.FC = () => {
                 </Route>
                 <Route exact path="/feed/events">
 					<Events />
+				</Route>
+				<Route exact path="/club/:id">
+					<ClubPage />
 				</Route>
 			</div>
 		</div>
