@@ -15,3 +15,16 @@
     top: 0;
     z-index: 999;
 }
+
+
+@side-menu-prefix: ~"ant-menu";
+.shadow .@{side-menu-prefix} {
+    font-size: 14px;
+    &-item {
+        padding-left: @padding-md !important;
+    }
+    &-item:hover {
+        // font-weight: 600 !important;
+        color: @text-color !important;
+    }
+}

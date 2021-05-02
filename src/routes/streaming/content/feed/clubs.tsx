@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import "../style.less";
 
 import { ClubCard } from "../Card";
@@ -6,7 +6,7 @@ import { ClubCard } from "../Card";
 const Clubs: React.FC = () => {
 	return (
 		<>
-			{[...Array(23).keys()].map(_ => (
+			{[...Array(Math.floor(Math.random() * 20 + 5)).keys()].map(_ => (
 				<ClubCard key={_} />
 			))}
 		</>

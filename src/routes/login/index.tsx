@@ -2,21 +2,20 @@ import React, { useState } from "react";
 import "./style.less";
 
 import { Button, Input, Space } from "antd";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
 
 import Navbar from "./navbar";
 import { AuthProps } from "../../redux/lib/auth.type";
 
 
 
-const SIGNIN = "SIGNIN";
-const SIGNUP = "SIGNUP";
-type TAB = "SIGNIN" | "SIGNUP";
+const SIGNIN = "sign-in";
+const SIGNUP = "sign-up";
 
 interface Props extends RouteComponentProps, AuthProps {}
 
 const LoginPage: React.FC<Props> = (props) => {
-	const [tab, setTab] = useState<TAB>(SIGNIN);
+	const { authMode } = useParams<{ authMode: string }>();
 	return (
 		<div className="body-center">
 			<Navbar />
@@ -28,24 +27,24 @@ const LoginPage: React.FC<Props> = (props) => {
 						<div
 							className={
 								`login-form-tab` +
-								(tab === SIGNIN ? ` login-form-tab-hover` : ``)
+								(authMode === SIGNIN ? ` login-form-tab-hover` : ``)
 							}
-							onClick={() => setTab(SIGNIN)}
+							onClick={() => props.history.push("/auth/sign-in")}
 						>
 							<span>Sign in</span>
 						</div>
 						<div
 							className={
 								`login-form-tab` +
-								(tab === SIGNUP ? ` login-form-tab-hover` : ``)
+								(authMode === SIGNUP ? ` login-form-tab-hover` : ``)
 							}
-							onClick={() => setTab(SIGNUP)}
+							onClick={() => props.history.push("/auth/sign-up")}
 						>
 							<span>Sign up</span>
 						</div>
 					</div>
 					{/* Login Form Sign In */}
-					{tab === SIGNIN && (
+					{authMode === SIGNIN && (
 						<div className="login-form-content">
 							<span className="login-form-title">Sign in to your account</span>
 							<div className="login-form-fields">
@@ -67,7 +66,7 @@ const LoginPage: React.FC<Props> = (props) => {
 						</div>
 					)}
 					{/* Login Form Sign Out */}
-					{tab === SIGNUP && (
+					{authMode === SIGNUP && (
 						<div className="login-form-content">
 							<span className="login-form-title">Create an account</span>
 							<div className="login-form-fields">

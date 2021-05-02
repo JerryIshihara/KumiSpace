@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
-import * as uuid from "uuid";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import "./style.less";
 
 import { Menu, Avatar } from "antd";
@@ -12,8 +11,8 @@ import {
 } from "@ant-design/icons";
 import { RiGroupFill } from "react-icons/ri";
 
-const PARTICIPATIONS = [...Array(20).keys()].map(i => {
-	return { name: `U of T Clubs ${i}`, id: uuid.v4() };
+const PARTICIPATIONS = [...Array(20).keys()].map((i, j) => {
+	return { name: `U of T Clubs ${i}`, id: `club ${j}` };
 });
 
 interface Props extends RouteComponentProps {}
@@ -25,17 +24,19 @@ const Side: React.FC<Props> = props => {
 			? loc[loc.length - 1]
 			: "home";
 	};
-	const [key, setKey] = useState<string>(getLocation(props.location.pathname));
-	useEffect(() => {
-		setKey(getLocation(props.location.pathname));
-	}, [props.location.pathname]);
+	// const [key, setKey] = useState<string>(getLocation(props.location.pathname));
+	// useEffect(() => {
+	// 	setKey(getLocation(props.location.pathname));
+	// 	console.log(props.location.pathname);
+	// }, [props.location.pathname]);
 	return (
 		<div className="strm-side">
 			<div className="strm-side-container">
 				<Menu
 					className="strm-side-buttons"
 					mode="inline"
-					defaultSelectedKeys={[key]}
+					defaultSelectedKeys={["home"]}
+					selectedKeys={[getLocation(props.location.pathname)]}
 					onClick={() => {}}
 				>
 					<Menu.Item

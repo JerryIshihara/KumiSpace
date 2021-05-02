@@ -1,19 +1,29 @@
 import React, { useEffect } from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
 
 interface Props extends RouteComponentProps {}
 
 const PageTitleSetter: React.FC<Props> = props => {
+	// const { category, id } = useParams<{ category: string | undefined,  }>();
 	useEffect(() => {
 		// Home Page
 		const parts = props.location.pathname.split("/");
 		if (parts.length >= 2) {
 			const cat = parts[parts.length - 2];
-			const comp = parts[parts.length - 1];
-			if (cat === "club") {
-				document.title = StrTemplate(cat);
-			} else {
-				document.title = StrTemplate(comp);
+			const subCat = parts[parts.length - 1];
+			switch (cat.toUpperCase()) {
+				case "AUTH":
+					document.title = StrTemplate(subCat.replace("-", " "));
+					break;
+				case "CLUB":
+					document.title = StrTemplate(cat);
+					break;
+				case "FEED":
+					document.title = StrTemplate(subCat);
+					break;
+				default:
+					document.title = StrTemplate(cat);
+					break;
 			}
 		}
 	}, [props.location.pathname]);

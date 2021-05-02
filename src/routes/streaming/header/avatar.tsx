@@ -1,38 +1,23 @@
-import React  from "react";
-import {withRouter, RouteComponentProps} from "react-router";
+import React from "react";
+import { withRouter, RouteComponentProps } from "react-router";
 import { logoutType } from "../../../redux/lib/auth.action";
 
-import { Menu, Avatar, Dropdown, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Menu, Avatar, Dropdown } from "antd";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 
+import "./style.less";
 
 interface MenuProps {
 	logout: logoutType;
 }
-const ManageAccount: React.FC<MenuProps> = (props) => {
+const ManageAccount: React.FC<MenuProps> = props => {
 	return (
 		<div className="shadow">
-			<Menu>
-				<Menu.Item>
-					<a
-						target="_blank"
-						rel="noopener noreferrer"
-						href="https://www.antgroup.com"
-					>
-						1st menu item
-					</a>
-				</Menu.Item>
-				<Menu.Item>
-					<a
-						target="_blank"
-						rel="noopener noreferrer"
-						href="https://www.aliyun.com"
-					>
-						2nd menu item
-					</a>
-				</Menu.Item>
-				<Menu.Item>
-					<Button type="text" onClick={props.logout}>Log out</Button>
+			<Menu selectedKeys={[]}>
+				<Menu.Item>1st menu item</Menu.Item>
+				<Menu.Item>2nd menu item</Menu.Item>
+				<Menu.Item icon={<LogoutOutlined />} onClick={props.logout}>
+					Log out
 				</Menu.Item>
 			</Menu>
 		</div>
@@ -42,14 +27,17 @@ const ManageAccount: React.FC<MenuProps> = (props) => {
 interface Props extends RouteComponentProps {
 	logout: logoutType;
 }
-const NavBarAvatar: React.FC<Props> = (props) => {
+const NavBarAvatar: React.FC<Props> = props => {
 	return (
-		<Dropdown placement="bottomRight" overlay={<ManageAccount logout={() => props.logout(() => props.history.push("/"))}/>}>
-			<Avatar
-				size={40}
-				icon={<UserOutlined />}
-				style={{ cursor: "pointer" }}
-			/>
+		<Dropdown
+			placement="bottomRight"
+			overlay={
+				<ManageAccount
+					logout={() => props.logout(() => props.history.push("/"))}
+				/>
+			}
+		>
+			<Avatar size={40} icon={<UserOutlined />} style={{ cursor: "pointer" }} />
 		</Dropdown>
 	);
 };

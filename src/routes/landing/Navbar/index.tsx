@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.less";
-import { Space, Button } from "antd";
+import { Space, Button, Divider } from "antd";
 // import { Link } from "react-router-dom";
 
 import { Logo, Navbar } from "../../../components";
@@ -23,7 +23,9 @@ const LandingNavbar: React.FC = () => {
 						<Button type="text" size="large">
 							Moments
 						</Button>
-						<Button size="large" href="/login">Get Started</Button>
+						<Divider type="vertical" className="landing-navbar-divider"/>
+						<Button type="text" size="large" href="/auth/sign-in">Login</Button>
+						<Button size="large" href="/auth/sign-up">Get Started</Button>
 					</Space>
 				</div>
 			</div>

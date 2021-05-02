@@ -5,6 +5,7 @@
 @{mp-prefix} {
     width: 80%;
     min-width: 400px;
+    max-width: 1000px;
     .vertical-center;
 }
 
@@ -14,6 +15,10 @@
         background-color: #ffffff;
         border-radius: 2 * @border-radius-base;
         overflow: hidden;
+        margin-bottom: @margin-md;
+        &-container {
+            padding: @margin-md;
+        }
     }
     &-header {
         &-banner {
@@ -30,7 +35,8 @@
                 padding: 0 @padding-md;
             }
             &-avatar {
-                margin-top: -32px;
+                margin: @margin-md;
+                margin-top: -25px;
                 padding: @padding-xss;
                 border-radius: 2 * @border-radius-base;
                 background-color: #ffffff;
@@ -44,5 +50,12 @@
 
             }
         }
+    }
+}
+
+.ant-tabs-tab {
+    &:hover, 
+    &&-active &-btn{
+        color: @text-color;
     }
 }

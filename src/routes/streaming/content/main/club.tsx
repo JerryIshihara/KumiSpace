@@ -1,10 +1,15 @@
 import React from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
-import { Avatar } from "antd";
+import { Avatar, Tabs } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
-import event_img from "../../../../assets/event.png";
+import TextEllipsis from "components/TextEllipsis";
+
+
+import event_img from "assets/event.png";
+
+const { TabPane } = Tabs;
 
 interface Props extends RouteComponentProps {}
 
@@ -20,14 +25,33 @@ const ClubPage: React.FC<Props> = props => {
 				/>
 				<div className="main-page-club-header-info-container">
 					<div className="main-page-club-header-info-avatar">
-						<Avatar shape="square" size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 100, xxl: 128 }} icon={<UserOutlined />} />
+						<Avatar
+							shape="square"
+							size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 110, xxl: 128 }}
+							icon={<UserOutlined />}
+						/>
 					</div>
 					<div className="main-page-club-header-info-profile-container">
-						<h3>This club has id {id}</h3>
+						<TextEllipsis>
+							<h3>This club has id {id}</h3>
+						</TextEllipsis>
 					</div>
 				</div>
-				<h3>This club has id {id}</h3>
 			</div>
+			<div className="main-page-club-block">
+				<div
+					className="main-page-club-block-container"
+					style={{ paddingTop: 0 }}
+				>
+					<Tabs defaultActiveKey="Home" size="large" tabBarGutter={12}>
+						<TabPane tab="Home" key="Home"></TabPane>
+						<TabPane tab="Moments" key="Moments"></TabPane>
+						<TabPane tab="Events" key="Events"></TabPane>
+						<TabPane tab="Members" key="Members"></TabPane>
+					</Tabs>
+				</div>
+			</div>
+			<div style={{width: "100%", height: "800px", backgroundColor: "gray"}}/>
 		</div>
 	);
 };
