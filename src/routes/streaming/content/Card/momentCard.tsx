@@ -17,10 +17,10 @@ const MomentCard: React.FC<Props> = props => {
 				<div className="strm-card-avatar">
 					<Avatar size={30} icon={<UserOutlined />} />
 				</div>
-				<div className="strm-card-title-container">
+				<div className="strm-card-moment-title-container">
 					<TextEllipsis numLines={2}>
 						<h3>
-							This is a great title! This is a great title! This is a great
+							This is a great titleasfas! This is a great title! This is a great
 							title! This is a great title! This is a great title! This is a
 							great title!
 						</h3>

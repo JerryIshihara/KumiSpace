@@ -20,9 +20,9 @@ const Side: React.FC<Props> = props => {
 	const getLocation = (pathname: string): string => {
 		const loc = pathname.split("/");
 		return loc.length > 0 && loc[loc.length - 1].length > 0
-		? loc[loc.length - 1]
-		: "home"
-	}
+			? loc[loc.length - 1]
+			: "home";
+	};
 	const [key, setKey] = useState<string>(getLocation(props.location.pathname));
 	useEffect(() => {
 		setKey(getLocation(props.location.pathname));
@@ -62,7 +62,11 @@ const Side: React.FC<Props> = props => {
 					>
 						Clubs
 					</Menu.Item>
-					<Menu.Item icon={<CalendarFilled />} key="events">
+					<Menu.Item
+						key="events"
+						icon={<CalendarFilled />}
+						onClick={() => props.history.push("/feed/events")}
+					>
 						Events
 					</Menu.Item>
 					<Menu.Divider />
