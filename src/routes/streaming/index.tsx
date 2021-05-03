@@ -12,7 +12,7 @@ interface Props extends AuthProps, RouteComponentProps {}
 const StreamingPage: React.FC<Props> = props => {
 	useEffect(() => {
 		const unlisten = props.history.listen(() => {
-			window.location.reload();
+			// window.location.reload();
 		});
 		return () => {
 			unlisten();

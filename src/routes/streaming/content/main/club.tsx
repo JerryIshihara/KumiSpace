@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
 import { Avatar, Tabs } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
-
+import ClubService from "api/club";
 
 import event_img from "assets/event.png";
 
@@ -15,6 +15,22 @@ interface Props extends RouteComponentProps {}
 
 const ClubPage: React.FC<Props> = props => {
 	const { id } = useParams<{ id: string }>();
+	const [loading, setLoading] = useState(true);
+	const [detail, setDetail] = useState<
+		{ name: string; id: string } | undefined
+	>({ name: "...", id: "" });
+	// useEffect(() => {
+	// 	ClubService.fetchClubDetail(id)
+	// 		.then(res => {
+	// 			setDetail(res.data);
+	// 			setLoading(false);
+	// 		})
+	// 		.catch(error => console.error(error));
+
+	// 	return () => {
+	// 		setLoading(true);
+	// 	};
+	// }, [id]);
 	return (
 		<div className="main-page">
 			<div className="main-page-club-block">
@@ -33,7 +49,7 @@ const ClubPage: React.FC<Props> = props => {
 					</div>
 					<div className="main-page-club-header-info-profile-container">
 						<TextEllipsis>
-							<h3>This club has id {id}</h3>
+							<h3>{loading ? "..." : detail?.name || "no name"}</h3>
 						</TextEllipsis>
 					</div>
 				</div>
@@ -51,7 +67,9 @@ const ClubPage: React.FC<Props> = props => {
 					</Tabs>
 				</div>
 			</div>
-			<div style={{width: "100%", height: "800px", backgroundColor: "gray"}}/>
+			<div
+				style={{ width: "100%", height: "800px", backgroundColor: "gray" }}
+			/>
 		</div>
 	);
 };

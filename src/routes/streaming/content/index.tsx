@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Route, RouteComponentProps, withRouter } from "react-router-dom";
 import "./style.less";
 
@@ -11,9 +11,6 @@ interface Props extends RouteComponentProps { }
 
 const Content: React.FC<Props> = props => {
 	return (
-		// <div className="strm-content-placeholder-container">
-		// 	{/* Left placeholder */}
-		// 	<div className="strm-content-placeholder-left" />
 			<div className="strm-content">
 				<div className="strm-content-container">
 					<Route exact path="/">
@@ -29,7 +26,6 @@ const Content: React.FC<Props> = props => {
 					</Route>
 				</div>
 			</div>
-		// </div>
 	);
 };
 

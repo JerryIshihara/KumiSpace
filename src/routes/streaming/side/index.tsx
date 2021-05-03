@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import ClubService from 'api/club';
 import "./style.less";
 
 import { Menu, Avatar } from "antd";
@@ -10,10 +11,13 @@ import {
 	CalendarFilled,
 } from "@ant-design/icons";
 import { RiGroupFill } from "react-icons/ri";
-
-const PARTICIPATIONS = [...Array(20).keys()].map((i, j) => {
-	return { name: `U of T Clubs ${i}`, id: `club ${j}` };
-});
+const {SubMenu} = Menu;
+// const PARTICIPATIONS = [...Array(3).keys()].map((i, j) => {
+// 	return { name: `U of T Clubs ${i}`, id: `club ${j}` };
+// });
+// const FOLLOWS = [...Array(20).keys()].map((i, j) => {
+// 	return { name: `U of T Clubs ${i}`, id: `follow ${j}` };
+// });
 
 interface Props extends RouteComponentProps {}
 
@@ -24,11 +28,12 @@ const Side: React.FC<Props> = props => {
 			? loc[loc.length - 1]
 			: "home";
 	};
-	// const [key, setKey] = useState<string>(getLocation(props.location.pathname));
-	// useEffect(() => {
-	// 	setKey(getLocation(props.location.pathname));
-	// 	console.log(props.location.pathname);
-	// }, [props.location.pathname]);
+	const [par, setPar] = useState<any>([]);
+	const [follows, setFollows] = useState<any>([]);
+	useEffect(() => {
+		ClubService.fetchClubs("PARTICIPATIONS").then(res => setPar(res.data || [])).catch(error => console.log(error));
+		ClubService.fetchClubs("FOLLOWS").then(res => setFollows(res.data || [])).catch(error => console.log(error));
+	})
 	return (
 		<div className="strm-side">
 			<div className="strm-side-container">
@@ -73,8 +78,9 @@ const Side: React.FC<Props> = props => {
 						Events
 					</Menu.Item>
 					<Menu.Divider />
-					<Menu.ItemGroup key="sub2" title="Participations">
-						{PARTICIPATIONS.map(club => (
+					{/* Menu.ItemGroup */}
+					< Menu.ItemGroup key="sub2" title="Participations">
+						{par.map((club: { id: string; name: string; }) => (
 							<Menu.Item
 								key={club.id}
 								icon={
@@ -90,7 +96,26 @@ const Side: React.FC<Props> = props => {
 								{club.name}
 							</Menu.Item>
 						))}
-					</Menu.ItemGroup>
+					</ Menu.ItemGroup>
+					<Menu.Divider />
+					< Menu.ItemGroup key="sub3" title="Followed">
+						{follows.map((club: { id: string; name: string; }) => (
+							<Menu.Item
+								key={club.id}
+								icon={
+									<Avatar
+										className="ant-menu-item-icon"
+										size={26}
+										icon={<UserOutlined size={14} />}
+										style={{ cursor: "pointer", verticalAlign: "middle" }}
+									/>
+								}
+								onClick={ () => props.history.push(`/club/${club.id}`)}
+							>
+								{club.name}
+							</Menu.Item>
+						))}
+					</ Menu.ItemGroup>
 				</Menu>
 			</div>
 		</div>
