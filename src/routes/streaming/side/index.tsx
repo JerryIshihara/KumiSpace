@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-	withRouter,
-	RouteComponentProps,
-	Link,
-	Redirect,
-} from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import ClubService from "api/club";
 import "./style.less";
 
@@ -16,6 +11,7 @@ import {
 	CalendarFilled,
 } from "@ant-design/icons";
 import { RiGroupFill } from "react-icons/ri";
+import { feedItems } from "./feed.constant";
 const { SubMenu } = Menu;
 
 interface Props extends RouteComponentProps {}
@@ -31,13 +27,34 @@ const Side: React.FC<Props> = props => {
 	const [par, setPar] = useState<any>([]);
 	const [follows, setFollows] = useState<any>([]);
 	useEffect(() => {
+		var pe = performance.getEntriesByType("navigation");
+			var pnt =
+				pe.length > 0 ? (pe[0] as PerformanceNavigationTiming) : undefined;
 		if (hasUpdate) {
-			ClubService.fetchClubsNameAndAvatar("PARTICIPATIONS")
-				.then(res => setPar(res.data || []))
-				.catch(error => console.log(error));
-			ClubService.fetchClubsNameAndAvatar("FOLLOWS")
-				.then(res => setFollows(res.data || []))
-				.catch(error => console.log(error));
+			const sessionContent = sessionStorage.getItem("sideBar");
+			if (sessionContent !== null && pnt?.type === "navigate") {
+				const { par, follow } = JSON.parse(sessionContent);
+				setPar(par || []);
+				setFollows(follow || []);
+			} else {
+				const promise_par = ClubService.fetchClubsNameAndAvatar(
+					"PARTICIPATIONS"
+				);
+				const promise_fol = ClubService.fetchClubsNameAndAvatar("FOLLOWS");
+				Promise.all([promise_par, promise_fol])
+					.then(values => {
+						setPar(values[0].data || []);
+						setFollows(values[1].data || []);
+						sessionStorage.setItem(
+							"sideBar",
+							JSON.stringify({
+								par: values[0].data,
+								follow: values[1].data,
+							})
+						);
+					})
+					.catch(error => console.error(error));
+			}
 			setHasUpdate(false);
 		}
 	}, [hasUpdate]);
@@ -47,47 +64,21 @@ const Side: React.FC<Props> = props => {
 				<Menu
 					className="strm-side-buttons"
 					mode="inline"
-					defaultSelectedKeys={["home"]}
+					defaultSelectedKeys={[feedItems[0].title]}
 					selectedKeys={[getLocation(props.location.pathname)]}
 					onClick={() => {}}
 				>
-					<Menu.Item
-						key="home"
-						icon={<HomeFilled />}
-						onClick={() => props.history.push("/")}
-					>
-						Home
-					</Menu.Item>
-					<Menu.Item
-						key="moments"
-						icon={<ThunderboltFilled />}
-						// onClick={() => props.history.push("/feed/moments")}
-					>
-						<Link to={{ pathname: "/feed/moments", key:Math.random().toString()}}>Moments</Link>
-						
-					</Menu.Item>
-					<Menu.Item
-						key="clubs"
-						icon={
-							<RiGroupFill
-								className="ant-menu-item-icon"
-								style={{ verticalAlign: "-4%" }}
-							/>
-						}
-						onClick={() => props.history.push("/feed/clubs")}
-					>
-						Clubs
-					</Menu.Item>
-					<Menu.Item
-						key="events"
-						icon={<CalendarFilled />}
-						onClick={() => props.history.push("/feed/events")}
-					>
-						Events
-					</Menu.Item>
+					{feedItems.map(item => (
+						<Menu.Item
+							key={item.title.toLowerCase()}
+							icon={item.icon()}
+						>
+							<a href={item.path}> {item.title} </a>
+						</Menu.Item>
+					))}
 					<Menu.Divider />
 					{/* Menu.ItemGroup */}
-					<Menu.ItemGroup key="sub2" title="Participations">
+					<SubMenu key="sub2" title={"Participations"}>
 						{par.map((club: { id: string; name: string }) => (
 							<Menu.Item
 								key={club.id}
@@ -99,14 +90,13 @@ const Side: React.FC<Props> = props => {
 										style={{ cursor: "pointer", verticalAlign: "middle" }}
 									/>
 								}
-								onClick={() => props.history.push(`/club/${club.id}`)}
 							>
-								{club.name}
+								<a href={`/club/${club.id}`}>{club.name}</a>
 							</Menu.Item>
 						))}
-					</Menu.ItemGroup>
+					</SubMenu>
 					<Menu.Divider />
-					<Menu.ItemGroup key="sub3" title="Followed">
+					<SubMenu key="sub3" title={"Follows"}>
 						{follows.map((club: { id: string; name: string }) => (
 							<Menu.Item
 								key={club.id}
@@ -118,12 +108,11 @@ const Side: React.FC<Props> = props => {
 										style={{ cursor: "pointer", verticalAlign: "middle" }}
 									/>
 								}
-								onClick={() => props.history.push(`/club/${club.id}`)}
 							>
-								{club.name}
+								<a href={`/club/${club.id}`}>{club.name}</a>
 							</Menu.Item>
 						))}
-					</Menu.ItemGroup>
+					</SubMenu>
 				</Menu>
 			</div>
 		</div>

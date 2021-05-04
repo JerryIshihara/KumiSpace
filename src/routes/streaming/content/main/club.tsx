@@ -68,10 +68,7 @@ const ClubPage: React.FC<Props> = props => {
 				</div>
 			</div>
 			<>
-				<div
-					className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky"
-					style={{ paddingTop: 0, paddingBottom: 0, marginBottom: 0 }}
-				>
+				<div className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky">
 					<Tabs
 						defaultActiveKey="Home"
 						size="large"

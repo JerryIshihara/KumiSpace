@@ -4,7 +4,7 @@
 .strm-side {
     width: @streaming-side-width;
     height: calc(~"100vh - @{streaming-header-height}");
-    background-color: white;
+    background-color: @component-background;
     position: fixed;
     top: @streaming-header-height;
     overflow: auto;
@@ -29,19 +29,35 @@
 @side-menu-prefix: ~"ant-menu";
 .@{side-menu-prefix} {
     font-size: 16px;
-    &-item {
+    &-item,
+    &-submenu-title {
         padding-left: @streaming-side-padding !important;
     }
+    &-submenu-title {
+        font-weight: 600 !important;
+        color: @gray-7;
+    }
+    &-submenu,
+    &-submenu > &-item {
+        background-color: @component-background !important;
+    }
+    &-item a {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
     &-item:hover,
+    &-item:hover a,
     &-submenu-title:hover,
     &-submenu-selected > &-submenu-title,
-    &-item-selected {
+    &-item-selected,
+    &-item-selected a {
         // font-weight: 600 !important;
         background-color: @streaming-background-color !important;
         color: @text-color !important;
     }
     &-submenu-selected > &-submenu-title,
-    &-item-selected { 
+    &-item-selected,
+    &-item-selected a { 
         font-weight: 600 !important;
     }
     &-item-group-title {

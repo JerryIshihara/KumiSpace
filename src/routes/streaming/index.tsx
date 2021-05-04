@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import "./style.less";
 
@@ -10,14 +10,6 @@ import Content from "./content/index";
 interface Props extends AuthProps, RouteComponentProps {}
 
 const StreamingPage: React.FC<Props> = props => {
-	// useEffect(() => {
-	// 	const unlisten = props.history.listen(() => {
-	// 		// window.location.reload();
-	// 	});
-	// 	return () => {
-	// 		unlisten();
-	// 	};
-	// });
 	return (
 		<div className="strm-page">
 			<Header logout={props.logout} />
