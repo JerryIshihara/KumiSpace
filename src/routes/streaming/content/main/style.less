@@ -16,8 +16,29 @@
         border-radius: 2 * @border-radius-base;
         overflow: hidden;
         margin-bottom: @margin-md;
+            &-tab-container {
+                padding: 0 @padding-md;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+            &-tabs {
+                padding: 0;
+            }
+            &-tabs > * {
+                padding: 0 !important;
+                margin: 1px !important;
+            }
+            &-tabpane-container {
+                padding: @padding-md;
+                border-top-right-radius: 0;
+                border-top-left-radius: 0;
+            }
         &-container {
-            padding: @margin-md;
+            padding: @padding-md;
+        }
+        &-sticky {
+            position: sticky;
+            top: @streaming-header-height;
         }
     }
     &-header {

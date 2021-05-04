@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
+import { StickyContainer, Sticky } from "react-sticky";
 import { Avatar, Tabs } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
@@ -11,6 +12,18 @@ import event_img from "assets/event.png";
 
 const { TabPane } = Tabs;
 
+const renderTabBar = (props: any, DefaultTabBar: any) => (
+	<Sticky bottomOffset={80}>
+		{({ style }: any) => (
+			<DefaultTabBar
+				{...props}
+				className="site-custom-tab-bar"
+				style={{ ...style }}
+			/>
+		)}
+	</Sticky>
+);
+
 interface Props extends RouteComponentProps {}
 
 const ClubPage: React.FC<Props> = props => {
@@ -19,18 +32,18 @@ const ClubPage: React.FC<Props> = props => {
 	const [detail, setDetail] = useState<
 		{ name: string; id: string } | undefined
 	>({ name: "...", id: "" });
-	// useEffect(() => {
-	// 	ClubService.fetchClubDetail(id)
-	// 		.then(res => {
-	// 			setDetail(res.data);
-	// 			setLoading(false);
-	// 		})
-	// 		.catch(error => console.error(error));
+	useEffect(() => {
+		ClubService.fetchClubDetail(id)
+			.then(res => {
+				setDetail(res.data);
+				setLoading(false);
+			})
+			.catch(error => console.error(error));
 
-	// 	return () => {
-	// 		setLoading(true);
-	// 	};
-	// }, [id]);
+		return () => {
+			setLoading(true);
+		};
+	}, [id]);
 	return (
 		<div className="main-page">
 			<div className="main-page-club-block">
@@ -54,22 +67,36 @@ const ClubPage: React.FC<Props> = props => {
 					</div>
 				</div>
 			</div>
-			<div className="main-page-club-block">
+			<>
 				<div
-					className="main-page-club-block-container"
-					style={{ paddingTop: 0 }}
+					className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky"
+					style={{ paddingTop: 0, paddingBottom: 0, marginBottom: 0 }}
 				>
-					<Tabs defaultActiveKey="Home" size="large" tabBarGutter={12}>
+					<Tabs
+						defaultActiveKey="Home"
+						size="large"
+						tabBarGutter={12}
+						className="main-page-club-block-tabs"
+					>
 						<TabPane tab="Home" key="Home"></TabPane>
 						<TabPane tab="Moments" key="Moments"></TabPane>
 						<TabPane tab="Events" key="Events"></TabPane>
 						<TabPane tab="Members" key="Members"></TabPane>
 					</Tabs>
 				</div>
-			</div>
-			<div
-				style={{ width: "100%", height: "800px", backgroundColor: "gray" }}
-			/>
+				<div className="main-page-club-block main-page-club-block-tabpane-container">
+					{[...Array(10).keys()].map(() => (
+						<div
+							style={{
+								width: "100%",
+								height: "100px",
+								backgroundColor: "gray",
+								marginBottom: "10px",
+							}}
+						/>
+					))}
+				</div>
+			</>
 		</div>
 	);
 };

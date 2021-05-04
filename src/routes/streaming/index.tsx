@@ -10,21 +10,19 @@ import Content from "./content/index";
 interface Props extends AuthProps, RouteComponentProps {}
 
 const StreamingPage: React.FC<Props> = props => {
-	useEffect(() => {
-		const unlisten = props.history.listen(() => {
-			// window.location.reload();
-		});
-		return () => {
-			unlisten();
-		};
-	});
+	// useEffect(() => {
+	// 	const unlisten = props.history.listen(() => {
+	// 		// window.location.reload();
+	// 	});
+	// 	return () => {
+	// 		unlisten();
+	// 	};
+	// });
 	return (
 		<div className="strm-page">
 			<Header logout={props.logout} />
-			<div className="strm-body">
-				<Side />
-				<Content />
-			</div>
+			<Side />
+			<Content />
 		</div>
 	);
 };

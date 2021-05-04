@@ -15,9 +15,11 @@ const ClubService = {
 			setTimeout(() => {
 				switch (type) {
 					case "PARTICIPATIONS":
-						return PARTICIPATIONS;
+						resolve({ data: PARTICIPATIONS });
+						break;
 					case "FOLLOWS":
-						return FOLLOWS;
+						resolve({ data: FOLLOWS });
+						break;
 					default:
 						break;
 				}
