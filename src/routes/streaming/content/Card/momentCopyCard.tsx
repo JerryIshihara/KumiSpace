@@ -29,7 +29,6 @@ const MomentCard: React.FC<Props> = props => {
 					</TextEllipsis>
 				</div>
 			</div>
-			<img className="strm-card-moment-image" alt="alt" src={props.img} />
 			<div className="strm-card-moment-avatar-title-container">
 				<div className="strm-card-avatar">
 					<Avatar size={30} icon={<UserOutlined />} />
