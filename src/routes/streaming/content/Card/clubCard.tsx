@@ -30,11 +30,11 @@ const ClubCard: React.FC<Props> = props => {
 						</h3>
 					</TextEllipsis>
 					<TextEllipsis numLines={2}>
-						<h3 className="strm-card-title-container-info">
+						<h4 className="strm-card-title-container-info">
 							102 members
 							{BULLET}
-							9289 followers
-						</h3>
+							928 followers
+						</h4>
 					</TextEllipsis>
 				</div>
 			</div>
