@@ -5,8 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 
 import event_img from "assets/event.png";
 import { TextEllipsis } from "components";
-
-const BULLET = " \u2022 ";
+import { Bullet } from "utils/text.constant";
 
 interface Props {
 	title?: string;
@@ -29,13 +28,14 @@ const ClubCard: React.FC<Props> = props => {
 								: "CLub name"}
 						</h3>
 					</TextEllipsis>
-					<TextEllipsis numLines={2}>
-						<h4 className="strm-card-title-container-info">
-							102 members
-							{BULLET}
-							928 followers
-						</h4>
-					</TextEllipsis>
+					{/* <TextEllipsis numLines={2}> */}
+					<h4 className="strm-card-title-container-info">
+						802 members
+						{Bullet}
+						928 followers
+					</h4>
+					<h4 className="strm-card-title-container-date">Establish in May 2021</h4>
+					{/* </TextEllipsis> */}
 				</div>
 			</div>
 		</div>

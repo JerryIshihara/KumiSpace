@@ -1,5 +1,13 @@
 @import "../style.less";
 
+.strm-card-date-style {
+    font-size: @font-size-sm !important;
+    font-weight: 400;
+    color: @gray-8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+}
+
 .strm-card {
     width: 23%;
     min-width: 260px;
@@ -32,7 +40,11 @@
     padding: 0 @padding-xs;
     width: 100%;
     &-info {
-        font-weight: 450;   
+        margin-bottom: 0 !important;
+    }
+    &-info,
+    &-date {
+        font-weight: 400;   
         color: @text-color-secondary;
     }
 }
@@ -42,20 +54,50 @@
 
 /* ============== Moment Card ============== */
 .strm-card-moment {
-    width: 35%;
-    min-width: 200px;
-    // max-width: 800px;
+    width: 45%;
+    height: auto;
+    min-width: 450px;
+    max-width: 1200px;
     margin: @margin-sm;
     margin-bottom: @margin-md;
     background-color: @component-background;
+    position: relative;
     .shadow;
+    &-ellipsis {
+        position: absolute;
+        top: @margin-sm;
+        right: @margin-sm;
+        font-size: @heading-4-size;
+        padding: 0 !important; 
+        line-height: 0;
+        cursor: pointer;
+    }
+    &-social-activity {
+        .horizontal-center;
+        // color: @gray-6;
+        &-stats{
+            font-size: @font-size-base !important;
+            // color: @text-color-secondary;
+            font-weight: 500;
+        }
+        &-date {
+            .strm-card-date-style;
+        }
+    }
+    &-social-activity > * {
+        margin: 0 @margin-xs;
+        font-size: @heading-4-size;
+        cursor: pointer;
+    }
+    // &-social-activity-stats {
+    //     margin: 0 @margin-xs;
+    // }
 }
 .strm-card-moment > *{
     padding: @padding-sm;
 }
 .strm-card-moment-image {
     width: 100%;
-    // aspect-ratio: 2/3;
     padding: 0;
     object-fit: cover;
 }

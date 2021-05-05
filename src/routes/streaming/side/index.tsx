@@ -5,12 +5,9 @@ import "./style.less";
 
 import { Menu, Avatar } from "antd";
 import {
-	ThunderboltFilled,
-	HomeFilled,
+	NumberOutlined,
 	UserOutlined,
-	CalendarFilled,
 } from "@ant-design/icons";
-import { RiGroupFill } from "react-icons/ri";
 import { feedItems } from "./feed.constant";
 const { SubMenu } = Menu;
 
@@ -97,6 +94,24 @@ const Side: React.FC<Props> = props => {
 					</SubMenu>
 					<Menu.Divider />
 					<SubMenu key="sub3" title={"Follows"}>
+						{follows.map((club: { id: string; name: string }) => (
+							<Menu.Item
+								key={club.id}
+								icon={
+									<Avatar
+										className="ant-menu-item-icon"
+										size={26}
+										icon={<UserOutlined size={14} />}
+										style={{ cursor: "pointer", verticalAlign: "middle" }}
+									/>
+								}
+							>
+								<a href={`/club/${club.id}`}>{club.name}</a>
+							</Menu.Item>
+						))}
+					</SubMenu>
+					<Menu.Divider />
+					<SubMenu key="sub4" title={"HashTags"}>
 						{follows.map((club: { id: string; name: string }) => (
 							<Menu.Item
 								key={club.id}
