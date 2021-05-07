@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
-import { StickyContainer, Sticky } from "react-sticky";
-import { Avatar, Tabs } from "antd";
+import { Avatar, Tabs, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
@@ -11,18 +10,6 @@ import ClubService from "api/club";
 import event_img from "assets/event.png";
 
 const { TabPane } = Tabs;
-
-const renderTabBar = (props: any, DefaultTabBar: any) => (
-	<Sticky bottomOffset={80}>
-		{({ style }: any) => (
-			<DefaultTabBar
-				{...props}
-				className="site-custom-tab-bar"
-				style={{ ...style }}
-			/>
-		)}
-	</Sticky>
-);
 
 interface Props extends RouteComponentProps {}
 
@@ -65,6 +52,10 @@ const ClubPage: React.FC<Props> = props => {
 							<h3>{loading ? "..." : detail?.name || "no name"}</h3>
 						</TextEllipsis>
 					</div>
+					<div className="main-page-club-header-info-admin">
+					<Button>Admin View</Button>
+					</div>
+					
 				</div>
 			</div>
 			<>
@@ -75,7 +66,7 @@ const ClubPage: React.FC<Props> = props => {
 						tabBarGutter={12}
 						className="main-page-club-block-tabs"
 					>
-						<TabPane tab="Home" key="Home"></TabPane>
+						{/* <TabPane tab="Home" key="Home"></TabPane> */}
 						<TabPane tab="Moments" key="Moments"></TabPane>
 						<TabPane tab="Events" key="Events"></TabPane>
 						<TabPane tab="Members" key="Members"></TabPane>
