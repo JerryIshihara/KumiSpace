@@ -4,5 +4,6 @@ import Navbar from "./Navbar";
 import TextEllipsis from "./TextEllipsis";
 import PageTitleSetter from "./PageTitleSetter";
 import PrivateRoute from "./PrivateRoute"
+import ReactIcon from "./Icon";
 
-export { Logo, OutsideDetector, Navbar, TextEllipsis, PageTitleSetter, PrivateRoute};
+export { Logo, OutsideDetector, Navbar, TextEllipsis, PageTitleSetter, PrivateRoute, ReactIcon};

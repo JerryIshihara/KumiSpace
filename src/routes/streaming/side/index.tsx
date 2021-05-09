@@ -111,7 +111,7 @@ const Side: React.FC<Props> = props => {
 						))}
 					</SubMenu>
 					<Menu.Divider />
-					<SubMenu key="sub4" title={"HashTags"}>
+					{/* <SubMenu key="sub4" title={"HashTags"}>
 						{follows.map((club: { id: string; name: string }) => (
 							<Menu.Item
 								key={club.id}
@@ -127,7 +127,7 @@ const Side: React.FC<Props> = props => {
 								<a href={`/club/${club.id}`}>{club.name}</a>
 							</Menu.Item>
 						))}
-					</SubMenu>
+					</SubMenu> */}
 				</Menu>
 			</div>
 		</div>

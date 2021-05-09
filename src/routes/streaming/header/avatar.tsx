@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import { logoutType } from "../../../redux/lib/auth.action";
 
 import { Menu, Avatar, Dropdown } from "antd";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, SettingOutlined } from "@ant-design/icons";
 
 import "./style.less";
 
@@ -14,8 +14,8 @@ const ManageAccount: React.FC<MenuProps> = props => {
 	return (
 		<div className="shadow">
 			<Menu selectedKeys={[]}>
-				<Menu.Item>1st menu item</Menu.Item>
-				<Menu.Item>2nd menu item</Menu.Item>
+				<Menu.Item icon={<UserOutlined />}><a href="/@lalal"> My Profile </a></Menu.Item>
+				<Menu.Item icon={ <SettingOutlined />}>Setting</Menu.Item>
 				<Menu.Item icon={<LogoutOutlined />} onClick={props.logout}>
 					Log out
 				</Menu.Item>
@@ -37,7 +37,7 @@ const NavBarAvatar: React.FC<Props> = props => {
 				/>
 			}
 		>
-			<Avatar size={40} icon={<UserOutlined />} style={{ cursor: "pointer" }} />
+			<Avatar size={36} icon={<UserOutlined />} style={{ cursor: "pointer" }} />
 		</Dropdown>
 	);
 };

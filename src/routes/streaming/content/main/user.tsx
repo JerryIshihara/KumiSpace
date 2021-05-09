@@ -6,6 +6,7 @@ import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
 import ClubService from "api/club";
+import MomentCard from "../Card/momentCard";
 
 import event_img from "assets/event.png";
 
@@ -13,14 +14,14 @@ const { TabPane } = Tabs;
 
 interface Props extends RouteComponentProps {}
 
-const ClubPage: React.FC<Props> = props => {
-	const { id } = useParams<{ id: string }>();
+const UserProfile: React.FC<Props> = props => {
+	const { userId } = useParams<{ userId: string }>();
 	const [loading, setLoading] = useState(true);
 	const [detail, setDetail] = useState<
 		{ name: string; id: string } | undefined
 	>({ name: "...", id: "" });
 	useEffect(() => {
-		ClubService.fetchClubDetail(id)
+		ClubService.fetchClubDetail(userId)
 			.then(res => {
 				setDetail(res.data);
 				setLoading(false);
@@ -30,7 +31,7 @@ const ClubPage: React.FC<Props> = props => {
 		return () => {
 			setLoading(true);
 		};
-	}, [id]);
+	}, [userId]);
 	return (
 		<div className="main-page">
 			<div className="main-page-club-block">
@@ -40,9 +41,8 @@ const ClubPage: React.FC<Props> = props => {
 					src={event_img}
 				/>
 				<div className="main-page-club-header-info-container">
-					<div className="main-page-club-header-info-avatar">
+					<div className="main-page-user-header-info-avatar">
 						<Avatar
-							shape="square"
 							size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 110, xxl: 128 }}
 							icon={<UserOutlined />}
 						/>
@@ -53,12 +53,33 @@ const ClubPage: React.FC<Props> = props => {
 						</TextEllipsis>
 					</div>
 					<div className="main-page-club-header-info-admin">
-						<Button style={{ fontWeight: 600 }}>Join</Button>
 						<Button style={{ fontWeight: 600 }}>Follow</Button>
-						<Button style={{ fontWeight: 600 }}>Admin View</Button>
+						<Button style={{ fontWeight: 600 }}>Edit profile</Button>
 					</div>
 				</div>
 			</div>
+			{/* <div className="main-page-club-block main-page-club-block">
+				<div className="main-page-user-header-info-container">
+					<Avatar
+						shape="circle"
+						size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 110, xxl: 128 }}
+						icon={<UserOutlined />}
+					/>
+					<div className="main-page-club-header-info-profile-container">
+						<TextEllipsis>
+							<h1>{loading ? "..." : detail?.name || "My name lalala"}</h1>
+						</TextEllipsis>
+					</div>
+					<div className="main-page-user-header-info-more">
+						<EllipsisOutlined />
+					</div>
+				</div>
+				<div className="main-page-user-header-social-container">
+					<TextEllipsis>
+						<h3>123 moments {Bullet} 3 Clubs { Bullet } 123 Followings</h3>
+					</TextEllipsis>
+				</div>
+			</div> */}
 			<>
 				<div className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky">
 					<Tabs
@@ -67,27 +88,21 @@ const ClubPage: React.FC<Props> = props => {
 						tabBarGutter={12}
 						className="main-page-club-block-tabs"
 					>
-						<TabPane tab="Home" key="Home"></TabPane>
+						{/* <TabPane tab="Home" key="Home"></TabPane> */}
 						<TabPane tab="Moments" key="Moments"></TabPane>
 						<TabPane tab="Events" key="Events"></TabPane>
-						<TabPane tab="Members" key="Members"></TabPane>
+						<TabPane tab="Follows" key="Follows"></TabPane>
 					</Tabs>
 				</div>
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
-					{[...Array(10).keys()].map(() => (
-						<div
-							style={{
-								width: "100%",
-								height: "100px",
-								backgroundColor: "gray",
-								marginBottom: "10px",
-							}}
-						/>
-					))}
+					<MomentCard img={event_img} />
+					<MomentCard img={ event_img}/>
+					<MomentCard img={event_img} />
+					<MomentCard img={ event_img}/>
 				</div>
 			</>
 		</div>
 	);
 };
 
-export default withRouter(ClubPage);
+export default withRouter(UserProfile);

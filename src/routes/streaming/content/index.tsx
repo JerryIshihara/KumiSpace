@@ -4,7 +4,7 @@ import "./style.less";
 
 import { ClubCard } from "./Card";
 import Feed from "./feed";
-import { ClubPage } from "./main";
+import { ClubPage, UserPage } from "./main";
 
 interface Props extends RouteComponentProps {}
 
@@ -22,6 +22,9 @@ const Content: React.FC<Props> = props => {
 				</Route>
 				<Route exact path="/club/:id">
 					<ClubPage />
+				</Route>
+				<Route exact path="/@:userId">
+					<UserPage />
 				</Route>
 			</div>
 		</div>
