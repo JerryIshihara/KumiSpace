@@ -8,7 +8,7 @@ import {
 	SendOutlined,
 } from "@ant-design/icons";
 import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
-import { TextEllipsis } from "../../../../components";
+import { TextEllipsis } from "components";
 import { Bullet } from "utils/text.constant";
 
 interface Props {

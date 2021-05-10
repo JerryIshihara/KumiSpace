@@ -1,7 +1,7 @@
 import React from "react";
 import "../style.less";
 
-import { MomentCard } from "../Card";
+import { MomentCard } from "./Card";
 
 import event_img from "../../../../assets/event.png";
 import huawei_img from "../../../../assets/photo.jpeg";

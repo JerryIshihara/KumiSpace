@@ -8,6 +8,13 @@
     max-width: 1000px;
     .vertical-center;
 }
+@{mp-prefix}-block {        
+    width: 100%;
+    border-radius: 2 * @border-radius-base;
+    overflow: hidden;
+    margin-bottom: @margin-md;
+    background-color: @component-background;
+}
 
 @{mp-prefix}-user {
     &-block {
@@ -49,12 +56,12 @@
 
 @{mp-prefix}-club {
     &-block {
-        width: 100%;
-        border-radius: 2 * @border-radius-base;
-        overflow: hidden;
-        margin-bottom: @margin-md;
-        background-color: @component-background;
-        // position: relative;
+        // width: 100%;
+        // border-radius: 2 * @border-radius-base;
+        // overflow: hidden;
+        // margin-bottom: @margin-md;
+        // background-color: @component-background;
+        .main-page-block;
             &-tab-container {
                 background-color: @component-background;
                 padding: 0 @padding-md;

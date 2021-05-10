@@ -3,8 +3,8 @@ import "./style.less";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-import event_img from "../../../../assets/event.png";
-import { TextEllipsis } from "../../../../components";
+import event_img from "assets/event.png";
+import { TextEllipsis } from "components";
 
 const ClubCard: React.FC = () => {
 	return (

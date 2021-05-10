@@ -12,11 +12,11 @@ export const feedItems = [
 		path: "/",
 		icon: () => <HomeFilled />,
 	},
-	{
-		title: "Moments",
-		path: "/feed/moments",
-		icon: () => <ThunderboltFilled />,
-	},
+	// {
+	// 	title: "Moments",
+	// 	path: "/feed/moments",
+	// 	icon: () => <ThunderboltFilled />,
+	// },
 	{
 		title: "Clubs",
 		path: "/feed/clubs",

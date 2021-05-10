@@ -8,9 +8,10 @@ import Events from "./events";
 const Feed: React.FC = props => {
 	return (
 		<Switch>
-			<Route exact path="/feed/moments">
+			{/* <Route exact path="/feed/moments"> */}
+			{/* <Route exact path="/feed/moments">
 				<Moments />
-			</Route>
+			</Route> */}
 			<Route exact path="/feed/clubs">
 				<Clubs />
 			</Route>

@@ -6,7 +6,7 @@ import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
 import ClubService from "api/club";
-import MomentCard from "../Card/momentCard";
+import MomentCard from "./momentCard";
 
 import event_img from "assets/event.png";
 

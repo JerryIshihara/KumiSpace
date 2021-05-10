@@ -2,7 +2,7 @@ import React from "react";
 import "./style.less";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { TextEllipsis } from "../../../../components";
+import { TextEllipsis } from "components";
 
 interface Props {
     url?: string;

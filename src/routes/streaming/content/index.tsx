@@ -2,9 +2,8 @@ import React from "react";
 import { Route, RouteComponentProps, withRouter } from "react-router-dom";
 import "./style.less";
 
-import { ClubCard } from "./Card";
-import Feed from "./feed";
-import { ClubPage, UserPage } from "./main";
+import Feed, { Moments } from "./feed";
+import { ClubPage, UserPage, CreatePage } from "./main";
 
 interface Props extends RouteComponentProps {}
 
@@ -13,9 +12,7 @@ const Content: React.FC<Props> = props => {
 		<div className="strm-body strm-content ">
 			<div className="strm-content-container">
 				<Route exact path="/">
-					{[...Array(20).keys()].map(_ => (
-						<ClubCard key={_} />
-					))}
+					<Moments />
 				</Route>
 				<Route exact path="/feed/:feedType">
 					<Feed />
@@ -23,9 +20,16 @@ const Content: React.FC<Props> = props => {
 				<Route exact path="/club/:id">
 					<ClubPage />
 				</Route>
+				<Route exact path="/new/club">
+					<CreatePage />
+				</Route>
+				<Route exact path="/new/moment">
+					<UserPage />
+				</Route>
 				<Route exact path="/@:userId">
 					<UserPage />
 				</Route>
+				
 			</div>
 		</div>
 	);

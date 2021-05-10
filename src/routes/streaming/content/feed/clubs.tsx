@@ -1,7 +1,7 @@
 import React from "react";
 import "../style.less";
 
-import { ClubCard } from "../Card";
+import { ClubCard } from "./Card";
 
 const Clubs: React.FC = () => {
 	return (

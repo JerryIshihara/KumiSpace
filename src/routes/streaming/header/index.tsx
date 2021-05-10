@@ -7,7 +7,7 @@ import "./style.less";
 import { Logo } from "../../../components";
 import { logoutType } from "../../../redux/lib/auth.action";
 import Avatar from "./avatar";
-import Create from "./create";
+import Plus from "./plus";
 
 // const { Option } = Select;
 
@@ -30,7 +30,7 @@ const Header: React.FC<Props> = props => {
 				{/* </Input.Group> */}
 			</div>
 			<div className="strm-header-icons">
-				<Create />
+				<Plus />
 				<BellOutlined className="strm-header-icon" />
 				<Avatar logout={props.logout} />
 			</div>
