@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter, RouteComponentProps } from "react-router";
 
 import { Menu, Dropdown } from "antd";
 import { PlusCircleOutlined, ThunderboltOutlined } from "@ant-design/icons";
@@ -31,4 +30,4 @@ const Plus: React.FC = props => {
 	);
 };
 
-export default withRouter(Plus);
+export default Plus;
