@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
+import { withRouter, RouteComponentProps, useParams, Link } from "react-router-dom";
 import { Avatar, Tabs, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
 import ClubService from "api/club";
+import {tab_constants } from './club.constant';
 
 import event_img from "assets/event.png";
 
@@ -14,7 +15,7 @@ const { TabPane } = Tabs;
 interface Props extends RouteComponentProps {}
 
 const ClubPage: React.FC<Props> = props => {
-	const { id } = useParams<{ id: string }>();
+	const { id, tab } = useParams<{ id: string, tab: string | undefined }>();
 	const [loading, setLoading] = useState(true);
 	const [detail, setDetail] = useState<
 		{ name: string; id: string } | undefined
@@ -61,7 +62,7 @@ const ClubPage: React.FC<Props> = props => {
 			</div>
 			<>
 				<div className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky">
-					<Tabs
+					{/* <Tabs
 						defaultActiveKey="Home"
 						size="large"
 						tabBarGutter={12}
@@ -71,7 +72,19 @@ const ClubPage: React.FC<Props> = props => {
 						<TabPane tab="Moments" key="Moments"></TabPane>
 						<TabPane tab="Events" key="Events"></TabPane>
 						<TabPane tab="Members" key="Members"></TabPane>
-					</Tabs>
+					</Tabs> */}
+										<nav>
+						{tab_constants.map(t => (
+							<Link
+								className={
+									t.isActive(tab) ? "main-page-club-block-tab-active" : ""
+								}
+								to={`/club/${id}${t.path}`}
+							>
+								{t.key}
+							</Link>
+						))}
+					</nav>
 				</div>
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
 					{[...Array(10).keys()].map(() => (

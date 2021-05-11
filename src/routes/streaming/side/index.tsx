@@ -16,9 +16,13 @@ interface Props extends RouteComponentProps {}
 const Side: React.FC<Props> = props => {
 	const getLocation = (pathname: string): string => {
 		const loc = pathname.split("/");
-		return loc.length > 0 && loc[loc.length - 1].length > 0
-			? loc[loc.length - 1]
-			: "home";
+		if (loc.every(l => l === "")) {
+			return "home";
+		}
+		if (loc.includes("feed")) {
+			return loc[loc.length - 1];
+		}
+		return ""
 	};
 	const [hasUpdate, setHasUpdate] = useState(true);
 	const [par, setPar] = useState<any>([]);

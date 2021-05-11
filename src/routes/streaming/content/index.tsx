@@ -21,10 +21,10 @@ const Content: React.FC<Props> = props => {
 				<Route exact path="/new/:newContentType">
 					<New />
 				</Route>
-				<Route exact path="/club/:id">
+				<Route exact path={["/club/:id", "/club/:id/:tab"]}>
 					<ClubPage />
 				</Route>
-				<Route exact path="/@:userId">
+				<Route exact path={["/@:userId", "/@:userId/:tab"]} >
 					<UserPage />
 				</Route>
 			</div>

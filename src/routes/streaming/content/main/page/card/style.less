@@ -10,7 +10,7 @@
 }
 .@{spc-prefix} {
     width: 100%;
-    margin-bottom: @margin-lg;
+    margin-bottom: @margin-sm;
     position: relative;
     &-ellipsis {
         position: absolute;
@@ -21,7 +21,8 @@
         line-height: 0;
         cursor: pointer;
     }
-    &-title-container {
+    &-title-container,
+    &-club-title-container {
         width: 100%;
         padding: @padding-xss @padding-md;
         display: flex;
@@ -31,9 +32,10 @@
         line-height: 1em !important;
     }
 
+
     &-image {
-        width: 50%;
-        min-width: 200px;
+        width: 45%;
+        min-width: 300px;
         align-self: center;
     }
 
