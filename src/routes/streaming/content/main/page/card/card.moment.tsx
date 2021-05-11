@@ -6,9 +6,10 @@ import {
 	LikeOutlined,
 	MessageOutlined,
 	SendOutlined,
+	EllipsisOutlined
 } from "@ant-design/icons";
 import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
-import { TextEllipsis } from "../../../../components";
+import { TextEllipsis } from "components";
 import { Bullet } from "utils/text.constant";
 
 interface Props {
@@ -18,40 +19,43 @@ interface Props {
 
 const MomentCard: React.FC<Props> = props => {
 	return (
-		<div className="strm-card-moment">
-			<div className="strm-card-moment-ellipsis">
-				<IoEllipsisHorizontalCircleOutline />
+		<div className="strm-page-card">
+			<div className="strm-page-card-ellipsis">
+			<EllipsisOutlined />
 			</div>
 			<div className="strm-card-moment-avatar-title-container">
 				<div className="strm-card-avatar">
 					<Avatar size={45} icon={<UserOutlined />} />
 				</div>
-				<div className="strm-card-moment-title-container">
+				<div className="strm-page-card-title-container">
 					<TextEllipsis numLines={1}>
-						<h3>This is a great Club!</h3>
+						<h3>User name</h3>
 					</TextEllipsis>
-					<TextEllipsis numLines={2}>
-						<span>
-							This is a great Club! This is a great Club! This is a great Club!
-							This is a great Club! This is a great Club! This is a great Club!
-						</span>
+					<TextEllipsis numLines={1}>
+						<p>User description</p>
 					</TextEllipsis>
 				</div>
 			</div>
-			<img className="strm-card-moment-image" alt="alt" src={props.img} />
-			<div className="strm-card-moment-social-activity">
+			<TextEllipsis numLines={2}>
+				<p>
+					This is a great Club! This is a greasdat Club! This is a great Club! This
+					is a great Club! This is a great Clasdfaub! This is a great Club! This is a great Club! This is a great Club! This is a great Club! This
+					is a great Club! This is a great Clasdfaub! This is a great Club!
+				</p>
+			</TextEllipsis>
+			<img className="strm-page-card-image" alt="alt" src={props.img} />
+			<div className="strm-page-card-social-activity">
 				<LikeOutlined />
 				<MessageOutlined />
 				<SendOutlined />
-				<Divider type="vertical"/>
-				<span className="strm-card-moment-social-activity-stats">232 likes {Bullet} 432 comments</span>
 				<Divider type="vertical" />
-				<span className="strm-card-moment-social-activity-date">May 5</span>
+				<span className="strm-page-card-social-activity-stats">
+					232 likes {Bullet} 432 comments
+				</span>
+				<Divider type="vertical" />
+				<span className="strm-card-date-style">May 5</span>
 			</div>
-			{/* <div className="strm-card-moment-social-activity-stats">
-				<h4>232 likes { Bullet }</h4>
-			</div> */}
-			<div className="strm-card-moment-avatar-title-container">
+			{/* <div className="strm-card-moment-avatar-title-container">
 				<div className="strm-card-avatar">
 					<Avatar size={30} icon={<UserOutlined />} />
 				</div>
@@ -64,7 +68,8 @@ const MomentCard: React.FC<Props> = props => {
 						</span>
 					</TextEllipsis>
 				</div>
-			</div>
+			</div> */}
+			<Divider />
 		</div>
 	);
 };

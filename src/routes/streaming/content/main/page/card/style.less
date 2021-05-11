@@ -1,0 +1,54 @@
+@import "../style.less";
+
+@spc-prefix: ~"strm-page-card";
+
+.@{spc-prefix} > * {
+    margin-bottom: @margin-sm;
+}
+.@{spc-prefix} p {
+    font-size: @font-size-lg;
+}
+.@{spc-prefix} {
+    width: 100%;
+    margin-bottom: @margin-lg;
+    position: relative;
+    &-ellipsis {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: @heading-3-size;
+        padding: 0 !important; 
+        line-height: 0;
+        cursor: pointer;
+    }
+    &-title-container {
+        width: 100%;
+        padding: @padding-xss @padding-md;
+        display: flex;
+        flex-direction: column;
+    }
+    &-title-container > * {
+        line-height: 1em !important;
+    }
+
+    &-image {
+        width: 50%;
+        min-width: 200px;
+        align-self: center;
+    }
+
+    &-social-activity {
+        .horizontal-center;
+        // color: @gray-6;
+        &-stats{
+            font-size: @font-size-lg !important;
+            // color: @text-color-secondary;
+            font-weight: 500;
+        }
+    }
+    &-social-activity > * {
+        margin: @margin-xs @margin-sm;
+        font-size: @heading-4-size;
+        cursor: pointer;
+    }
+}
