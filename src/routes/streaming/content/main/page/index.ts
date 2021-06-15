@@ -1,4 +1,4 @@
-import ClubPage from "./club";
+import Profile from "./club";
 import UserPage from './user';
 
-export { ClubPage, UserPage };
+export { Profile, UserPage };

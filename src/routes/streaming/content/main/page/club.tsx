@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, RouteComponentProps, useParams, Link } from "react-router-dom";
+import {
+	withRouter,
+	RouteComponentProps,
+	useParams,
+	Link,
+} from "react-router-dom";
 import { Avatar, Tabs, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
 import ClubService from "api/club";
-import {tab_constants } from './club.constant';
+import { MomentCard, ClubCard, FollowCard } from "./card";
+import { tab_constants as club_constants } from "./club.constant";
+import { tab_constants as user_constants } from "./user.constant";
 
 import event_img from "assets/event.png";
 
@@ -14,14 +21,24 @@ const { TabPane } = Tabs;
 
 interface Props extends RouteComponentProps {}
 
-const ClubPage: React.FC<Props> = props => {
-	const { id, tab } = useParams<{ id: string, tab: string | undefined }>();
+const Profile: React.FC<Props> = props => {
+	const { userId, clubId, tab } =
+		useParams<{
+			userId: string | undefined;
+			clubId: string | undefined;
+			tab: string | undefined;
+		}>();
+	const [tabs, setTabs] = useState<Array<any>>([]);
 	const [loading, setLoading] = useState(true);
 	const [detail, setDetail] = useState<
 		{ name: string; id: string } | undefined
 	>({ name: "...", id: "" });
 	useEffect(() => {
-		ClubService.fetchClubDetail(id)
+		// TODO: get id by condition
+		setTabs(userId ? user_constants : club_constants);
+		const finalId = userId || clubId;
+		if (!finalId) return;
+		ClubService.fetchClubDetail(finalId)
 			.then(res => {
 				setDetail(res.data);
 				setLoading(false);
@@ -31,7 +48,7 @@ const ClubPage: React.FC<Props> = props => {
 		return () => {
 			setLoading(true);
 		};
-	}, [id]);
+	}, [clubId, userId]);
 	return (
 		<div className="main-page">
 			<div className="main-page-club-block">
@@ -41,9 +58,13 @@ const ClubPage: React.FC<Props> = props => {
 					src={event_img}
 				/>
 				<div className="main-page-club-header-info-container">
-					<div className="main-page-club-header-info-avatar">
+					<div
+						className={`main-page-${
+							userId ? "user" : "club"
+						}-header-info-avatar`}
+					>
 						<Avatar
-							shape="square"
+							shape={userId ? "circle" : "square"}
 							size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 110, xxl: 128 }}
 							icon={<UserOutlined />}
 						/>
@@ -54,9 +75,18 @@ const ClubPage: React.FC<Props> = props => {
 						</TextEllipsis>
 					</div>
 					<div className="main-page-club-header-info-admin">
-						<Button style={{ fontWeight: 600 }}>Join</Button>
-						<Button style={{ fontWeight: 600 }}>Follow</Button>
-						<Button style={{ fontWeight: 600 }}>Admin View</Button>
+						{userId ? (
+							<>
+								<Button style={{ fontWeight: 600 }}>Follow</Button>
+								<Button style={{ fontWeight: 600 }}>Edit profile</Button>
+							</>
+						) : (
+							<>
+								<Button style={{ fontWeight: 600 }}>Join</Button>
+								<Button style={{ fontWeight: 600 }}>Follow</Button>
+								<Button style={{ fontWeight: 600 }}>Admin View</Button>
+							</>
+						)}
 					</div>
 				</div>
 			</div>
@@ -73,13 +103,13 @@ const ClubPage: React.FC<Props> = props => {
 						<TabPane tab="Events" key="Events"></TabPane>
 						<TabPane tab="Members" key="Members"></TabPane>
 					</Tabs> */}
-										<nav>
-						{tab_constants.map(t => (
+					<nav>
+						{tabs.map(t => (
 							<Link
 								className={
 									t.isActive(tab) ? "main-page-club-block-tab-active" : ""
 								}
-								to={`/club/${id}${t.path}`}
+								to={`/${userId ? "@" + userId : "club/" + clubId}${t.path}`}
 							>
 								{t.key}
 							</Link>
@@ -87,6 +117,14 @@ const ClubPage: React.FC<Props> = props => {
 					</nav>
 				</div>
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
+					{tab === "moments" && (
+						<>
+							<MomentCard img={event_img} />
+							<MomentCard img={event_img} />
+							<MomentCard img={event_img} />
+							<MomentCard img={event_img} />
+						</>
+					)}
 					{[...Array(10).keys()].map(() => (
 						<div
 							style={{
@@ -103,4 +141,4 @@ const ClubPage: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(ClubPage);
+export default withRouter(Profile);
