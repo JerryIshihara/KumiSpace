@@ -1,0 +1,166 @@
+@import "../../style.less";
+@mp-prefix: ~".main-page";
+@banner-height: 200px;
+
+@{mp-prefix} {
+    width: 80%;
+    min-width: 400px;
+    max-width: 1000px;
+    .vertical-center;
+}
+@{mp-prefix}-block {        
+    width: 100%;
+    border-radius: 2 * @border-radius-base;
+    overflow: hidden;
+    margin-bottom: @margin-md;
+    background-color: @component-background;
+    &-padding {
+        padding: @padding-md;
+    }
+}
+
+@{mp-prefix}-user {
+    &-block {
+        display: flex;
+        flex-direction: column;
+    }
+    &-header {
+        &-info {
+            &-container {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                padding: @padding-md;
+                position: relative;
+            }
+            &-avatar {
+                margin: @margin-md;
+                margin-top: -25px;
+                padding: @padding-xss;
+                border-radius: 50%;
+                background-color: #ffffff;
+            }
+            &-more {
+                position: absolute;
+                padding: 0 !important;
+                top: @margin-md;
+                right: @margin-lg;
+                font-size: 30px;
+                line-height: 0em;
+            }
+        }
+        &-social {
+            &-container {
+                padding: 0 @padding-md;
+            }
+        }
+    }
+}
+
+@{mp-prefix}-club {
+    &-block {
+        // width: 100%;
+        // border-radius: 2 * @border-radius-base;
+        // overflow: hidden;
+        // margin-bottom: @margin-md;
+        // background-color: @component-background;
+        .main-page-block;
+            &-tab-container {
+                background-color: @component-background;
+                padding: 0 @padding-md;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+            &-tab-container nav {
+                padding: 0;
+                list-style-type: none;
+                .horizontal-center;
+                text-align: center;
+                border-bottom: 1px solid @gray-3;
+            }
+            &-tab-container a:hover {
+                background-color: @gray-2;
+                color: @text-color;
+            }
+            &-tab-container a {
+                color: @text-color;
+                text-align: center;
+                font-family: @font-family;
+                font-size: @font-size-lg;
+                padding: @padding-md @padding-lg;
+                border-bottom: 1px solid transparent;
+            }
+            &-tab-active {
+                border-bottom: 1px solid @primary-color !important;
+            }
+            &-tabs {
+                padding: 0;
+            }
+            &-tabs > * {
+                padding: 0 !important;
+                margin: 1px !important;
+            }
+            &-tabpane-container {
+                padding: @padding-md;
+                border-top-right-radius: 0;
+                border-top-left-radius: 0;
+                
+            }
+        &-container {
+            padding: @padding-md;
+        }
+        &-sticky {
+            position: sticky;
+            top: @streaming-header-height;
+            margin-bottom: 0 !important;
+            z-index: 999;
+        }
+    }
+    &-header {
+        &-banner {
+            width: 100%;
+            height: @banner-height;
+            object-fit: cover;
+            // border-radius: @border-radius-base;
+        }
+        &-info {
+            &-container {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                padding: 0 @padding-md;
+            }
+            &-avatar {
+                margin: @margin-md;
+                margin-top: -25px;
+                padding: @padding-xss;
+                border-radius: 2 * @border-radius-base;
+                background-color: #ffffff;
+            }
+            &-profile {
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                    padding: @padding-md;
+                }
+
+            }
+            &-admin {
+                text-align: right;
+                padding: @padding-sm;
+                padding-right: 0;
+                flex-grow: 1;
+            }
+            &-admin > * {
+                margin-left: @margin-md;
+            }
+        }
+    }
+}
+
+.ant-tabs-tab {
+    &:hover, 
+    &&-active &-btn{
+        color: @text-color;
+    }
+}

@@ -5,7 +5,7 @@ import { PageTitleSetter, PrivateRoute } from "components";
 
 import LandingPage from "./landing";
 import LoginPage from "./login";
-import StreamingPage from "./streaming";
+import Competitions from "./competitions";
 
 const App: React.FC<AuthProps> = props => {
 	return (
@@ -19,7 +19,7 @@ const App: React.FC<AuthProps> = props => {
 						{/* <PrivateRoute {...props} altComponent={<LandingPage />}>
 							<StreamingPage {...props} />
 						</PrivateRoute> */}
-						<StreamingPage {...props} />
+						<Competitions {...props} />
 					</Route>
 				</Switch>
 			</PageTitleSetter>
