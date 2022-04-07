@@ -1,6 +1,6 @@
 @import "../../style.less";
 @mp-prefix: ~".main-page";
-@banner-height: 200px;
+@banner-height: 250px;
 
 @{mp-prefix} {
     width: 80%;
@@ -10,7 +10,7 @@
 }
 @{mp-prefix}-block {        
     width: 100%;
-    border-radius: 2 * @border-radius-base;
+    // border-radius: 2 * @border-radius-base;
     overflow: hidden;
     margin-bottom: @margin-md;
     background-color: @component-background;
@@ -59,13 +59,17 @@
 
 @{mp-prefix}-club {
     &-block {
-        // width: 100%;
+        min-width: 600px;
         // border-radius: 2 * @border-radius-base;
         // overflow: hidden;
         // margin-bottom: @margin-md;
         // background-color: @component-background;
         .main-page-block;
             &-tab-container {
+                width: '100%';
+                display: flex;
+                flex-direction: row;
+                align-items: center;
                 background-color: @component-background;
                 padding: 0 @padding-md;
                 border-bottom-right-radius: 0;
@@ -73,6 +77,8 @@
             }
             &-tab-container nav {
                 padding: 0;
+                width: '100%';
+                // padding: @padding-md @padding-lg;
                 list-style-type: none;
                 .horizontal-center;
                 text-align: center;
@@ -125,23 +131,31 @@
         }
         &-info {
             &-container {
+                height: @banner-height;
                 width: 100%;
                 display: flex;
                 flex-direction: row;
+                align-items: flex-end;
                 padding: 0 @padding-md;
             }
             &-avatar {
                 margin: @margin-md;
                 margin-top: -25px;
                 padding: @padding-xss;
-                border-radius: 2 * @border-radius-base;
+                // border-radius: 2 * @border-radius-base;
                 background-color: #ffffff;
             }
             &-profile {
                 &-container {
+                    height: '100%';
                     display: flex;
                     flex-direction: column;
+                    justify-content: space-between;
                     padding: @padding-md;
+                    z-index: 9;
+                }
+                &-text > * {
+                    color: @text-color-inverse;
                 }
 
             }

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps, Route, Switch } from "react-router-dom";
 
-import Moments from "./moments";
-import Clubs from "./clubs";
-import Events from "./events";
+import Competitions from "./competitions";
 
 const Feed: React.FC = props => {
 	return (
@@ -12,11 +10,8 @@ const Feed: React.FC = props => {
 			{/* <Route exact path="/feed/moments">
 				<Moments />
 			</Route> */}
-			<Route exact path="/feed/clubs">
-				<Clubs />
-			</Route>
-			<Route exact path="/feed/events">
-				<Events />
+			<Route exact path="/feed/competitions">
+				<Competitions />
 			</Route>
 		</Switch>
 	);

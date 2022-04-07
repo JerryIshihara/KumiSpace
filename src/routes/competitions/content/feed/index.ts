@@ -1,7 +1,5 @@
 import Feed from "./feed";
-import Moments from "./moments";
-import Clubs from "./clubs";
-import Events from "./events";
+import Competitions from "./competitions";
 
 export default Feed;
-export { Moments, Clubs, Events };
+export { Competitions };

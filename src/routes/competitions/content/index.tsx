@@ -2,8 +2,8 @@ import React from "react";
 import { Route, RouteComponentProps, withRouter } from "react-router-dom";
 import "./style.less";
 
-import Feed, { Moments, Clubs } from "./feed";
-import { Profile, UserPage } from "./main/page";
+import Feed, { Competitions } from "./feed";
+import Competition from "./main/competition";
 import New from "./main/new";
 
 interface Props extends RouteComponentProps {}
@@ -13,20 +13,21 @@ const Content: React.FC<Props> = props => {
 		<div className="strm-body strm-content ">
 			<div className="strm-content-container">
 				<Route exact path="/">
-					<Clubs />
+					<Competitions />
 				</Route>
 				{/* <Route exact path="/feed/:feedType">
 					<Feed />
 				</Route>
+				*/}
 				<Route exact path="/new/:newContentType">
 					<New />
+				</Route> 
+				<Route exact path={["/competitions/:competitionName", "/competitions/:competitionName/:tab"]}>
+					<Competition />
 				</Route>
-				<Route exact path={["/club/:clubId", "/club/:clubId/:tab", "/@:userId", "/@:userId/:tab"]}>
-					<Profile />
-				</Route> */}
-				{/* <Route exact path={["/@:userId", "/@:userId/:tab"]} >
-					<UserPage />
-				</Route> */}
+				<Route exact path={["/@:userId", "/@:userId/:tab"]} >
+					{/* <UserPage /> */}
+				</Route>
 			</div>
 		</div>
 	);

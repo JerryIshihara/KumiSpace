@@ -1,5 +1,3 @@
-import ClubCard from "./clubCard";
-import MomentCard from "./momentCard";
-import EventCard from "./eventCard";
+import CompetitionCard from "./competitionCard";
 
-export { ClubCard, MomentCard, EventCard };
+export { CompetitionCard };

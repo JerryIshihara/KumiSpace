@@ -22,11 +22,12 @@ const { TabPane } = Tabs;
 interface Props extends RouteComponentProps {}
 
 const Profile: React.FC<Props> = props => {
-	const { userId, clubId, tab } = useParams<{
-		userId: string | undefined;
-		clubId: string | undefined;
-		tab: string | undefined;
-	}>();
+	const { userId, clubId, tab } =
+		useParams<{
+			userId: string | undefined;
+			clubId: string | undefined;
+			tab: string | undefined;
+		}>();
 	const [tabs, setTabs] = useState<Array<any>>([]);
 	const [loading, setLoading] = useState(true);
 	const [detail, setDetail] = useState<
@@ -57,14 +58,35 @@ const Profile: React.FC<Props> = props => {
 					src={event_img}
 				/>
 				<div className="main-page-club-header-info-container">
+					{userId && <div
+						className={`main-page-${
+							userId ? "user" : "club"
+						}-header-info-avatar`}
+					>
+						<Avatar
+							shape={userId ? "circle" : "square"}
+							size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 110, xxl: 128 }}
+							icon={<UserOutlined />}
+						/>
+					</div>}
 					<div className="main-page-club-header-info-profile-container">
 						<TextEllipsis>
 							<h1>{loading ? "..." : detail?.name || "no name"}</h1>
 						</TextEllipsis>
 					</div>
 					<div className="main-page-club-header-info-admin">
-						<Button style={{ fontWeight: 600 }}>Join</Button>
-						<Button style={{ fontWeight: 600 }}>Follow</Button>
+						{userId ? (
+							<>
+								<Button style={{ fontWeight: 600 }}>Follow</Button>
+								<Button style={{ fontWeight: 600 }}>Edit profile</Button>
+							</>
+						) : (
+							<>
+								<Button style={{ fontWeight: 600 }}>Join</Button>
+								<Button style={{ fontWeight: 600 }}>Follow</Button>
+								<Button style={{ fontWeight: 600 }}>Admin View</Button>
+							</>
+						)}
 					</div>
 				</div>
 			</div>

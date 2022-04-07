@@ -30,7 +30,7 @@ const Header: React.FC<Props> = props => {
 				{/* </Input.Group> */}
 			</div>
 			<div className="strm-header-icons">
-				<Plus />
+				{/* <Plus /> */}
 				<BellOutlined className="strm-header-icon" />
 				<Avatar logout={props.logout} />
 			</div>
