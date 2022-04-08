@@ -4,7 +4,6 @@ import "./style.less";
 
 import Feed, { Competitions } from "./feed";
 import Competition from "./main/competition";
-import New from "./main/new";
 
 interface Props extends RouteComponentProps {}
 
@@ -19,10 +18,7 @@ const Content: React.FC<Props> = props => {
 					<Feed />
 				</Route>
 				*/}
-				<Route exact path="/new/:newContentType">
-					<New />
-				</Route> 
-				<Route exact path={["/competitions/:competitionName", "/competitions/:competitionName/:tab"]}>
+				<Route path={"/competitions"}>
 					<Competition />
 				</Route>
 				<Route exact path={["/@:userId", "/@:userId/:tab"]} >

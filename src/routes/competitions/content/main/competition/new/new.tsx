@@ -1,14 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import CreateClubPage from "./club";
+import CreateNewTeam from "./team";
 import CreateNewMoment from "./moment";
 
 const New: React.FC = () => {
-	const { newContentType } = useParams<{ newContentType: string }>();
+	const params = new URLSearchParams(window.location.search);
 
-	switch (newContentType) {
-		case "club":
-			return <CreateClubPage />;
+	switch (params.get("type")) {
+		case "team":
+			return <CreateNewTeam />;
 		case "moment":
 			return <CreateNewMoment />;
 		default:

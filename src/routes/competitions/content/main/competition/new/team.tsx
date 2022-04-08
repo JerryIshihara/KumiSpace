@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Avatar, Tabs, Button, Space, Form, Input, Upload } from "antd";
+import { Avatar, Tabs, Button, Space, Select, Input, Upload } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
@@ -11,7 +11,7 @@ import event_img from "assets/event.png";
 interface InputItemProps {
 	label: string;
 	style?: React.CSSProperties;
-    className?: string;
+	className?: string;
 }
 const InputItem: React.FC<InputItemProps> = props => {
 	return (
@@ -29,25 +29,33 @@ const CreatePage: React.FC<Props> = props => {
 	return (
 		<div className="main-page">
 			<div className="main-page-block main-page-block-padding">
-				<h1>Create a new club page</h1>
+				<h1>Create a new team</h1>
 				<Space direction="vertical" size={15} style={{ width: "100%" }}>
 					<InputItem label="Name">
 						<Input
 							size="large"
 							required
-							placeholder="University of Toronto Student Union"
+							placeholder=""
 						/>
 					</InputItem>
 
-					<InputItem label="Abbreviation">
-						<Input size="large" placeholder="UTSU" />
+					<InputItem label="Number of teammates">
+						<Select style={{ width: "200px" }} size="large">
+							{[
+								...Array(5)
+									.fill("")
+									.map((item, index) => (
+										<Select.Option value={index + 1}>{index + 1}</Select.Option>
+									)),
+							]}
+						</Select>
 					</InputItem>
-					<InputItem label="About us">
-						<Input.TextArea size="large" placeholder="About us" />
+					<InputItem label="Join requirement">
+						<Input.TextArea size="large" placeholder="" />
 					</InputItem>
-					<InputItem label="Logo">
+					{/* <InputItem label="Logo">
 						<LogoUploader />
-					</InputItem>
+					</InputItem> */}
 					<Button
 						className="login-form-submit"
 						size="large"
