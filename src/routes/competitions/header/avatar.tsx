@@ -14,7 +14,7 @@ const ManageAccount: React.FC<MenuProps> = props => {
 	return (
 		<div className="shadow">
 			<Menu selectedKeys={[]}>
-				<Menu.Item icon={<UserOutlined />}><a href="/@lalal"> My Profile </a></Menu.Item>
+				<Menu.Item icon={<UserOutlined />}><a href="/usr/lalal"> My Profile </a></Menu.Item>
 				<Menu.Item icon={ <SettingOutlined />}>Setting</Menu.Item>
 				<Menu.Item icon={<LogoutOutlined />} onClick={props.logout}>
 					Log out
@@ -31,6 +31,7 @@ const NavBarAvatar: React.FC<Props> = props => {
 	return (
 		<Dropdown
 			placement="bottomRight"
+			trigger={['click']}
 			overlay={
 				<ManageAccount
 					logout={() => props.logout(() => props.history.push("/"))}

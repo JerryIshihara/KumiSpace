@@ -1,13 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../style.less";
 
 import { CompetitionCard } from "./Card";
+import { get_competitions } from "../../../../api/kaggle";
+
 
 const Clubs: React.FC = () => {
+	const [competitions, setCompetitions] = useState([]);
+	useEffect(() => {
+		get_competitions("token")
+			.then(res => {
+				setCompetitions(res.data);
+				console.log(res.data)
+			})
+			.catch(err => {
+				console.warn(err);
+			});
+	}, []);
+
 	return (
 		<>
-			{[...Array(Math.floor(Math.random() * 20 + 5)).keys()].map(_ => (
-				<CompetitionCard key={_} imageUrl={"https://picsum.photos/" + 2000 + "/" + 3000 + "?random=2"}/>
+			{competitions.map((item: any, index) => (
+					item.category === "Featured" && <CompetitionCard
+						key={index}
+						item={item}
+					/>
+			))}
+			{competitions.map((item: any, index) => (
+				item.category !== "Getting Started" && item.category !== "Featured" &&  <CompetitionCard
+					key={index}
+					item={item}
+				/>
+			))}
+			{competitions.map((item: any, index) => (
+				item.category === "Getting Started" && <CompetitionCard
+					key={index}
+					item={item}
+				/>
 			))}
 		</>
 	);

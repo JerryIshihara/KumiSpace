@@ -50,7 +50,7 @@ const CreatePage: React.FC<Props> = props => {
 							]}
 						</Select>
 					</InputItem>
-					<InputItem label="Join requirement">
+					<InputItem label="Join requirement (optional)">
 						<Input.TextArea size="large" placeholder="" />
 					</InputItem>
 					{/* <InputItem label="Logo">

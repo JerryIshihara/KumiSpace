@@ -17,7 +17,7 @@ import { TeamCard } from "./card";
 import { tab_constants as club_constants } from "./club.constant";
 import { tab_constants as user_constants } from "../profile/user.constant";
 
-import event_img from "assets/event.png";
+import {get_competition, KaggleCompetitionProps } from '../../../../../api/kaggle'
 
 const { TabPane } = Tabs;
 
@@ -29,23 +29,13 @@ const Competition: React.FC<Props> = props => {
 		competitionName: string;
 		tab: string | undefined;
 	}>();
+	const [competition, setCompetition] = useState<KaggleCompetitionProps | undefined>();
 	const [tabs, setTabs] = useState<Array<any>>(club_constants);
 	const [loading, setLoading] = useState(true);
-	const [detail, setDetail] = useState<
-		{ name: string; id: string } | undefined
-	>({ name: "...", id: "" });
 	useEffect(() => {
-		// TODO: get id by condition
-		// setTabs(userId ? user_constants : club_constants);
-		// const finalId = userId || clubId;
-		// if (!finalId) return;
-		// ClubService.fetchClubDetail(finalId)
-		// 	.then(res => {
-		// 		setDetail(res.data);
-		// 		setLoading(false);
-		// 	})
-		// 	.catch(error => console.error(error));
-		setDetail({ name: competitionName, id: "123" });
+		get_competition(competitionName).then(res => {
+			setCompetition(res.data);
+		})
 		setLoading(false);
 		return () => {
 			setLoading(true);
@@ -56,7 +46,7 @@ const Competition: React.FC<Props> = props => {
 			<div
 				className="main-page-club-block"
 				style={{
-					backgroundImage: `url("https://picsum.photos/${1000}/${500}?random=1")`,
+					backgroundImage: `url(${competition?.competition_header_image_url})`,
 					backgroundSize: "cover",
 				}}
 			>
@@ -69,10 +59,12 @@ const Competition: React.FC<Props> = props => {
 					<div className="main-page-club-header-info-profile-container">
 						<TextEllipsis className="main-page-club-header-info-profile-text">
 							<a
-								href="https://www.kaggle.com/competitions/ubiquant-market-prediction/overview"
+								href={"https://www.kaggle.com/competitions/" + competition?.name}
+								target="_blank"
+								rel="noreferrer"
 								style={{ fontWeight: "bold", fontSize: 30, display: 'flex', flexDirection: 'row', alignItems: 'center', lineHeight: 1.5 }}
 							>
-								{loading ? "..." : detail?.name || "no name"}{" "}
+								{competition?.title}{" "}
 								<FiExternalLink style={{ margin: 4 }} />
 							</a>
 						</TextEllipsis>
@@ -89,7 +81,8 @@ const Competition: React.FC<Props> = props => {
 							<h4>
 								{/* <div className="strm-card-team-num">{}</div> */}
 								{Math.floor(Math.random() * 100)} teams to join &middot;{" "}
-								{Math.floor(Math.random() * 100)} days to go
+								{Math.floor(Math.random() * 100)} days to go &middot;{" "}
+								{competition?.category} 
 							</h4>
 						</TextEllipsis>
 					</div>

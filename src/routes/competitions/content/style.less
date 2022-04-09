@@ -25,3 +25,22 @@
     justify-content: center;
     flex-wrap: wrap;
 }
+
+@mp-prefix: ~".main-page";
+@{mp-prefix} {
+    width: 80%;
+    min-width: 400px;
+    max-width: 1000px;
+    .vertical-center;
+}
+
+@{mp-prefix}-block {        
+    width: 100%;
+    // border-radius: 2 * @border-radius-base;
+    overflow: hidden;
+    margin-bottom: @margin-md;
+    background-color: @component-background;
+    &-padding {
+        padding: @padding-md;
+    }
+}
