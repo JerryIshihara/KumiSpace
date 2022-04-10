@@ -3,6 +3,8 @@ import { Button, Divider } from "antd";
 import { EditFilled } from "@ant-design/icons";
 
 import TextEllipsis from "components/TextEllipsis";
+import "./style.less";
+
 
 export const Level = {
 	beginner: "#3bdb89",

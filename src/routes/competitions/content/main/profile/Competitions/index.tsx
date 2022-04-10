@@ -2,22 +2,22 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button } from "antd";
 
-import Skill, { SkillType } from "./skill";
+import Competition from "./competition";
 
 const Skills: React.FC<any> = props => {
 	const history = useHistory();
-	const [skills, setSkills] = useState<Array<SkillType>>([
+	const [skills, setSkills] = useState<Array<any>>([
 		{ name: "Python", level: "expert" },
 		{ name: "Pytorch", level: "intermediate" },
 	]);
-	const openForm = (skill?: SkillType) => {
+	const openForm = (skill?: any) => {
 		history.push({
 			pathname:
 				window.location.pathname + `?form=skill${skill ? "&i=" + skills.indexOf(skill) : "" }`,
 			state: skill,
 		});
 	};
-    const handleSubmit = async (skill: SkillType) => {
+    const handleSubmit = async (skill: any) => {
         const params = new URLSearchParams(window.location.search);
         const i = Number(params.get("i") !== null ? params.get("i") : -1)
         console.log(i);
@@ -34,7 +34,7 @@ const Skills: React.FC<any> = props => {
                 });
            }
         }
-		if (skills.filter((s: SkillType) => skill.name === s.name).length > 0) {
+		if (skills.filter((s: any) => skill.name === s.name).length > 0) {
 			return new Promise((res, rej) => {
 				rej("Skill already exists");
 			});
@@ -48,11 +48,10 @@ const Skills: React.FC<any> = props => {
 
 	return (
 		<div className="main-page-skills">
-			{skills.map((item: SkillType, index: number) => (
-				<Skill
+			{skills.map((item: any, index: number) => (
+				<Competition
 					key={index}
 					skillName={item.name}
-					skillLevel={item.level}
 					onPressEdit={() => {
 						openForm(skills[index]);
 					}}

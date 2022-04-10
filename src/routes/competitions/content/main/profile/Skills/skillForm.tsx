@@ -65,7 +65,7 @@ const SkillForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 		<>
 			<Modal
 				// title="Add skill"
-				visible={params.get("form") !== null}
+				visible={params.get("form") === 'skill'}
 				onOk={handleOk}
 				confirmLoading={confirmLoading}
 				onCancel={handleCancel}

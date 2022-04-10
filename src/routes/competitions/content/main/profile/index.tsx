@@ -4,8 +4,6 @@ import {
 	RouteComponentProps,
 	useParams,
 	Link,
-	Switch,
-	Route,
 	useHistory,
 } from "react-router-dom";
 import { Avatar, Tabs, Button, Divider } from "antd";
@@ -15,17 +13,32 @@ import TextEllipsis from "components/TextEllipsis";
 import ClubService from "api/club";
 
 import { tab_constants } from "./user.constant";
+import ProfileEditForm from "./profileEditForm";
 import Skills from "./Skills";
-import Competitions from './Competitions';
+import Competitions from "./Competitions";
 import "./style.less";
 
 const { TabPane } = Tabs;
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
+
+export type ProfileProps = {
+	username: string | undefined;
+	occupation: string | undefined;
+	organization: string | undefined;
+	description: string | undefined;
+}
 
 const UserProfile: React.FC<Props> = props => {
+	const history = useHistory();
 	const params = new URLSearchParams(window.location.search);
 	const tab = params.get("tab");
+	const [profile, setProfile] = useState<ProfileProps>({
+		username: "Jerry",
+		occupation: "Meng",
+		organization: "Berkeley",
+		description: "Win!",
+	});
 	const { userId } = useParams<{ userId: string }>();
 	// const [tabKey, setTabKey] = useState<string>("Home");
 	const [loading, setLoading] = useState(false);
@@ -42,30 +55,48 @@ const UserProfile: React.FC<Props> = props => {
 	}, [userId]);
 	return (
 		<div className="main-page">
-			<div className="main-page-club-block main-page-profile-container" style={{padding: 0}}>
+			<div
+				className="main-page-club-block main-page-profile-container"
+				style={{ padding: 0 }}
+			>
 				<Avatar
 					shape="square"
-					style={{borderRadius: 0, margin: 0}}
+					style={{ borderRadius: 0, margin: 0 }}
 					size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
 					icon={<UserOutlined />}
 				/>
 				<div className="main-page-profile">
-				<TextEllipsis
-					style={{ fontSize: 25, fontWeight: "bold", width: "fit-content" }}
-				>
-					{"no name"}
-				</TextEllipsis>
-				<TextEllipsis style={{ width: "fit-content" }}>
-					Job title @ Organization
+					<TextEllipsis
+						style={{ fontSize: 25, fontWeight: "bold", width: "fit-content" }}
+					>
+						{profile.username}
 					</TextEllipsis>
-					<TextEllipsis style={{ width: "fit-content", color: "GrayText",margin: '4px 0' }}>
-					Some Description Experience
-				</TextEllipsis>
+					<TextEllipsis style={{ width: "fit-content" }}>
+						{profile.occupation} @ {profile.organization}
+					</TextEllipsis>
+					<TextEllipsis
+						style={{ width: "fit-content", color: "GrayText", margin: "4px 0" }}
+					>
+						{profile.description}
+					</TextEllipsis>
 				</div>
 				<div className="main-page-profile-buttons">
-						{/* <Button style={{ fontWeight: 600 }}>Follow</Button> */}
-						<Button style={{ fontWeight: 600 }}>Edit profile</Button>
-					</div>
+					{/* <Button style={{ fontWeight: 600 }}>Follow</Button> */}
+					<Button
+						onClick={() => {
+							history.push({pathname: window.location.pathname + "?form=profile", state: profile});
+						}}
+						style={{ fontWeight: 600 }}
+					>
+						Edit profile
+					</Button>
+					<ProfileEditForm
+						onCancel={() => {
+							history.goBack();
+						}}
+						onSubmit={() => {}}
+					/>
+				</div>
 			</div>
 			{/* <div className="main-page-club-block main-page-club-block">
 				<div className="main-page-user-header-info-container">
