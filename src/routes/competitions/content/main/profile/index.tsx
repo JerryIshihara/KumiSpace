@@ -94,7 +94,7 @@ const UserProfile: React.FC<Props> = props => {
 						onCancel={() => {
 							history.goBack();
 						}}
-						onSubmit={() => {}}
+						onSubmit={(profile: ProfileProps) => {setProfile(profile)}}
 					/>
 				</div>
 			</div>

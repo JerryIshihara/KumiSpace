@@ -3,18 +3,16 @@ import { Modal, Select, Input, Avatar } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import { useHistory, useLocation } from "react-router-dom";
 
-
 import FormItem from "components/FormItem";
 import { ProfileProps } from ".";
 import "./style.less";
 
 interface Props {
 	onCancel: () => void;
-	onSubmit: () => void;
+	onSubmit: (profile: ProfileProps) => void;
 }
 
 const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
-	
 	const params = new URLSearchParams(window.location.search);
 	const state = useLocation().state as ProfileProps;
 	const [confirmLoading, setConfirmLoading] = useState(false);
@@ -22,25 +20,33 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 	const [occupation, setOccupation] = useState<string>();
 	const [organization, setOrganization] = useState<string>();
 	const [description, setDescription] = useState<string>();
-	const [status, setStatus] = useState<{code: "error", msg: string}>();
+	const [status, setStatus] = useState<{ code: "error"; msg: string }>();
 	const [errMsg, setErrMsg] = useState<string>();
 
 	useEffect(() => {
-		console.log("changed state: ", state);
-		setUsername(state.username)
-		setOccupation(state.occupation);
-		setOrganization(state.organization);
-		setDescription(state.description);
-	}, [state])
+		setUsername(state?.username);
+		setOccupation(state?.occupation);
+		setOrganization(state?.organization);
+		setDescription(state?.description);
+		return () => {
+			setConfirmLoading(false)
+		}
+	}, [state]);
 
 	const handleOk = () => {
 		setStatus(undefined);
 		if (!username) {
-			setStatus({code: "error", msg: "empty fields"})
-			return 
+			setStatus({ code: "error", msg: "empty fields" });
+			return;
 		}
 		setConfirmLoading(true);
-		onSubmit()
+		onSubmit({
+			username,
+			occupation,
+			organization,
+			description,
+		});
+		onCancel()
 	};
 
 	const handleCancel = () => {
@@ -59,12 +65,12 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 				onCancel={handleCancel}
 			>
 				<div className="main-page-form-container">
-				<Avatar
-					shape="square"
-					style={{borderRadius: 0, margin: 0}}
-					size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
-					icon={<UserOutlined />}
-				/>
+					<Avatar
+						shape="square"
+						style={{ borderRadius: 0, margin: 0 }}
+						size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
+						icon={<UserOutlined />}
+					/>
 					<FormItem label="Username" errorMessage={status?.msg}>
 						<Input
 							status={status?.code}
