@@ -4,28 +4,29 @@ import {
 	RouteComponentProps,
 	useParams,
 	Link,
+	Switch,
+	Route,
+	useHistory,
 } from "react-router-dom";
 import { Avatar, Tabs, Button, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
 import ClubService from "api/club";
-// import { MomentCard, ClubCard, FollowCard } from "./card";
-import { tab_constants } from "./user.constant";
 
-import event_img from "assets/event.png";
-import Skill from "./skill";
+import { tab_constants } from "./user.constant";
+import Skills from "./Skills";
+import Competitions from './Competitions';
+import "./style.less";
 
 const { TabPane } = Tabs;
 
 interface Props extends RouteComponentProps {}
 
 const UserProfile: React.FC<Props> = props => {
-	const { userId, tab } = useParams<{
-		userId: string;
-		tab: string | undefined;
-	}>();
+	const params = new URLSearchParams(window.location.search);
+	const tab = params.get("tab");
+	const { userId } = useParams<{ userId: string }>();
 	// const [tabKey, setTabKey] = useState<string>("Home");
 	const [loading, setLoading] = useState(false);
 	useEffect(() => {
@@ -34,26 +35,37 @@ const UserProfile: React.FC<Props> = props => {
 		// 		setDetail(res.data);
 		// 		setLoading(false);
 		// 	})
-        //     .catch(error => console.error(error));
-        console.log(tab);
-        
+		//     .catch(error => console.error(error));
 		// return () => {
 		// 	setLoading(true);
 		// };
-	}, [userId, tab]);
+	}, [userId]);
 	return (
 		<div className="main-page">
-            <div className="main-page-club-block main-page-profile-container">
-            <Avatar
-							size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 80, xxl: 100 }}
-							icon={<UserOutlined />}
-                />
-                						<TextEllipsis style={{fontSize: 25, fontWeight: 'bold'}}>
-							{"no name"}
-                </TextEllipsis>
-                <TextEllipsis>
-                    Current Experience
-                </TextEllipsis>
+			<div className="main-page-club-block main-page-profile-container" style={{padding: 0}}>
+				<Avatar
+					shape="square"
+					style={{borderRadius: 0, margin: 0}}
+					size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
+					icon={<UserOutlined />}
+				/>
+				<div className="main-page-profile">
+				<TextEllipsis
+					style={{ fontSize: 25, fontWeight: "bold", width: "fit-content" }}
+				>
+					{"no name"}
+				</TextEllipsis>
+				<TextEllipsis style={{ width: "fit-content" }}>
+					Job title @ Organization
+					</TextEllipsis>
+					<TextEllipsis style={{ width: "fit-content", color: "GrayText",margin: '4px 0' }}>
+					Some Description Experience
+				</TextEllipsis>
+				</div>
+				<div className="main-page-profile-buttons">
+						{/* <Button style={{ fontWeight: 600 }}>Follow</Button> */}
+						<Button style={{ fontWeight: 600 }}>Edit profile</Button>
+					</div>
 			</div>
 			{/* <div className="main-page-club-block main-page-club-block">
 				<div className="main-page-user-header-info-container">
@@ -98,31 +110,17 @@ const UserProfile: React.FC<Props> = props => {
 								className={
 									t.isActive(tab) ? "main-page-club-block-tab-active" : ""
 								}
-								to={`/usr/${userId}${t.path}`}
+								to={t.path ? `/usr/${userId}?tab=${t.path}` : `/usr/${userId}`}
 							>
 								{t.key}
 							</Link>
 						))}
-                    </nav>
-                    <div className="main-page-profile-buttons">
-						{/* <Button style={{ fontWeight: 600 }}>Follow</Button> */}
-						<Button style={{ fontWeight: 600 }}>Edit profile</Button>
-					</div>
+					</nav>
 				</div>
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
-					 {!tab && (
-						<div className="main-page-skills">
-                            <Skill skillName={"Python"} skillLevel="expert" />
-                            <Skill skillName={"Tensorflow"} skillLevel="beginner" last />
-                            <Button>Add skill</Button>
-						</div>
-                    )}
-                    
-					{tab === "competitions" && (
-						<>
-							<span>asdasdasd</span>
-						</>
-                    )}
+					{!tab && <Skills />}
+
+					{tab === "competitions" && <Competitions />}
 				</div>
 			</>
 		</div>

@@ -2,12 +2,12 @@ export const tab_constants = [
 	{
 		key: "Skills",
         path: "",
-        isActive: (tab: string | undefined) => { return !tab}
+        isActive: (tab: string | null) => { return !tab}
 	},
 	{
 		key: "Competitions",
-        path: "/competitions",
-        isActive: (tab: string | undefined) => tab === "competitions"
+        path: "competitions",
+        isActive: (tab: string | null) => tab === "competitions"
 	},
 	// {
 	// 	key: "Clubs",

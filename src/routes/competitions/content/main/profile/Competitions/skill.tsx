@@ -2,21 +2,24 @@ import React, { useState } from "react";
 import { Button, Divider } from "antd";
 import { EditFilled } from "@ant-design/icons";
 
-import TextEllipsis from "../../../../../components/TextEllipsis";
+import TextEllipsis from "components/TextEllipsis";
 
-const level = {
+export const Level = {
 	beginner: "#3bdb89",
     intermediate: "#eddb39",
     expert: "#f5079a"
 };
+let levels: keyof typeof Level;
+export type SkillType ={ name: string; level: typeof levels }
 
 interface Props {
 	skillName: string;
-	skillLevel: "beginner" | "expert";
+	skillLevel: typeof levels;
 	last?: boolean;
+	onPressEdit: () => void;
 }
 
-const Skill: React.FC<Props> = ({ skillName, skillLevel, last }: Props) => {
+const Skill: React.FC<Props> = ({ skillName, skillLevel, last, onPressEdit }: Props) => {
 	return (
 		<div className="main-page-skill">
 			<div className="main-page-skill-container">
@@ -31,7 +34,7 @@ const Skill: React.FC<Props> = ({ skillName, skillLevel, last }: Props) => {
 							width: 10,
 							height: 10,
 							borderRadius: 100,
-							backgroundColor: level[skillLevel],
+							backgroundColor: Level[skillLevel],
 							marginRight: 4,
 						}}
 					/>
@@ -41,6 +44,7 @@ const Skill: React.FC<Props> = ({ skillName, skillLevel, last }: Props) => {
 					style={{ marginLeft: "auto", marginRight: 0 }}
 					type="text"
 					icon={<EditFilled />}
+					onClick={onPressEdit}
 				/>
 			</div>
 			{!last && <Divider style={{margin: 0}}/>}

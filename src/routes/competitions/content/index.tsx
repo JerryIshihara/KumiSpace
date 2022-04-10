@@ -19,7 +19,6 @@ const Content: React.FC<Props> = props => {
 					<Feed />
 				</Route>
 				*/}
-				{/* <Route path={["/usr/:userId", "/usr/:userId/:tab"]} > */}
 				<Route exact path={["/usr/:userId", "/usr/:userId/:tab"]} >
 					<UserProfile />
 				</Route>
