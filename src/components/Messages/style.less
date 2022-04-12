@@ -1,0 +1,36 @@
+@import '../../App.less';
+
+.message-container {
+    display: flex;
+    flex-direction: row;
+}
+.message-text {
+    display: flex;
+    flex-direction: column;
+    padding: 0 @padding-sm;
+    width: '70%';
+}
+
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: @margin-md
+    
+}
+.messages-title {
+    display: flex;
+    flex-direction: column;
+    margin: 0 @margin-sm;
+
+}
+.messages-tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: @margin-xs;
+    margin-top: @margin-xs;
+}
+.messages-tag {
+    margin: @margin-sm 0;
+}

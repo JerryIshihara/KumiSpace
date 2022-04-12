@@ -5,6 +5,7 @@ import { Button, Input, Space } from "antd";
 import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
 
 import Navbar from "./navbar";
+import OAuth from "./oauth";
 import { AuthProps } from "../../redux/lib/auth.type";
 
 
@@ -93,6 +94,7 @@ const LoginPage: React.FC<Props> = (props) => {
 							</div>
 						</div>
 					)}
+					<OAuth />
 				</div>
 			</div>
 		</div>

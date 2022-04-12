@@ -4,16 +4,17 @@ export const tab_constants = [
         path: "",
         isActive: (tab: string | undefined) => { console.log(!tab); return !tab}
 	},
-	// {
-	// 	key: "Moments",
-    //     path: "/moments",
-    //     isActive: (tab: string | undefined) => tab === "moments"
-	// },
-	// {
-	// 	key: "Events",
-    //     path: "/events",
-    //     isActive: (tab: string | undefined) => tab === "events"
-	// },
+		{
+		key: "Pool",
+        path: "/pool",
+        isActive: (tab: string | undefined) => tab === "pool"
+	},
+	{
+		key: "My Team",
+        path: "/my-team",
+        isActive: (tab: string | undefined) => tab === "my-team"
+	},
+
 	// {
 	// 	key: "Members",
     //     path: "/members",

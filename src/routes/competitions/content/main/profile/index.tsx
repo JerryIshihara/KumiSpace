@@ -90,6 +90,15 @@ const UserProfile: React.FC<Props> = props => {
 					>
 						Edit profile
 					</Button>
+					<Button
+					href="http://localhost:3000/auth/sign-in"
+						// onClick={() => {
+						// 	<Link to={}/>
+						// }}
+						style={{ fontWeight: 600 }}
+					>
+						Log out
+					</Button>
 					<ProfileEditForm
 						onCancel={() => {
 							history.goBack();

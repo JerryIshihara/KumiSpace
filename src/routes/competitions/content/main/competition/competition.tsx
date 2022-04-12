@@ -7,17 +7,19 @@ import {
 	Link,
 } from "react-router-dom";
 import { Avatar, Tabs, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { TeamOutlined } from "@ant-design/icons";
 import { FiExternalLink } from "react-icons/fi";
 import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
-import ClubService from "api/club";
+import MyTeam from "./myTeam";
 import { TeamCard } from "./card";
-import { tab_constants as club_constants } from "./club.constant";
-import { tab_constants as user_constants } from "../profile/user.constant";
+import { tab_constants } from "./tab.constant";
 
-import {get_competition, KaggleCompetitionProps } from '../../../../../api/kaggle'
+import {
+	get_competition,
+	KaggleCompetitionProps,
+} from "../../../../../api/kaggle";
 
 const { TabPane } = Tabs;
 
@@ -29,13 +31,15 @@ const Competition: React.FC<Props> = props => {
 		competitionName: string;
 		tab: string | undefined;
 	}>();
-	const [competition, setCompetition] = useState<KaggleCompetitionProps | undefined>();
-	const [tabs, setTabs] = useState<Array<any>>(club_constants);
+	const [competition, setCompetition] = useState<
+		KaggleCompetitionProps | undefined
+	>();
+	const [tabs, setTabs] = useState<Array<any>>(tab_constants);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		get_competition(competitionName).then(res => {
 			setCompetition(res.data);
-		})
+		});
 		setLoading(false);
 		return () => {
 			setLoading(true);
@@ -59,30 +63,35 @@ const Competition: React.FC<Props> = props => {
 					<div className="main-page-club-header-info-profile-container">
 						<TextEllipsis className="main-page-club-header-info-profile-text">
 							<a
-								href={"https://www.kaggle.com/competitions/" + competition?.name}
+								href={
+									"https://www.kaggle.com/competitions/" + competition?.name
+								}
 								target="_blank"
 								rel="noreferrer"
-								style={{ fontWeight: "bold", fontSize: 30, display: 'flex', flexDirection: 'row', alignItems: 'center', lineHeight: 1.5 }}
+								style={{
+									fontWeight: "bold",
+									fontSize: 30,
+									display: "flex",
+									flexDirection: "row",
+									alignItems: "center",
+									lineHeight: 1.5,
+								}}
 							>
-								{competition?.title}{" "}
-								<FiExternalLink style={{ margin: 4 }} />
+								{competition?.title} <FiExternalLink style={{ margin: 4 }} />
 							</a>
 						</TextEllipsis>
 						<TextEllipsis
 							className="main-page-club-header-info-profile-text"
 							numLines={2}
 						>
-							<h4>
-								This is description! This is description! This is description!
-								This is description! This is description!
-							</h4>
+							<h4>{competition?.description}</h4>
 						</TextEllipsis>
 						<TextEllipsis className="main-page-club-header-info-profile-text">
 							<h4>
 								{/* <div className="strm-card-team-num">{}</div> */}
 								{Math.floor(Math.random() * 100)} teams to join &middot;{" "}
 								{Math.floor(Math.random() * 100)} days to go &middot;{" "}
-								{competition?.category} 
+								{competition?.category}
 							</h4>
 						</TextEllipsis>
 					</div>
@@ -123,27 +132,22 @@ const Competition: React.FC<Props> = props => {
 								className={
 									t.isActive(tab) ? "main-page-club-block-tab-active" : ""
 								}
-								to={`/competitions/${competitionName}/${t.path}`}
+								to={`/competitions/${competitionName}${t.path}`}
 							>
 								{t.key}
 							</Link>
 						))}
 					</nav>
-					<Button
-						type="primary"
-						style={{ fontWeight: 600, marginLeft: "auto", color: "white" }}
-						onClick={() => {
-							history.push(`/competitions/${competitionName}/new?type=team`);
-						}}
-						// href={`/competitions/${competitionName}/team/new`}
-					>
-						Create a team
-					</Button>
 				</div>
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
-					{[...Array(10).keys()].map(() => (
-						<TeamCard />
-					))}
+					{!tab && (
+						<>
+							{[...Array(10).keys()].map(() => (
+								<TeamCard />
+							))}
+						</>
+					)}
+					{tab === "my-team" && <MyTeam />}
 				</div>
 			</>
 		</div>

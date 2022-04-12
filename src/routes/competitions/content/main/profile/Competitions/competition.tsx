@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Divider, Avatar } from "antd";
-import { EditFilled, UserOutlined } from "@ant-design/icons";
+import { EditFilled, UserOutlined, TeamOutlined } from "@ant-design/icons";
 
 import TextEllipsis from "components/TextEllipsis";
 import "./style.less";
@@ -47,16 +47,17 @@ const Skill: React.FC<Props> = ({
 						...Array(5)
 							.fill("")
 							.map((item, index) => (
-								<Avatar key={index} size={40} icon={<UserOutlined />} />
+								<Avatar key={index} size={{ xs: 30, sm: 30, md: 35, lg: 35, xl: 40, xxl: 40 }} icon={<UserOutlined />} />
 							)),
 					]}
 				</div>
-				{/* <Button
+				<Button
 					style={{ marginLeft: "auto", marginRight: 0 }}
-					type="text"
-					icon={<EditFilled />}
+					icon={<TeamOutlined />}
 					onClick={onPressEdit}
-				/> */}
+				>
+					Go to the group
+				</Button>
 			</div>
 			{!last && <Divider style={{ margin: 0 }} />}
 		</div>
