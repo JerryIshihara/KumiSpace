@@ -13,6 +13,7 @@ import "./style.less";
 
 import TextEllipsis from "components/TextEllipsis";
 import MyTeam from "./myTeam";
+import Pool from "./pool";
 import { TeamCard } from "./card";
 import { tab_constants } from "./tab.constant";
 
@@ -147,6 +148,7 @@ const Competition: React.FC<Props> = props => {
 							))}
 						</>
 					)}
+					{tab === "pool" && <Pool />}
 					{tab === "my-team" && <MyTeam />}
 				</div>
 			</>

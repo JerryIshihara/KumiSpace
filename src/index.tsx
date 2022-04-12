@@ -1,16 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { AuthContextProvider } from "context/auth";
+import { UserContextProvider } from "context/user";
 import "./index.css";
 import App from "./routes";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<Provider store={store}>
-			<App />
-		</Provider>
+		{/* <Provider store={store}> */}
+		<AuthContextProvider>
+			<UserContextProvider>
+				<App />
+			</UserContextProvider>
+		</AuthContextProvider>
+		{/* </Provider> */}
 	</React.StrictMode>,
 	document.getElementById("root")
 );

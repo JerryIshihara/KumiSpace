@@ -1,20 +1,37 @@
-// TODO: Mock API
+import axios from "axios";
+const baseUrl = "http://192.168.2.12:8000";
 
-const AuthService = {
-	login: async function (email: string, password: string): Promise<any> {
-		return new Promise<any>((resolve, reject) => {
-            setTimeout(() => {
-                if (email !== undefined && password !== undefined) {
-                    console.log("AuthService sucess")
-                    resolve("success");
-                } else {
-                    console.error("AuthService fail", email, password)
-                    reject("fail");
-                }
-            }, 1000); 
-        }) 
-    }
-};
+const withUrl = (suffix: string) => `${baseUrl}${suffix}`
 
+// see flagger API documentation for specification
+export const IdentityType = {
+    email: "email",
+    wechat: "wechat",
+    phone: "phone"
+}
 
-export default AuthService;
+export const login = async (email: string, password: string) => {
+    const response = await axios({
+        method: "PUT",
+        url: withUrl("/users/login"),
+        data: {
+            identity_type: IdentityType.email,
+            identifier: email.toLowerCase(),
+            credential: password,
+        }
+    })
+    return response;
+}
+
+export const signup = async (email: string, password: string) => {
+    const response = await axios({
+        method: "POST",
+        url: withUrl("/users/new"),
+        data: {
+            identity_type: IdentityType.email,
+            identifier: email.toLowerCase(),
+            credential: password,
+        }
+    })
+    return response;
+}

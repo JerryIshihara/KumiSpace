@@ -1,11 +1,25 @@
-import React from 'react';
-import { AuthProps } from "../../redux/lib/auth.type";
+import React from "react";
+// import { AuthProps } from "../../redux/lib/auth.type";
+import { Redirect } from "react-router-dom";
+import { useAuth } from "context/auth";
 
-interface Props extends AuthProps {
-    altComponent: React.ReactNode;
+interface Props {
+	path?: string;
 }
-const PrivateRoute: React.FC<Props> = (props) => {
-    return (<>{ props.authenticated ? props.children  : props.altComponent}</>);
-}
+const PrivateRoute: React.FC<Props> = props => {
+	const auth = useAuth();
 
-export default PrivateRoute
+	return (
+		<>
+			{auth.status() ? (
+				props.children
+			) : (
+				<Redirect
+					to={{ pathname: "/auth/sign-in", state: window.location.pathname }}
+				/>
+			)}
+		</>
+	);
+};
+
+export default PrivateRoute;

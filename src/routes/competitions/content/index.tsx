@@ -1,7 +1,8 @@
 import React from "react";
-import { Route, RouteComponentProps, withRouter } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, withRouter } from "react-router-dom";
 import "./style.less";
 
+import { PrivateRoute } from "components";
 import Feed, { Competitions } from "./feed";
 import Competition from "./main/competition";
 import UserProfile from "./main/profile";
@@ -19,13 +20,14 @@ const Content: React.FC<Props> = props => {
 					<Feed />
 				</Route>
 				*/}
-				<Route exact path={["/usr/:userId", "/usr/:userId/:tab"]} >
-					<UserProfile />
+				<Route exact path={["/usr/:userId", "/usr/:userId/:tab"]}>
+					<PrivateRoute>
+						<UserProfile />
+					</PrivateRoute>
 				</Route>
 				<Route path={"/competitions"}>
 					<Competition />
 				</Route>
-
 			</div>
 		</div>
 	);

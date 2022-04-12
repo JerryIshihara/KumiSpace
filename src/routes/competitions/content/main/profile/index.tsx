@@ -5,12 +5,14 @@ import {
 	useParams,
 	Link,
 	useHistory,
+	Redirect,
 } from "react-router-dom";
 import { Avatar, Tabs, Button, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 import TextEllipsis from "components/TextEllipsis";
-import ClubService from "api/club";
+import { useAuth } from "context/auth";
+import { useUser } from "context/user";
 
 import { tab_constants } from "./user.constant";
 import ProfileEditForm from "./profileEditForm";
@@ -20,39 +22,34 @@ import "./style.less";
 
 const { TabPane } = Tabs;
 
-interface Props extends RouteComponentProps { }
+interface Props extends RouteComponentProps {}
 
 export type ProfileProps = {
 	username: string | undefined;
 	occupation: string | undefined;
 	organization: string | undefined;
 	description: string | undefined;
-}
+};
 
 const UserProfile: React.FC<Props> = props => {
 	const history = useHistory();
+	const auth = useAuth();
+	const user = useUser();
 	const params = new URLSearchParams(window.location.search);
 	const tab = params.get("tab");
-	const [profile, setProfile] = useState<ProfileProps>({
-		username: "Jerry",
-		occupation: "Meng",
-		organization: "Berkeley",
-		description: "Win!",
-	});
+	// const [profile, setProfile] = useState<ProfileProps>({
+	// 	username: "Jerry",
+	// 	occupation: "Meng",
+	// 	organization: "Berkeley",
+	// 	description: "Win!",
+	// });
 	const { userId } = useParams<{ userId: string }>();
 	// const [tabKey, setTabKey] = useState<string>("Home");
 	const [loading, setLoading] = useState(false);
-	useEffect(() => {
-		// ClubService.fetchClubDetail(userId)
-		// 	.then(res => {
-		// 		setDetail(res.data);
-		// 		setLoading(false);
-		// 	})
-		//     .catch(error => console.error(error));
-		// return () => {
-		// 	setLoading(true);
-		// };
-	}, [userId]);
+
+	const onSubmitEditProfile = async (newProfile: ProfileProps) => {
+		
+	}
 	return (
 		<div className="main-page">
 			<div
@@ -69,32 +66,35 @@ const UserProfile: React.FC<Props> = props => {
 					<TextEllipsis
 						style={{ fontSize: 25, fontWeight: "bold", width: "fit-content" }}
 					>
-						{profile.username}
+						{user.profile?.username}
 					</TextEllipsis>
 					<TextEllipsis style={{ width: "fit-content" }}>
-						{profile.occupation} @ {profile.organization}
+						{user.profile?.occupation} {user.profile?.occupation && user.profile?.organization && "@" } {user.profile?.organization}
 					</TextEllipsis>
 					<TextEllipsis
 						style={{ width: "fit-content", color: "GrayText", margin: "4px 0" }}
 					>
-						{profile.description}
+						{user.profile?.description}
 					</TextEllipsis>
 				</div>
 				<div className="main-page-profile-buttons">
 					{/* <Button style={{ fontWeight: 600 }}>Follow</Button> */}
 					<Button
 						onClick={() => {
-							history.push({pathname: window.location.pathname + "?form=profile", state: profile});
+							history.push({
+								pathname: window.location.pathname + "?form=profile",
+							});
 						}}
 						style={{ fontWeight: 600 }}
 					>
 						Edit profile
 					</Button>
 					<Button
-					href="http://localhost:3000/auth/sign-in"
-						// onClick={() => {
-						// 	<Link to={}/>
-						// }}
+						// href="http://localhost:3000"
+						onClick={() => {
+							auth.logout();
+							// return <Redirect to="/" />;
+						}}
 						style={{ fontWeight: 600 }}
 					>
 						Log out
@@ -103,7 +103,9 @@ const UserProfile: React.FC<Props> = props => {
 						onCancel={() => {
 							history.goBack();
 						}}
-						onSubmit={(profile: ProfileProps) => {setProfile(profile)}}
+						// onSubmit={(profile: ProfileProps) => {
+						// 	setProfile(profile);
+						// }}
 					/>
 				</div>
 			</div>

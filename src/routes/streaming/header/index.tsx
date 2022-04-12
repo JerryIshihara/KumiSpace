@@ -5,17 +5,11 @@ import { BellOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import "./style.less";
 
 import { Logo } from "../../../components";
-import { logoutType } from "../../../redux/lib/auth.action";
 import Avatar from "./avatar";
 import Plus from "./plus";
 
 // const { Option } = Select;
-
-interface Props extends RouteComponentProps {
-	logout: logoutType;
-}
-
-const Header: React.FC<Props> = props => {
+const Header: React.FC<any> = props => {
 	return (
 		<div className="strm-header">
 			<Logo href="/" />

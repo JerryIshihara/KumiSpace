@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
-import { logoutType } from "../../../redux/lib/auth.action";
 
 import { Menu, Avatar, Dropdown } from "antd";
 import {
@@ -11,10 +10,8 @@ import {
 
 import "./style.less";
 
-interface MenuProps {
-	logout: logoutType;
-}
-const ManageAccount: React.FC<MenuProps> = props => {
+
+const ManageAccount: React.FC<any> = props => {
 	return (
 		<div className="shadow">
 			<Menu selectedKeys={[]}>
@@ -30,10 +27,8 @@ const ManageAccount: React.FC<MenuProps> = props => {
 	);
 };
 
-interface Props extends RouteComponentProps {
-	logout: logoutType;
-}
-const NavBarAvatar: React.FC<Props> = props => {
+
+const NavBarAvatar: React.FC<any> = props => {
 	return (
 		// <Dropdown
 		// 	placement="bottomRight"

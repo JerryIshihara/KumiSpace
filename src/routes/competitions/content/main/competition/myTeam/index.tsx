@@ -19,7 +19,7 @@ interface Props {
 	img?: string;
 }
 
-const ClubCard: React.FC<Props> = props => {
+const MyTeam: React.FC<Props> = props => {
 	const numMember = Math.max(1, Math.min(4, Math.floor(Math.random() * 10)));
 	const history = useHistory();
 	return (
@@ -77,4 +77,4 @@ const ClubCard: React.FC<Props> = props => {
 	);
 };
 
-export default ClubCard;
+export default MyTeam;

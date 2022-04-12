@@ -6,15 +6,15 @@ import { useHistory, useLocation } from "react-router-dom";
 import FormItem from "components/FormItem";
 import { ProfileProps } from ".";
 import "./style.less";
+import { useUser } from "context/user";
 
 interface Props {
 	onCancel: () => void;
-	onSubmit: (profile: ProfileProps) => void;
 }
 
-const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
+const ProfileEditForm: React.FC<Props> = ({ onCancel }: Props) => {
+	const user = useUser();
 	const params = new URLSearchParams(window.location.search);
-	const state = useLocation().state as ProfileProps;
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [username, setUsername] = useState<string>();
 	const [occupation, setOccupation] = useState<string>();
@@ -24,14 +24,14 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 	const [errMsg, setErrMsg] = useState<string>();
 
 	useEffect(() => {
-		setUsername(state?.username);
-		setOccupation(state?.occupation);
-		setOrganization(state?.organization);
-		setDescription(state?.description);
+		setUsername(user.profile?.username);
+		setOccupation(user.profile?.occupation);
+		setOrganization(user.profile?.organization);
+		setDescription(user.profile?.description);
 		return () => {
-			setConfirmLoading(false)
-		}
-	}, [state]);
+			setConfirmLoading(false);
+		};
+	}, [user.profile]);
 
 	const handleOk = () => {
 		setStatus(undefined);
@@ -40,13 +40,15 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 			return;
 		}
 		setConfirmLoading(true);
-		onSubmit({
-			username,
-			occupation,
-			organization,
-			description,
-		});
-		onCancel()
+		user.updateProfile(
+			{
+				username,
+				occupation,
+				organization,
+				description,
+			},
+			onCancel
+		);
 	};
 
 	const handleCancel = () => {
@@ -101,6 +103,8 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 						<Input.TextArea
 							placeholder="Briefly introduce yourself."
 							value={description}
+							maxLength={200}
+							showCount
 							onChange={e => setDescription(e.target.value)}
 						/>
 					</FormItem>

@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { authConnector, AuthProps } from "redux/lib/auth.type";
+// import { authConnector, AuthProps } from "redux/lib/auth.type";
 import { PageTitleSetter, PrivateRoute } from "components";
 
 import LandingPage from "./landing";
 import LoginPage from "./login";
 import Competitions from "./competitions";
 
-const App: React.FC<AuthProps> = props => {
+const App: React.FC<any> = props => {
 	return (
 		<Router>
 			<PageTitleSetter>
@@ -27,4 +27,4 @@ const App: React.FC<AuthProps> = props => {
 	);
 };
 
-export default authConnector(App);
+export default App;
