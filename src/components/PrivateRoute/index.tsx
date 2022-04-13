@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 // import { AuthProps } from "../../redux/lib/auth.type";
 import { Redirect } from "react-router-dom";
 import { useAuth } from "context/auth";
@@ -8,10 +8,11 @@ interface Props {
 }
 const PrivateRoute: React.FC<Props> = props => {
 	const auth = useAuth();
+	const show = useMemo(() => auth.token ? true : false, [auth.token]);
 
 	return (
 		<>
-			{auth.status() ? (
+			{show ? (
 				props.children
 			) : (
 				<Redirect

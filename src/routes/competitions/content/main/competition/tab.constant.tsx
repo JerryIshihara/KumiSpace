@@ -6,12 +6,12 @@ export const tab_constants = [
 	},
 		{
 		key: "Pool",
-        path: "/pool",
+        path: "pool",
         isActive: (tab: string | undefined) => tab === "pool"
 	},
 	{
 		key: "My Team",
-        path: "/my-team",
+        path: "my-team",
         isActive: (tab: string | undefined) => tab === "my-team"
 	},
 

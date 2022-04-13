@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Modal, Select, Input } from "antd";
 
 import FormItem from "components/FormItem";
-import { SkillType, Level } from "./skill";
+import { Level } from "./skill";
 import "./style.less";
 import { useHistory, useLocation } from "react-router-dom";
+import { useUser, UserSkillProps } from "context/user";
 
 interface Props {
-	onCancel: () => void;
-	onSubmit: (skill: SkillType) => Promise<any>;
+	onFinish: () => void;
 }
 
-const SkillForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
-	
+const SkillForm: React.FC<Props> = ({ onFinish }: Props) => {
+	const userContext = useUser()
 	const params = new URLSearchParams(window.location.search);
-	const state = useLocation().state as SkillType;
+	const state = useLocation().state as UserSkillProps;
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [name, setName] = useState<string>("");
 	let levels: keyof typeof Level;
@@ -23,36 +23,49 @@ const SkillForm: React.FC<Props> = ({ onCancel, onSubmit }: Props) => {
 	const [errMsg, setErrMsg] = useState<string>();
 
 	useEffect(() => {
-		console.log("changed state: ", state);
 		setName(state?.name)
 		setLevel(state?.level);
 	}, [state])
 
+	const handleEdit = (pid: string) => {
+		if (userContext.user?.skills.filter((item: UserSkillProps) => item.public_id !== pid && item.name === name).length > 0) {
+			setStatus({code: "error", msg: "skill is duplicated"})
+		} else {
+			userContext.editSkill(pid, { name, level }, () => {
+				setConfirmLoading(false);
+				onFinish()
+			})
+		}
+
+	}
+
+	const handleAdd = () => {
+		if (userContext.user?.skills.filter((s: UserSkillProps) => name === s.name).length > 0) {
+			setStatus({code: "error", msg: "skill is duplicated"})
+		} else {
+			userContext.addSkill({ name, level }, () => {
+				setConfirmLoading(false);
+				onFinish()
+			})
+		}
+	}
+
 	const handleOk = () => {
 		setStatus(undefined);
-		if (!name || !level) {
+		if (!name) {
 			setStatus({code: "error", msg: "empty fields"})
 			return 
 		}
 		setConfirmLoading(true);
-		onSubmit({ name, level } as SkillType)
-			.then((res: any) => {
-				setTimeout(() => {
-					setConfirmLoading(false);
-					onCancel();
-				}, 2000);
-			})
-			.catch((err: any) => {
-				console.warn(err);
-				setStatus({code: "error", msg: "skill is duplicated"})
-				setConfirmLoading(false);
-			});
+		const pid = params.get("id")
+		pid ? handleEdit(pid) : handleAdd()
+			
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
 		console.log("Clicked cancel button");
-		onCancel();
+		onFinish();
 	};
 
 	function handleChange(value: any) {

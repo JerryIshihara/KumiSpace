@@ -15,6 +15,11 @@ export const AuthContext = React.createContext<Partial<AuthContextProps> | any>(
 
 export const AuthContextProvider = (props: any) => {
     const [token, setToken] = useState<string>();
+    useEffect(() => {
+        console.log("auth context");
+        
+		getTokenFromSecureStore()
+	}, []);
 	const authenticate = async (email: string, passward: string, path?: string) => {
 		// TODO: use keychain for security
 		login(email, passward)
@@ -71,9 +76,6 @@ export const AuthContextProvider = (props: any) => {
 		localStorage.removeItem("secure_token");
 		setToken(undefined);
 	};
-	React.useEffect(() => {
-		getTokenFromSecureStore().catch(e => console.warn(e));
-	});
 	return (
 		<AuthContext.Provider
 			value={{

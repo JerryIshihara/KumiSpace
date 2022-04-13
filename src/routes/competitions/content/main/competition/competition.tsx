@@ -28,10 +28,11 @@ interface Props extends RouteComponentProps {}
 
 const Competition: React.FC<Props> = props => {
 	const history = useHistory();
-	const { competitionName, tab } = useParams<{
+	const { competitionName } = useParams<{
 		competitionName: string;
-		tab: string | undefined;
 	}>();
+	const params = new URLSearchParams(window.location.search);
+	const tab = params.get("tab");
 	const [competition, setCompetition] = useState<
 		KaggleCompetitionProps | undefined
 	>();
@@ -133,7 +134,12 @@ const Competition: React.FC<Props> = props => {
 								className={
 									t.isActive(tab) ? "main-page-club-block-tab-active" : ""
 								}
-								to={`/competitions/${competitionName}${t.path}`}
+								// to={`/competitions/${competitionName}${t.path}`}
+								to={
+									t.path
+										? `/competitions/${competitionName}?tab=${t.path}`
+										: `/competitions/${competitionName}`
+								}
 							>
 								{t.key}
 							</Link>

@@ -1,17 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAuth } from "./auth";
-import { get_profile, edit_profile } from "api/user";
+import { get_user, add_skill, edit_profile, edit_skill } from "api/user";
 
 export type UserProfileProps = {
-	username: string,
-	occupation?: string,
-	organization?: string,
-	description?: string,
+	username: string;
+	occupation?: string;
+	organization?: string;
+	description?: string;
+};
+export type UserSkillProps = {
+	public_id?: string;
+	name: string;
+	level?: "beginner" | "intermediate" | "expert";
+};
+export type UserProps = {
+	profile: UserProfileProps;
+	avatar: string | null;
+	skills: Array<UserSkillProps>;
 };
 
+
+
+
 export interface UserContextProps {
-	profile: UserProfileProps;
+	user: UserProps;
 	updateProfile: (p: UserProfileProps, callBack: () => void) => void;
+	addSkill: (skill: UserSkillProps, callBack: () => void) => void;
+	editSkill: (pid: string, skill: UserSkillProps, callBack: () => void) => void;
 }
 
 export const UserContext = React.createContext<Partial<UserContextProps> | any>(
@@ -20,16 +35,16 @@ export const UserContext = React.createContext<Partial<UserContextProps> | any>(
 
 export const UserContextProvider = (props: any) => {
 	const auth = useAuth();
-	const [profile, setProfile] = useState<UserProfileProps>();
+	const [user, setUser] = useState<UserProps>();
 
 	useEffect(() => {
 		if (auth.token) {
 			console.log(auth.token);
-			
-			get_profile(auth.token)
+
+			get_user(auth.token)
 				.then(res => {
 					console.log(res.data);
-					setProfile(res.data);
+					setUser(res.data);
 				})
 				.catch(e => {
 					console.warn(e);
@@ -37,21 +52,54 @@ export const UserContextProvider = (props: any) => {
 		}
 	}, [auth.token]);
 
-	const updateProfile = async (newProfile: UserProfileProps, callBack: () => void) => {
-		var _profile = {...profile, ...newProfile}		
-		edit_profile(auth.token, _profile).then(res => {
-			setProfile(_profile)
-			callBack();
-		}).catch(e => {
-			console.warn(e);
-		})
-	}
+	const updateProfile = async (
+		newProfile: UserProfileProps,
+		callBack: () => void
+	) => {
+		var _profile = { ...user?.profile, ...newProfile };
+		edit_profile(auth.token, _profile)
+			.then(res => {
+				setUser({ ...user, profile: _profile } as UserProps);
+				callBack();
+			})
+			.catch(e => {
+				console.warn(e);
+			});
+	};
+
+	const addSkill = async (skill: UserSkillProps, callBack: () => void) => {
+		add_skill(auth.token, skill)
+			.then(res => {
+				setUser({ ...user, skills: user?.skills.concat(skill) } as UserProps);
+				callBack();
+			})
+			.catch(e => {
+				console.warn(e);
+			});
+	};
+
+	const editSkill = async (pid: string, skill: UserSkillProps, callBack: () => void) => {
+		edit_skill(auth.token, pid, skill)
+			.then(res => {
+				const index = user?.skills.findIndex(i => i.public_id === pid);				
+				if (index !== undefined) {
+					user?.skills.splice(index, 1, skill);
+					setUser({ ...user, skills: user?.skills } as UserProps);
+					callBack();
+				}
+			})
+			.catch(e => {
+				console.warn(e);
+			});
+	};
 
 	return (
 		<UserContext.Provider
 			value={{
-				profile,
-				updateProfile
+				user,
+				updateProfile,
+				addSkill,
+				editSkill,
 			}}
 		>
 			{props.children}
@@ -60,5 +108,5 @@ export const UserContextProvider = (props: any) => {
 };
 
 export function useUser() {
-	return React.useContext(UserContext) as UserContextProps;
+	return useContext(UserContext) as UserContextProps;
 }

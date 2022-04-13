@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ProfileEditForm: React.FC<Props> = ({ onCancel }: Props) => {
-	const user = useUser();
+	const userContext = useUser();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [username, setUsername] = useState<string>();
@@ -24,14 +24,14 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel }: Props) => {
 	const [errMsg, setErrMsg] = useState<string>();
 
 	useEffect(() => {
-		setUsername(user.profile?.username);
-		setOccupation(user.profile?.occupation);
-		setOrganization(user.profile?.organization);
-		setDescription(user.profile?.description);
+		setUsername(userContext.user?.profile.username);
+		setOccupation(userContext.user?.profile.occupation);
+		setOrganization(userContext.user?.profile.organization);
+		setDescription(userContext.user?.profile.description);
 		return () => {
 			setConfirmLoading(false);
 		};
-	}, [user.profile]);
+	}, [userContext.user?.profile]);
 
 	const handleOk = () => {
 		setStatus(undefined);
@@ -40,7 +40,7 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel }: Props) => {
 			return;
 		}
 		setConfirmLoading(true);
-		user.updateProfile(
+		userContext.updateProfile(
 			{
 				username,
 				occupation,

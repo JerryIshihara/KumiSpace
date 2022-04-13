@@ -20,7 +20,7 @@ const Content: React.FC<Props> = props => {
 					<Feed />
 				</Route>
 				*/}
-				<Route exact path={["/usr/:userId", "/usr/:userId/:tab"]}>
+				<Route exact path={["/usr/:userId"]}>
 					<PrivateRoute>
 						<UserProfile />
 					</PrivateRoute>

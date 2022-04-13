@@ -34,7 +34,7 @@ export type ProfileProps = {
 const UserProfile: React.FC<Props> = props => {
 	const history = useHistory();
 	const auth = useAuth();
-	const user = useUser();
+	const userContext = useUser();
 	const params = new URLSearchParams(window.location.search);
 	const tab = params.get("tab");
 	// const [profile, setProfile] = useState<ProfileProps>({
@@ -47,9 +47,7 @@ const UserProfile: React.FC<Props> = props => {
 	// const [tabKey, setTabKey] = useState<string>("Home");
 	const [loading, setLoading] = useState(false);
 
-	const onSubmitEditProfile = async (newProfile: ProfileProps) => {
-		
-	}
+	const onSubmitEditProfile = async (newProfile: ProfileProps) => {};
 	return (
 		<div className="main-page">
 			<div
@@ -66,15 +64,19 @@ const UserProfile: React.FC<Props> = props => {
 					<TextEllipsis
 						style={{ fontSize: 25, fontWeight: "bold", width: "fit-content" }}
 					>
-						{user.profile?.username}
+						{userContext.user?.profile?.username}
 					</TextEllipsis>
 					<TextEllipsis style={{ width: "fit-content" }}>
-						{user.profile?.occupation} {user.profile?.occupation && user.profile?.organization && "@" } {user.profile?.organization}
+						{userContext.user?.profile?.occupation}{" "}
+						{userContext.user?.profile?.occupation &&
+							userContext.user?.profile?.organization &&
+							"@"}{" "}
+						{userContext.user?.profile?.organization}
 					</TextEllipsis>
 					<TextEllipsis
 						style={{ width: "fit-content", color: "GrayText", margin: "4px 0" }}
 					>
-						{user.profile?.description}
+						{userContext.user?.profile?.description}
 					</TextEllipsis>
 				</div>
 				<div className="main-page-profile-buttons">
@@ -82,7 +84,7 @@ const UserProfile: React.FC<Props> = props => {
 					<Button
 						onClick={() => {
 							history.push({
-								pathname: window.location.pathname + "?form=profile",
+								pathname: window.location.pathname + "?" + (tab ? `tab=${tab}&` : "") + "form=profile",
 							});
 						}}
 						style={{ fontWeight: 600 }}

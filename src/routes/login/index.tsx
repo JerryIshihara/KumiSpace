@@ -91,7 +91,7 @@ const LoginPage: React.FC<Props> = props => {
 										loading={false}
 										onClick={() => {
 											if (identifier && credential) {
-												auth.authenticate(identifier, credential, state);
+												auth.authenticate(identifier, credential, state || "/");
 											}
 										}}
 									>
