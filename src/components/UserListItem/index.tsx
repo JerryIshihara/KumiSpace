@@ -13,27 +13,27 @@ import { TextEllipsis } from "components";
 import { Bullet } from "utils/text.constant";
 
 interface Props {
+	profile: { username: string } | any;
+	skills?: Array<any>;
 	url?: string;
 	img?: string;
 }
 
-const UserItem: React.FC<Props> = props => {
+const UserItem: React.FC<Props> = (props: Props) => {
 	return (
 		<div className="user-item-container">
 			<Avatar size={45} icon={<UserOutlined />} />
 			<div className="user-item-title">
 				<TextEllipsis style={{ fontSize: 14, fontWeight: "bold" }}>
-					Jerry Ishihara
+					{props.profile?.username}
 				</TextEllipsis>
 				<TextEllipsis style={{ fontSize: 12 }} numLines={2}>
-					University of Toronto
+					{props.profile.occupation} @ {props.profile.organization}
 				</TextEllipsis>
 				<div className="user-item-tags">
-					{[...Array(Math.min(5, Math.floor(Math.random() * 10)))]
-						.fill("")
-						.map(_ => (
-							<Tag style={{ margin: 0 }}>This is a tag</Tag>
-						))}
+					{props.skills?.map((skill: any) => (
+						<Tag style={{ margin: 0 }}>{skill.name}</Tag>
+					))}
 				</div>
 			</div>
 		</div>

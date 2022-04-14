@@ -56,7 +56,7 @@ const MyTeam: React.FC<Props> = props => {
 			<Divider />
 			<div className="my-team-members">
 				{[...Array(numMember)].fill("").map(_ => (
-					<UserItem />
+					<UserItem profile={{username: "JerryIshihara"} }/>
 				))}
             </div>
             <Divider />

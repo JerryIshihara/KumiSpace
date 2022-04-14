@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Select, Input, Avatar } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
 	Tag,
 	Button,
@@ -10,39 +10,27 @@ import {
 } from "@arco-design/web-react";
 import { IconPlus } from "@arco-design/web-react/icon";
 
+import { join_pool } from "api/kaggle";
 import FormItem from "components/FormItem";
 import "./style.less";
+import { useAuth } from "context/auth";
 
 interface Props {
+	competitionName: string;
 	onCancel: () => void;
 }
 
-const JoinPoolForm: React.FC<Props> = ({ onCancel }: Props) => {
+const JoinPoolForm: React.FC<Props> = ({
+	competitionName,
+	onCancel,
+}: Props) => {
+	const auth = useAuth();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
-	const [username, setUsername] = useState<string>();
-	const [occupation, setOccupation] = useState<string>();
-	const [organization, setOrganization] = useState<string>();
 	const [description, setDescription] = useState<string>();
-	const [tags, setTags] = useState(["Tag 1", "Tag 2", "Tag 3"]);
-	const [showInput, setShowInput] = useState(false);
-	const [inputValue, setInputValue] = useState("");
+	const [language, setLanguage] = useState<string>();
 	const [status, setStatus] = useState<{ code: "error"; msg: string }>();
 	const [errMsg, setErrMsg] = useState<string>();
-
-	const addTag = () => {
-		if (inputValue) {
-			tags.push(inputValue);
-			setTags(tags);
-			setInputValue("");
-		}
-		setShowInput(false);
-	};
-
-	const removeTag = (removeTag: string) => {
-		const newTags = tags.filter(tag => tag !== removeTag);
-		setTags(newTags);
-	};
 
 	// useEffect(() => {
 	// 	setUsername(userContext.user?.profile.username);
@@ -60,16 +48,18 @@ const JoinPoolForm: React.FC<Props> = ({ onCancel }: Props) => {
 		// 	setStatus({ code: "error", msg: "empty fields" });
 		// 	return;
 		// }
-		// setConfirmLoading(true);
-		// userContext.updateProfile(
-		// 	{
-		// 		username,
-		// 		occupation,
-		// 		organization,
-		// 		description,
-		// 	},
-		// 	onCancel
-		// );
+		setConfirmLoading(true);
+		join_pool(auth.token, competitionName)
+			.then(res => {
+				console.log(res.data);
+				onCancel();
+			})
+			.catch(e => {
+				console.warn(e);
+			})
+			.finally(() => {
+				setConfirmLoading(false);
+			});
 	};
 
 	const handleCancel = () => {
@@ -94,12 +84,21 @@ const JoinPoolForm: React.FC<Props> = ({ onCancel }: Props) => {
 							value={description}
 							maxLength={200}
 							showCount
-							onChange={e => setDescription(e.target.value)}
+							onChange={e => {
+								setDescription(e.target.value);
+							}}
 						/>
 					</FormItem>
 					<FormItem label="Language Preferences">
 						<div style={{ display: "flex", alignItems: "flex-start" }}>
-							{tags.map((tag, index) => {
+							<Input
+								placeholder="English/Mandarin"
+								value={language}
+								onChange={e => {
+									setLanguage(e.target.value);
+								}}
+							/>
+							{/* {tags.map((tag, index) => {
 								return (
 									<Tag
 										key={tag}
@@ -134,7 +133,7 @@ const JoinPoolForm: React.FC<Props> = ({ onCancel }: Props) => {
 								>
 									Add Language
 								</Tag>
-							)}
+							)} */}
 						</div>
 					</FormItem>
 				</div>

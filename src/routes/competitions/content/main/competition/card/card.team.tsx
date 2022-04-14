@@ -30,7 +30,7 @@ const ClubCard: React.FC<Props> = props => {
 			{[...Array(numMember)]
 				.fill("")
 				.map(_ => (
-					<UserItem />
+					<UserItem profile={{username: "JerryIshihara"} }/>
 				))}
 
 			{/* <img className="strm-page-card-image" alt="alt" src={props.img} />

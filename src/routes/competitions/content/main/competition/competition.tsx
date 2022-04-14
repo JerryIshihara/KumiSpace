@@ -39,6 +39,8 @@ const Competition: React.FC<Props> = props => {
 	const [tabs, setTabs] = useState<Array<any>>(tab_constants);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
+		console.log(competitionName);
+		
 		get_competition(competitionName).then(res => {
 			setCompetition(res.data);
 		});
@@ -137,7 +139,7 @@ const Competition: React.FC<Props> = props => {
 								// to={`/competitions/${competitionName}${t.path}`}
 								to={
 									t.path
-										? `/competitions/${competitionName}?tab=${t.path}`
+										? `/competitions/${competitionName}/?tab=${t.path}`
 										: `/competitions/${competitionName}`
 								}
 							>
@@ -154,7 +156,7 @@ const Competition: React.FC<Props> = props => {
 							))}
 						</>
 					)}
-					{tab === "pool" && <Pool />}
+					{tab === "pool" && <Pool competitionName={competitionName}/>}
 					{tab === "my-team" && <MyTeam />}
 				</div>
 			</>
