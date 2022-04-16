@@ -25,7 +25,7 @@ const ClubCard: React.FC<Props> = props => {
             <TextEllipsis numLines={1} style={{fontSize: 20, fontWeight: 'bold', width: 'fit-content'}}>
                     Team name ({numMember}/5)
                 </TextEllipsis>
-                <Button style={{marginLeft: '16px'}} type="primary" ghost>Join</Button>
+                <Button style={{marginLeft: '16px'}} type="link" size="small">Join</Button>
                 </div>
 			{[...Array(numMember)]
 				.fill("")

@@ -8,6 +8,7 @@ import ReactIcon from "./Icon";
 import UserItem from "./UserListItem";
 import FormItem from "./FormItem";
 import { ImageUploader } from "./Upload";
+import Messages from "./Messages";
 
 export {
 	Logo,
@@ -20,4 +21,5 @@ export {
 	UserItem,
 	FormItem,
 	ImageUploader,
+	Messages
 };

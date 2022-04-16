@@ -77,6 +77,7 @@ const JoinPoolForm: React.FC<Props> = ({
 				confirmLoading={confirmLoading}
 				onCancel={handleCancel}
 			>
+				<h1>Join the pool</h1>
 				<div className="main-page-form-container">
 					<FormItem label="Description">
 						<Input.TextArea

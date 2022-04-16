@@ -139,7 +139,7 @@ const LoginPage: React.FC<Props> = props => {
 												credential &&
 												credential === repeatCrd
 											) {
-												auth.signUp(identifier, credential);
+												auth.signUp(identifier, credential)
 											}
 										}}
 									>

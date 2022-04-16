@@ -14,6 +14,7 @@ export type UserSkillProps = {
 	level?: "beginner" | "intermediate" | "expert";
 };
 export type UserProps = {
+	public_id: string;
 	profile: UserProfileProps;
 	avatar: any | null;
 	skills: Array<UserSkillProps>;

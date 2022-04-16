@@ -26,7 +26,7 @@ export const login = async (email: string, password: string) => {
 export const signup = async (email: string, password: string) => {
     const response = await axios({
         method: "POST",
-        url: withUrl("/users/new"),
+        url: withUrl("/users/signup"),
         data: {
             identity_type: IdentityType.email,
             identifier: email.toLowerCase(),

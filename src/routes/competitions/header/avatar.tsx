@@ -32,11 +32,11 @@ const NavBarAvatar: React.FC<any> = props => {
 	const [url, setUrl] = useState<string>();
 
 	useEffect(() => {
-		if (userContext.user?.avatar.url) {
-			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar.url);
-			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar.url)
+		if (userContext.user?.avatar?.url) {
+			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
+			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar?.url)
 		}
-	}, [userContext.user?.avatar.url])
+	}, [userContext.user?.avatar?.url])
 	
 	
 
@@ -51,7 +51,6 @@ const NavBarAvatar: React.FC<any> = props => {
 		// 	}
 		// >
 		<a href="/usr/lalal">
-			{" "}
 			<Avatar
 				size={36}
 				icon={<UserOutlined />}

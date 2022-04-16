@@ -157,7 +157,7 @@ const Competition: React.FC<Props> = props => {
 						</>
 					)}
 					{tab === "pool" && <Pool competitionName={competitionName}/>}
-					{tab === "my-team" && <MyTeam />}
+					{tab === "my-team" && <MyTeam competitionName={competitionName}/>}
 				</div>
 			</>
 		</div>

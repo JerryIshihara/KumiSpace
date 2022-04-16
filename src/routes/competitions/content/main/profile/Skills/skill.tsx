@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { Button, Divider } from "antd";
 import { EditFilled } from "@ant-design/icons";
 
-import TextEllipsis from "components/TextEllipsis";
+import { TextEllipsis } from "components";
+import { LevelColor } from "components/Skill/skillColor";
 import "./style.less";
 import { UserSkillProps } from "context/user";
 
-export const Level = {
-	beginner: "#3bdb89",
-	intermediate: "#eddb39",
-	expert: "#f5079a",
-};
+export const Level = LevelColor;
 
 interface Props {
 	skill: UserSkillProps;
