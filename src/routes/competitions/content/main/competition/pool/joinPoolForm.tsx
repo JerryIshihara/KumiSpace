@@ -49,7 +49,7 @@ const JoinPoolForm: React.FC<Props> = ({
 		// 	return;
 		// }
 		setConfirmLoading(true);
-		join_pool(auth.token, competitionName)
+		join_pool(auth.token, competitionName, description, language)
 			.then(res => {
 				console.log(res.data);
 				onCancel();

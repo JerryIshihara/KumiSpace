@@ -22,13 +22,13 @@ interface Props {
 const UserItem: React.FC<Props> = (props: Props) => {
 	return (
 		<div className="user-item-container">
-			<Avatar size={45} icon={<UserOutlined />} />
+			<Avatar size={45} icon={<UserOutlined />} src={props.url}/>
 			<div className="user-item-title">
 				<TextEllipsis style={{ fontSize: 14, fontWeight: "bold" }}>
 					{props.profile?.username}
 				</TextEllipsis>
 				<TextEllipsis style={{ fontSize: 12 }} numLines={2}>
-					{props.profile.occupation} @ {props.profile.organization}
+					{props.profile.occupation} {props.profile.occupation && props.profile.organization && "@"} {props.profile.organization}
 				</TextEllipsis>
 				<div className="user-item-tags">
 					{props.skills?.map((skill: any) => (

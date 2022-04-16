@@ -20,6 +20,7 @@
     "@types/redux-logger": "^3.0.8",
     "@types/uuid": "^8.3.0",
     "antd": "^4.15.2",
+    "antd-img-crop": "^4.2.0",
     "axios": "^0.26.1",
     "craco-antd": "^1.19.0",
     "react": "^17.0.2",

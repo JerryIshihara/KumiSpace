@@ -15,7 +15,7 @@ export type UserSkillProps = {
 };
 export type UserProps = {
 	profile: UserProfileProps;
-	avatar: string | null;
+	avatar: any | null;
 	skills: Array<UserSkillProps>;
 };
 

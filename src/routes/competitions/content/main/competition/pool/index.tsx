@@ -4,7 +4,7 @@ import { Button, Divider } from "antd";
 import "./style.less";
 
 import { get_pool_by_competition } from "api/kaggle";
-import { UserItem } from "components";
+import { UserItem, TextEllipsis } from "components";
 import JoinPoolForm from "./joinPoolForm";
 
 interface Props {
@@ -45,7 +45,15 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 				Join the pool
 			</Button>
 			{pools.map((pool: any) => (
-				<UserItem profile={pool.user.profile} skills={pool.user.skills}/>
+				<>
+					<UserItem profile={pool.user.profile} skills={pool.user.skills} url={process.env.REACT_APP_HOST + pool.user.avatar.url}/>
+					{pool.language && (
+						<TextEllipsis>Language: {pool.language}</TextEllipsis>
+					)}
+					{pool.description && (
+						<span style={{ color: "GrayText" }}>{pool.description}</span>
+					)}
+				</>
 			))}
 		</div>
 	);

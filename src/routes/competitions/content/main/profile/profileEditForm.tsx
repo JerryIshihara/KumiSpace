@@ -3,20 +3,22 @@ import { Modal, Select, Input, Avatar } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import { useHistory, useLocation } from "react-router-dom";
 
-import FormItem from "components/FormItem";
+import {FormItem, ImageUploader} from "components";
 import { ProfileProps } from ".";
 import "./style.less";
 import { useUser } from "context/user";
 
 interface Props {
 	onCancel: () => void;
+	onFinish?: () => void;
 }
 
-const ProfileEditForm: React.FC<Props> = ({ onCancel }: Props) => {
+const ProfileEditForm: React.FC<Props> = ({ onCancel, onFinish }: Props) => {
 	const userContext = useUser();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [username, setUsername] = useState<string>();
+	const [url, setUrl] = useState<any>();
 	const [occupation, setOccupation] = useState<string>();
 	const [organization, setOrganization] = useState<string>();
 	const [description, setDescription] = useState<string>();
@@ -66,13 +68,15 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel }: Props) => {
 				confirmLoading={confirmLoading}
 				onCancel={handleCancel}
 			>
+				<h1>Edit your profile</h1>
 				<div className="main-page-form-container">
-					<Avatar
+					{/* <ImageUploader icon={<UserOutlined />} onUpload={setUrl}/> */}
+					{/* <Avatar
 						shape="square"
 						style={{ borderRadius: 0, margin: 0 }}
 						size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
 						icon={<UserOutlined />}
-					/>
+					/> */}
 					<FormItem label="Username" errorMessage={status?.msg}>
 						<Input
 							status={status?.code}

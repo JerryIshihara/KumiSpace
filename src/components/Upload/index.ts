@@ -1,3 +1,3 @@
-import LogoUploader from "./logo-uploader";
+import ImageUploader from "./logo-uploader";
 
-export { LogoUploader };
+export { ImageUploader };

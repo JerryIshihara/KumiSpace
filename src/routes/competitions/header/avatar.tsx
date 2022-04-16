@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 
 import { Menu, Avatar, Dropdown } from "antd";
@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 
 import "./style.less";
-
+import { useUser } from "context/user";
 
 const ManageAccount: React.FC<any> = props => {
 	return (
@@ -27,8 +27,19 @@ const ManageAccount: React.FC<any> = props => {
 	);
 };
 
-
 const NavBarAvatar: React.FC<any> = props => {
+	const userContext = useUser();
+	const [url, setUrl] = useState<string>();
+
+	useEffect(() => {
+		if (userContext.user?.avatar.url) {
+			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar.url);
+			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar.url)
+		}
+	}, [userContext.user?.avatar.url])
+	
+	
+
 	return (
 		// <Dropdown
 		// 	placement="bottomRight"
@@ -41,7 +52,12 @@ const NavBarAvatar: React.FC<any> = props => {
 		// >
 		<a href="/usr/lalal">
 			{" "}
-			<Avatar size={36} icon={<UserOutlined />} style={{ cursor: "pointer" }} />
+			<Avatar
+				size={36}
+				icon={<UserOutlined />}
+				style={{ cursor: "pointer" }}
+				src={url}
+			/>
 		</a>
 		// </Dropdown>
 	);

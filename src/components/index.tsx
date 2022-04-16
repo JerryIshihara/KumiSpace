@@ -6,6 +6,8 @@ import PageTitleSetter from "./PageTitleSetter";
 import PrivateRoute from "./PrivateRoute";
 import ReactIcon from "./Icon";
 import UserItem from "./UserListItem";
+import FormItem from "./FormItem";
+import { ImageUploader } from "./Upload";
 
 export {
 	Logo,
@@ -16,4 +18,6 @@ export {
 	PrivateRoute,
 	ReactIcon,
 	UserItem,
+	FormItem,
+	ImageUploader,
 };

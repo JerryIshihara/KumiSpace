@@ -10,7 +10,8 @@ import {
 import { Avatar, Tabs, Button, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-import TextEllipsis from "components/TextEllipsis";
+import { TextEllipsis, ImageUploader } from "components";
+import { upload_avatar } from "api/user";
 import { useAuth } from "context/auth";
 import { useUser } from "context/user";
 
@@ -44,6 +45,13 @@ const UserProfile: React.FC<Props> = props => {
 	// 	description: "Win!",
 	// });
 	const { userId } = useParams<{ userId: string }>();
+	const [url, setUrl] = useState<string>();
+	useEffect(() => {
+		if (userContext.user?.avatar.url) {
+			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar.url);
+			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar.url)
+		}
+	}, [userContext.user?.avatar.url])
 	// const [tabKey, setTabKey] = useState<string>("Home");
 	const [loading, setLoading] = useState(false);
 
@@ -54,11 +62,25 @@ const UserProfile: React.FC<Props> = props => {
 				className="main-page-club-block main-page-profile-container"
 				style={{ padding: 0 }}
 			>
-				<Avatar
+				{/* <Avatar
 					shape="square"
 					style={{ borderRadius: 0, margin: 0 }}
 					size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
 					icon={<UserOutlined />}
+				/> */}
+				<ImageUploader
+					url={url}
+					style={{ width: 150, height: 150 }}
+					icon={<UserOutlined />}
+					onUpload={async (file: Blob) => {
+						upload_avatar(auth.token, file)
+							.then(res => {
+								console.log(res);
+							})
+							.catch(e => {
+								console.warn(e);
+							});
+					}}
 				/>
 				<div className="main-page-profile">
 					<TextEllipsis
@@ -84,7 +106,11 @@ const UserProfile: React.FC<Props> = props => {
 					<Button
 						onClick={() => {
 							history.push({
-								pathname: window.location.pathname + "?" + (tab ? `tab=${tab}&` : "") + "form=profile",
+								pathname:
+									window.location.pathname +
+									"?" +
+									(tab ? `tab=${tab}&` : "") +
+									"form=profile",
 							});
 						}}
 						style={{ fontWeight: 600 }}

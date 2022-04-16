@@ -4,7 +4,7 @@ import { Avatar, Tabs, Button, Space, Select, Input, Upload } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.less";
 
-import { LogoUploader } from "components/Upload";
+import { ImageUploader } from "components/Upload";
 import ClubService from "api/club";
 
 import event_img from "assets/event.png";
@@ -54,7 +54,7 @@ const CreatePage: React.FC<Props> = props => {
 						<Input.TextArea size="large" placeholder="" />
 					</InputItem>
 					{/* <InputItem label="Logo">
-						<LogoUploader />
+						<ImageUploader />
 					</InputItem> */}
 					<Button
 						className="login-form-submit"
