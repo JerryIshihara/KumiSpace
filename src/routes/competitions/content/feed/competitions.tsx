@@ -5,7 +5,7 @@ import { CompetitionCard } from "./Card";
 import { get_competitions } from "../../../../api/kaggle";
 
 
-const Clubs: React.FC = () => {
+const Competitions: React.FC = () => {
 	const [competitions, setCompetitions] = useState([]);
 	useEffect(() => {
 		get_competitions("token")
@@ -42,4 +42,4 @@ const Clubs: React.FC = () => {
 	);
 };
 
-export default Clubs;
+export default Competitions;

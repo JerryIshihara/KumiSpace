@@ -175,3 +175,16 @@ export const get_teams_by_competition_name = async (
 	return result;
 };
 
+export const get_my_competitions = async (
+	token: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "GET",
+		url: withUrl(`/kaggle_competitions/my-competitions`),
+		headers: {
+			"Authorization": token
+		}
+	});
+	return result;
+};
+
