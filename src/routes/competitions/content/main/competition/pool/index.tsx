@@ -6,7 +6,6 @@ import "./style.less";
 
 import { get_pool_by_competition } from "api/kaggle";
 import { UserItem, TextEllipsis } from "components";
-import JoinPoolForm from "../myTeam/joinPoolForm";
 import { useUser } from "context/user";
 
 interface Props {
@@ -17,7 +16,6 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 	const history = useHistory();
 	const userContext = useUser();
 	const [pools, setPools] = useState([]);
-	const [showJoinButton, setShowJoinButton] = useState<Boolean>(false);
 	useEffect(() => {
 		get_pool_by_competition(competitionName)
 			.then(res => {
@@ -25,18 +23,10 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 				console.log(res.data);
 			})
 			.catch(e => {
-				console.warn(e);
+				console.warn(e.response);
 			});
 	}, [competitionName]);
 
-	useEffect(() => {
-		setShowJoinButton(
-			!userContext.user ||
-				pools.findIndex(
-					(p: any) => p.user.public_id === userContext.user.public_id
-				) < 0
-		);
-	}, [userContext.user, pools]);
 
 	return (
 		<div className="pool-container">

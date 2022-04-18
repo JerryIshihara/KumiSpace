@@ -55,7 +55,7 @@ const JoinPoolForm: React.FC<Props> = ({
 				onCancel();
 			})
 			.catch(e => {
-				console.warn(e);
+				console.warn(e.response);
 			})
 			.finally(() => {
 				setConfirmLoading(false);

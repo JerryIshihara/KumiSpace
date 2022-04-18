@@ -106,3 +106,72 @@ export const get_my_team = async (
 	});
 	return result;
 };
+
+
+export const create_team = async (
+	token: string,
+	competition_name: string,
+	name: string,
+	num_members: number,
+	language?: string,
+	description?: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "POST",
+		headers: {
+			"Authorization": token,
+		},
+		url: withUrl(`/kaggle_competitions/${competition_name}/groups`),
+		data: {
+			name, 
+			num_members,
+			language,
+			description,
+		},
+	});
+	return result;
+};
+
+export const leave_team = async (
+	token: string,
+	competition_name: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "PUT",
+		headers: {
+			"Authorization": token,
+		},
+		url: withUrl(`/kaggle_competitions/${competition_name}/leave`),
+	});
+	return result;
+};
+
+export const join_team = async (
+	token: string,
+	group_pid: string,
+	language?: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "PUT",
+		headers: {
+			"Authorization": token,
+		},
+		url: withUrl(`/kaggle_competitions/groups`),
+		data: {
+			group_pid,
+			language
+		}
+	});
+	return result;
+};
+
+export const get_teams_by_competition_name = async (
+	competition_name: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "GET",
+		url: withUrl(`/kaggle_competitions/${competition_name}/groups`),
+	});
+	return result;
+};
+

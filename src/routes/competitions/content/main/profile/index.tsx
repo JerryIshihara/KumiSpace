@@ -47,11 +47,11 @@ const UserProfile: React.FC<Props> = props => {
 	const { userId } = useParams<{ userId: string }>();
 	const [url, setUrl] = useState<string>();
 	useEffect(() => {
-		if (userContext.user?.avatar.url) {
-			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar.url);
-			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar.url)
+		if (userContext.user?.avatar?.url) {
+			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
+			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar?.url)
 		}
-	}, [userContext.user?.avatar.url])
+	}, [userContext.user?.avatar?.url])
 	// const [tabKey, setTabKey] = useState<string>("Home");
 	const [loading, setLoading] = useState(false);
 
@@ -78,7 +78,7 @@ const UserProfile: React.FC<Props> = props => {
 								console.log(res);
 							})
 							.catch(e => {
-								console.warn(e);
+								console.warn(e.response);
 							});
 					}}
 				/>

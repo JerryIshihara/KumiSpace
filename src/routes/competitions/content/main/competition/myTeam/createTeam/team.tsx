@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, RouteComponentProps, useHistory } from "react-router-dom";
-import { Avatar, Tabs, Button, Space, Select, Input, Modal } from "antd";
+import { message, Tabs, Button, Space, Select, Input, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+
+import { create_team } from "api/kaggle";
 import "./style.less";
+import { useAuth } from "context/auth";
 
 interface InputItemProps {
 	label: string;
@@ -17,14 +20,16 @@ const InputItem: React.FC<InputItemProps> = props => {
 	);
 };
 
-interface Props extends RouteComponentProps {}
-const CreatePage: React.FC<Props> = props => {
+interface Props {
+	competitionName: string;
+}
+const CreatePage: React.FC<Props> = (props: Props) => {
 	const history = useHistory();
+	const auth = useAuth();
 	const params = new URLSearchParams(window.location.search);
-	const [username, setUsername] = useState<string>();
-	const [url, setUrl] = useState<any>();
-	const [occupation, setOccupation] = useState<string>();
-	const [organization, setOrganization] = useState<string>();
+	const [name, setName] = useState<string>();
+	const [numMembers, setNumMembers] = useState<number>();
+	const [language, setLanguage] = useState<string>();
 	const [description, setDescription] = useState<string>();
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [status, setStatus] = useState<{ code: "error"; msg: string }>();
@@ -33,25 +38,47 @@ const CreatePage: React.FC<Props> = props => {
 	};
 	const handleOk = () => {
 		setStatus(undefined);
-		if (!username) {
-			setStatus({ code: "error", msg: "empty fields" });
+		if (!name) {
+			message.error("Please enter a team name.");
+			return;
+		}
+		if (!numMembers) {
+			message.error("Please choose a team size.");
 			return;
 		}
 		setConfirmLoading(true);
-		// userContext.updateProfile(
-		// 	{
-		// 		username,
-		// 		occupation,
-		// 		organization,
-		// 		description,
-		// 	},
-		// 	onCancel
-		// );
+		create_team(
+			auth.token,
+			props.competitionName,
+			name,
+			numMembers,
+			language,
+			description
+		)
+			.then(res => {
+				setTimeout(() => {
+					setConfirmLoading(false);
+
+					setTimeout(() => {
+						history.goBack();
+					}, 1000);
+				}, 1000);
+			})
+			.catch(e => {
+				if (e.response.status === 409) {
+					message.error(
+						`You already created/joined a team under competition ${props.competitionName}`
+					);
+				}
+				console.warn(e.response);
+			})
+			.finally(() => {
+				setConfirmLoading(false);
+			});
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
-		console.log("Clicked cancel button");
 		history.goBack();
 	};
 	return (
@@ -64,12 +91,23 @@ const CreatePage: React.FC<Props> = props => {
 		>
 			<h1>Create a new team</h1>
 			<Space direction="vertical" size={15} style={{ width: "100%" }}>
-				<InputItem label="Name">
-					<Input size="large" required placeholder="" />
+				<InputItem label="Team name">
+					<Input
+						required
+						value={name}
+						onChange={e => {
+							setName(e.target.value);
+						}}
+					/>
 				</InputItem>
 
-				<InputItem label="Number of teammates">
-					<Select style={{ width: "200px" }} size="large">
+				<InputItem label="Team size">
+					<Select
+						style={{ width: "200px" }}
+						onChange={value => {
+							setNumMembers(value);
+						}}
+					>
 						{[
 							...Array(5)
 								.fill("")
@@ -79,23 +117,29 @@ const CreatePage: React.FC<Props> = props => {
 						]}
 					</Select>
 				</InputItem>
-				<InputItem label="Join requirement (optional)">
-					<Input.TextArea size="large" placeholder="" />
+				<InputItem label="Language (optional)">
+					<Input
+						required
+						value={language}
+						onChange={e => {
+							setLanguage(e.target.value);
+						}}
+					/>
+				</InputItem>
+				<InputItem label="Description / Join requirement (optional)">
+					<Input.TextArea
+						value={description}
+						onChange={e => {
+							setDescription(e.target.value);
+						}}
+					/>
 				</InputItem>
 				{/* <InputItem label="Logo">
 						<ImageUploader />
 					</InputItem> */}
-				<Button
-					className="login-form-submit"
-					size="large"
-					type="primary"
-					style={{ width: "100%" }}
-				>
-					Create
-				</Button>
 			</Space>
 		</Modal>
 	);
 };
 
-export default withRouter(CreatePage);
+export default CreatePage;

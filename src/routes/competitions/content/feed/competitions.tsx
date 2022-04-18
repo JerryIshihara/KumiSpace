@@ -14,7 +14,7 @@ const Clubs: React.FC = () => {
 				console.log(res.data)
 			})
 			.catch(err => {
-				console.warn(err);
+				console.warn(err.response);
 			});
 	}, []);
 

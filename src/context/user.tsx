@@ -16,12 +16,9 @@ export type UserSkillProps = {
 export type UserProps = {
 	public_id: string;
 	profile: UserProfileProps;
-	avatar: any | null;
+	avatar: { url: string } | null;
 	skills: Array<UserSkillProps>;
 };
-
-
-
 
 export interface UserContextProps {
 	user: UserProps;
@@ -48,7 +45,7 @@ export const UserContextProvider = (props: any) => {
 					setUser(res.data);
 				})
 				.catch(e => {
-					console.warn(e);
+					console.warn(e.response);
 				});
 		}
 	}, [auth.token]);
@@ -64,7 +61,7 @@ export const UserContextProvider = (props: any) => {
 				callBack();
 			})
 			.catch(e => {
-				console.warn(e);
+				console.warn(e.response);
 			});
 	};
 
@@ -75,14 +72,18 @@ export const UserContextProvider = (props: any) => {
 				callBack();
 			})
 			.catch(e => {
-				console.warn(e);
+				console.warn(e.response);
 			});
 	};
 
-	const editSkill = async (pid: string, skill: UserSkillProps, callBack: () => void) => {
+	const editSkill = async (
+		pid: string,
+		skill: UserSkillProps,
+		callBack: () => void
+	) => {
 		edit_skill(auth.token, pid, skill)
 			.then(res => {
-				const index = user?.skills.findIndex(i => i.public_id === pid);				
+				const index = user?.skills.findIndex(i => i.public_id === pid);
 				if (index !== undefined) {
 					user?.skills.splice(index, 1, skill);
 					setUser({ ...user, skills: user?.skills } as UserProps);
@@ -90,7 +91,7 @@ export const UserContextProvider = (props: any) => {
 				}
 			})
 			.catch(e => {
-				console.warn(e);
+				console.warn(e.response);
 			});
 	};
 

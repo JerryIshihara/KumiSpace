@@ -21,6 +21,7 @@ import {
 	get_competition,
 	KaggleCompetitionProps,
 } from "../../../../../api/kaggle";
+import Teams from "./groups";
 
 const { TabPane } = Tabs;
 
@@ -40,7 +41,7 @@ const Competition: React.FC<Props> = props => {
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		console.log(competitionName);
-		
+
 		get_competition(competitionName).then(res => {
 			setCompetition(res.data);
 		});
@@ -149,15 +150,9 @@ const Competition: React.FC<Props> = props => {
 					</nav>
 				</div>
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
-					{!tab && (
-						<>
-							{[...Array(10).keys()].map(() => (
-								<TeamCard />
-							))}
-						</>
-					)}
-					{tab === "pool" && <Pool competitionName={competitionName}/>}
-					{tab === "my-team" && <MyTeam competitionName={competitionName}/>}
+					{!tab && <Teams competitionName={competitionName} />}
+					{tab === "pool" && <Pool competitionName={competitionName} />}
+					{tab === "my-team" && <MyTeam competitionName={competitionName} />}
 				</div>
 			</>
 		</div>

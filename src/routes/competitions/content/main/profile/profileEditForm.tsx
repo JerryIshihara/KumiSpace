@@ -103,7 +103,7 @@ const ProfileEditForm: React.FC<Props> = ({ onCancel, onFinish }: Props) => {
 							onChange={e => setOrganization(e.target.value)}
 						/>
 					</FormItem>
-					<FormItem label="Description">
+					<FormItem label="About">
 						<Input.TextArea
 							placeholder="Briefly introduce yourself."
 							value={description}
