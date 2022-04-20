@@ -84,15 +84,16 @@ const SkillForm: React.FC<Props> = ({ onFinish }: Props) => {
 				onCancel={handleCancel}
 			>
 				<div className="main-page-form-container">
-					<FormItem label="Skill name" errorMessage={status?.msg}>
+					<FormItem label="Skill / Knowledge" errorMessage={status?.msg}>
 						<Input
+							placeholder="Python / Natural Language Processing"
 							status={status?.code}
 							allowClear
 							value={name}
 							onChange={e => setName(e.target.value)}
 						/>
 					</FormItem>
-					<FormItem label="Skill level">
+					<FormItem label="Level">
 						<Select
 							// showSearch
 							// optionFilterProp="children"

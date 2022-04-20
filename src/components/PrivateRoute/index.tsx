@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 // import { AuthProps } from "../../redux/lib/auth.type";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { useAuth } from "context/auth";
 
 interface Props {
@@ -8,15 +8,30 @@ interface Props {
 }
 const PrivateRoute: React.FC<Props> = props => {
 	const auth = useAuth();
-	const show = useMemo(() => auth.token ? true : false, [auth.token]);
+	const [loading, setLoading] = useState<Boolean>(true);
+
+	useEffect(() => {
+		auth
+			.status()
+			.then(res => {
+				setLoading(false);
+			})
+			.catch(e => {
+				console.warn(e);
+			});
+	}, []);
 
 	return (
 		<>
-			{show ? (
+			{loading ? (
+				<></>
+			) : auth.token !== undefined ? (
 				props.children
 			) : (
 				<Redirect
-					to={{ pathname: "/auth/sign-in", state: window.location.pathname }}
+					to={{
+						pathname: "/auth/sign-in" /* state: window.location.pathname */,
+					}}
 				/>
 			)}
 		</>

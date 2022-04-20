@@ -24,6 +24,7 @@ const Content: React.FC<Props> = props => {
 					<PrivateRoute>
 						<UserProfile />
 					</PrivateRoute>
+					{/* <UserProfile /> */}
 				</Route>
 				<Route path={"/competitions"}>
 					<Competition />

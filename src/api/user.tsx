@@ -10,7 +10,7 @@ export enum Gender {
 export const get_user = async (token: string) => {
 	const response = await axios({
 		method: "GET",
-		url: withUrl("/users/user"),
+		url: "/users/user",
 		headers: {
 			"Authorization": token,
 		},
@@ -21,7 +21,7 @@ export const get_user = async (token: string) => {
 export const get_profile = async (token: string) => {
 	const response = await axios({
 		method: "GET",
-		url: withUrl("/users/profile"),
+		url: "/users/profile",
 		headers: {
 			"Authorization": token,
 		},
@@ -32,7 +32,7 @@ export const get_profile = async (token: string) => {
 export const get_myscreen_info = async (token: string) => {
 	const response = await axios({
 		method: "GET",
-		url: withUrl("/users/info"),
+		url: "/users/info",
 		headers: {
 			"Authorization": token,
 		},
@@ -43,7 +43,7 @@ export const get_myscreen_info = async (token: string) => {
 export const edit_profile = async (token: string, new_profile: object) => {
 	const response = await axios({
 		method: "PUT",
-		url: withUrl("/users/profile/edit"),
+		url: "/users/profile/edit",
 		headers: {
 			"Authorization": token,
 		},
@@ -75,7 +75,7 @@ export const upload_avatar = async (
 
 	const response = await axios({
 		method: "post",
-		url: withUrl("/users/profile/avatar"),
+		url: "/users/profile/avatar",
 		headers: {
 			"Content-Type": `multipart/form-data`,
 			"Authorization": token,
@@ -83,7 +83,7 @@ export const upload_avatar = async (
 		responseType: "blob",
 		data: formData,
 	});
-	// const response = await fetch(withUrl("/users/profile/avatar"), {
+	// const response = await fetch("/users/profile/avatar"),{
 	// 	method: "post",
 	// 	body: formData,
 	// 	headers: {
@@ -97,7 +97,7 @@ export const upload_avatar = async (
 export const get_avatar = async (token: string) => {
 	const response = await axios({
 		method: "get",
-		url: withUrl("/users/profile/avatar"),
+		url: "/users/profile/avatar",
 		headers: {
 			"Authorization": token,
 		},
@@ -108,7 +108,7 @@ export const get_avatar = async (token: string) => {
 export const get_skills = async (token: string) => {
 	const response = await axios({
 		method: "PUT",
-		url: withUrl("/skills"),
+		url: "/skills",
 		headers: {
 			"Authorization": token,
 		},
@@ -119,7 +119,7 @@ export const get_skills = async (token: string) => {
 export const add_skill = async (token: string, skill: UserSkillProps) => {
 	const response = await axios({
 		method: "PUT",
-		url: withUrl("/skills/new"),
+		url: "/skills/new",
 		headers: {
 			"Authorization": token,
 		},
@@ -135,7 +135,7 @@ export const edit_skill = async (
 ) => {
 	const response = await axios({
 		method: "PUT",
-		url: withUrl("/skills/" + pid),
+		url: "/skills/" + pid,
 		headers: {
 			"Authorization": token,
 		},

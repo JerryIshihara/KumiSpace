@@ -6,8 +6,8 @@ import {
 	withRouter,
 	RouteComponentProps,
 	useParams,
-	useHistory,
 	useLocation,
+	useHistory,
 } from "react-router-dom";
 
 import Navbar from "./navbar";
@@ -23,7 +23,6 @@ interface Props extends RouteComponentProps {}
 const LoginPage: React.FC<Props> = props => {
 	const { authMode } = useParams<{ authMode: string }>();
 	const auth = useAuth();
-	const history = useHistory();
 	const state = useLocation().state as string;
 	const [identifier, setIdentifier] = useState<string>();
 	const [credential, setCredential] = useState<string>();
@@ -32,11 +31,11 @@ const LoginPage: React.FC<Props> = props => {
 		setCredential(undefined);
 		setRepeatCrd(undefined);
 	}, [authMode]);
-	useEffect(() => {
-		if (auth.token) {
-			history.push(state);
-		}
-	}, [auth.token])
+	// useEffect(() => {
+	// 	if (auth.token) {
+	// 		props.history.push(auth.redirectPath);
+	// 	}
+	// }, [auth.token])
 
 	return (
 		<div className="body-center">
@@ -91,7 +90,9 @@ const LoginPage: React.FC<Props> = props => {
 										loading={false}
 										onClick={() => {
 											if (identifier && credential) {
-												auth.authenticate(identifier, credential, state || "/");
+												auth.authenticate(identifier, credential, () => {
+													props.history.push("/");
+												});
 											}
 										}}
 									>
@@ -139,7 +140,7 @@ const LoginPage: React.FC<Props> = props => {
 												credential &&
 												credential === repeatCrd
 											) {
-												auth.signUp(identifier, credential)
+												auth.signUp(identifier, credential);
 											}
 										}}
 									>

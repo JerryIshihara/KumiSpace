@@ -1,4 +1,3 @@
-import { withUrl } from "./constant";
 import axios from "axios";
 
 
@@ -22,7 +21,7 @@ export const get_competitions = async (token: string): Promise<any> => {
 		// headers: {
 		// 	"x-access-tokens": token,
 		// },
-		url: withUrl("/kaggle_competitions"),
+		url: "/kaggle_competitions",
 	});
 	return result;
 };
@@ -34,7 +33,7 @@ export const get_competition = async (name: string): Promise<any> => {
 		// headers: {
 		// 	"x-access-tokens": token,
 		// },
-		url: withUrl("/kaggle_competitions/" + name),
+		url: "/kaggle_competitions/" + name,
 	});
 	return result;
 };
@@ -51,7 +50,7 @@ export const join_pool = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: withUrl(`/kaggle_competitions/${competition_name}/pool`),
+		url: `/kaggle_competitions/${competition_name}/pool`,
 		data: {
 			description,
 			language,
@@ -72,7 +71,7 @@ export const edit_pool = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: withUrl(`/kaggle_competitions/${competition_name}/pool`),
+		url: `/kaggle_competitions/${competition_name}/pool`,
 		data: {
 			description,
 			language,
@@ -87,7 +86,7 @@ export const get_pool_by_competition = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: withUrl(`/kaggle_competitions/${competition_name}/pool`),
+		url: `/kaggle_competitions/${competition_name}/pool`,
 	});
 	return result;
 };
@@ -99,7 +98,7 @@ export const get_my_team = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: withUrl(`/kaggle_competitions/${competition_name}/my-team`),
+		url: `/kaggle_competitions/${competition_name}/my-team`,
 		headers: {
 			"Authorization": token,
 		}
@@ -121,7 +120,7 @@ export const create_team = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: withUrl(`/kaggle_competitions/${competition_name}/groups`),
+		url: `/kaggle_competitions/${competition_name}/groups`,
 		data: {
 			name, 
 			num_members,
@@ -141,7 +140,7 @@ export const leave_team = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: withUrl(`/kaggle_competitions/${competition_name}/leave`),
+		url: `/kaggle_competitions/${competition_name}/leave`,
 	});
 	return result;
 };
@@ -156,7 +155,7 @@ export const join_team = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: withUrl(`/kaggle_competitions/groups`),
+		url: `/kaggle_competitions/groups`,
 		data: {
 			group_pid,
 			language
@@ -170,7 +169,7 @@ export const get_teams_by_competition_name = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: withUrl(`/kaggle_competitions/${competition_name}/groups`),
+		url: `/kaggle_competitions/${competition_name}/groups`,
 	});
 	return result;
 };
@@ -180,7 +179,7 @@ export const get_my_competitions = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: withUrl(`/kaggle_competitions/my-competitions`),
+		url: `/kaggle_competitions/my-competitions`,
 		headers: {
 			"Authorization": token
 		}

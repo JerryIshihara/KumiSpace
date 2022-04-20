@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Divider, Avatar } from "antd";
+import { Link } from "react-router-dom";
 import { SelectOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
 
 import { TextEllipsis } from "components";
@@ -7,6 +8,7 @@ import { timeToDeadline } from "utils/time";
 import "./style.less";
 
 interface CompetitionProps {
+	name: string;
 	title: string;
 	competition_header_image_url: string;
 	deadline: Date;
@@ -20,19 +22,20 @@ interface Props {
 		competition: CompetitionProps;
 		members?: Array<MemberProps>;
 		user?: any;
-		name?: string,
+		name?: string;
 	};
 	last?: boolean;
 }
 
 const Competition: React.FC<Props> = ({ content, last }: Props) => {
 	return (
-		<div className="main-page-skill">
+		<Link className="main-page-skill" to={`/competitions/${content.competition.name}/?tab=my-team`} style={{color: "ButtonText"}}>
 			<div className="main-page-profile-competition-container">
 				<Avatar
 					shape="square"
 					size={{ xs: 50, sm: 55, md: 60, lg: 65, xl: 70, xxl: 70 }}
 					icon={<UserOutlined />}
+					style={{objectFit: "fill"}}
 					src={content.competition.competition_header_image_url}
 				/>
 				<div className="main-page-profile-competition-info">
@@ -41,10 +44,32 @@ const Competition: React.FC<Props> = ({ content, last }: Props) => {
 						style={{ fontSize: 15, fontWeight: "bold" }}
 						numLines={1}
 					>
-						{content.competition.title}
+						<a
+							className="main-page-profile-competition-link"
+							target="_blank"
+							rel="noreferrer"
+							onClick={e => e.stopPropagation()}
+							href={
+								"https://www.kaggle.com/competitions/" +
+								content.competition.name
+							}
+						>
+							{content.competition.title}
+						</a>
 					</TextEllipsis>
-					<TextEllipsis style={{ fontSize: 13 }}>{content.members ?<> <TeamOutlined /> {content.name} </>: "In the pool"}</TextEllipsis>
-					<TextEllipsis style={{ fontSize: 13 }}>{timeToDeadline(content.competition.deadline)}</TextEllipsis>
+					<TextEllipsis style={{ fontSize: 13 }}>
+						{content.members ? (
+							<>
+								{" "}
+								<TeamOutlined /> {content.name}{" "}
+							</>
+						) : (
+							"In the pool"
+						)}
+					</TextEllipsis>
+					<TextEllipsis style={{ fontSize: 13 }}>
+						{timeToDeadline(content.competition.deadline)}
+					</TextEllipsis>
 				</div>
 				<div
 					className="main-page-profile-competition-members"
@@ -64,18 +89,18 @@ const Competition: React.FC<Props> = ({ content, last }: Props) => {
 						))
 					) : (
 						<Avatar
-						size={{ xs: 30, sm: 30, md: 35, lg: 35, xl: 40, xxl: 40 }}
-						icon={<UserOutlined />}
-						src={
-							content?.user?.avatar &&
-							process.env.REACT_APP_HOST + content?.user?.avatar?.url
-						}
-					/>
+							size={{ xs: 30, sm: 30, md: 35, lg: 35, xl: 40, xxl: 40 }}
+							icon={<UserOutlined />}
+							src={
+								content?.user?.avatar &&
+								process.env.REACT_APP_HOST + content?.user?.avatar?.url
+							}
+						/>
 					)}
 				</div>
 			</div>
 			{!last && <Divider style={{ margin: 0 }} />}
-		</div>
+		</Link>
 	);
 };
 

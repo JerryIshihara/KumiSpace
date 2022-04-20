@@ -2,6 +2,7 @@
   "name": "kumi",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@arco-design/web-react": "^2.31.3",
     "@craco/craco": "^6.1.1",

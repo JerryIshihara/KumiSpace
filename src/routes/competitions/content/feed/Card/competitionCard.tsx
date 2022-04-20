@@ -5,8 +5,8 @@ import { UserOutlined } from "@ant-design/icons";
 
 import event_img from "assets/event.png";
 import { TextEllipsis } from "components";
-import { Bullet } from "utils/text.constant";
-import {KaggleCompetitionProps  } from "../../../../../api/kaggle";
+import { utf16ToText } from "utils/text";
+import {KaggleCompetitionProps  } from "api/kaggle";
 
 interface Props {
 	item: KaggleCompetitionProps
@@ -47,7 +47,7 @@ const ClubCard: React.FC<Props> =( { item }) => {
 							className="strm-card-title-container-info"
 						>
 							{/* <h3> */}
-							{item.description}
+							{utf16ToText(item.description)}
 							{/* </h3> */}
 						</TextEllipsis>
 						{/* <TextEllipsis numLines={2}> */}

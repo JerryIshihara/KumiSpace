@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Input } from "antd";
 import { BellOutlined, PlusCircleOutlined } from "@ant-design/icons";
@@ -7,10 +7,13 @@ import "./style.less";
 import { Logo } from "../../../components";
 import Avatar from "./avatar";
 import Plus from "./plus";
+import { useAuth } from "context/auth";
 
 // const { Option } = Select;
 
 const Header: React.FC<any> = props => {
+	const auth = useAuth()
+	const show = useMemo(() => (auth.token ? true : false), [auth.token]);
 	return (
 		<div className="strm-header">
 			<Logo href="/" />
@@ -26,8 +29,8 @@ const Header: React.FC<any> = props => {
 			</div>
 			<div className="strm-header-icons">
 				{/* <Plus /> */}
-				<BellOutlined className="strm-header-icon" />
-				<Avatar />
+				{show && <BellOutlined className="strm-header-icon" />}
+				<Avatar show={show}/>
 			</div>
 		</div>
 	);

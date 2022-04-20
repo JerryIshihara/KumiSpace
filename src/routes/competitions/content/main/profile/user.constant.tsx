@@ -1,6 +1,6 @@
 export const tab_constants = [
 	{
-		key: "Skills",
+		key: "Skills / Knowledge",
         path: "",
         isActive: (tab: string | null) => { return !tab}
 	},

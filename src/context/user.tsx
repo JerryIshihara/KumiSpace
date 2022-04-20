@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useAuth } from "./auth";
 import { get_user, add_skill, edit_profile, edit_skill } from "api/user";
+import { get_my_competitions } from "api/kaggle";
 
 export type UserProfileProps = {
 	username: string;
@@ -22,6 +23,7 @@ export type UserProps = {
 
 export interface UserContextProps {
 	user: UserProps;
+	competitions: Array<any>;
 	updateProfile: (p: UserProfileProps, callBack: () => void) => void;
 	addSkill: (skill: UserSkillProps, callBack: () => void) => void;
 	editSkill: (pid: string, skill: UserSkillProps, callBack: () => void) => void;
@@ -34,6 +36,7 @@ export const UserContext = React.createContext<Partial<UserContextProps> | any>(
 export const UserContextProvider = (props: any) => {
 	const auth = useAuth();
 	const [user, setUser] = useState<UserProps>();
+	const [competitions, setCompetitions] = useState<Array<any>>([]);
 
 	useEffect(() => {
 		if (auth.token) {
@@ -46,6 +49,39 @@ export const UserContextProvider = (props: any) => {
 				})
 				.catch(e => {
 					console.warn(e.response);
+					if (e.status === 401) {
+						if (e.response.status === 401) {
+							auth.refresh_token().then(res => {
+								auth.storeToken(res.data.token);
+								get_user(res.data.token)
+									.then(res => {
+										setUser(res.data);
+									})
+									.catch(e => {});
+							}).catch(e => {
+								auth.logout()
+							});
+						}
+					}
+				});
+			get_my_competitions(auth.token)
+				.then(res => {
+					setCompetitions(res.data);
+				})
+				.catch(e => {
+					console.warn(e.response);
+					if (e.response.status === 401) {
+						auth.refresh_token().then(res => {
+							auth.storeToken(res.data.token);
+							get_my_competitions(res.data.token)
+								.then(res => {
+									setCompetitions(res.data);
+								})
+								.catch(e => {});
+						}).catch(e => [
+							auth.logout()
+						])
+					}
 				});
 		}
 	}, [auth.token]);
@@ -99,6 +135,7 @@ export const UserContextProvider = (props: any) => {
 		<UserContext.Provider
 			value={{
 				user,
+				competitions,
 				updateProfile,
 				addSkill,
 				editSkill,
