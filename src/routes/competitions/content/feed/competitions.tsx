@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react";
 import "../style.less";
 
 import { CompetitionCard } from "./Card";
-import { get_competitions } from "../../../../api/kaggle";
+import { get_competitions } from "api/kaggle";
+import competition from "../main/competition";
 
 
 const Competitions: React.FC = () => {
 	const [competitions, setCompetitions] = useState([]);
 	useEffect(() => {
-		get_competitions("token")
+		get_competitions()
 			.then(res => {
-				setCompetitions(res.data);
 				console.log(res.data)
+				setCompetitions(res.data);
+				
 			})
 			.catch(err => {
-				console.warn(err.response);
+				console.warn(err);
 			});
 	}, []);
 

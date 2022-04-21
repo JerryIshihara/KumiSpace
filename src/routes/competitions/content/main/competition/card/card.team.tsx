@@ -13,8 +13,10 @@ import { IconLanguage } from "@arco-design/web-react/icon";
 import { UserProps, useUser } from "context/user";
 import { join_team } from "api/kaggle";
 import { TextEllipsis, UserItem } from "components";
+import JoinTeamForm from "./joinTeamForm";
 import { Bullet } from "utils/text.constant";
 import { useAuth } from "context/auth";
+import { useHistory, useParams } from "react-router-dom";
 
 export interface MemberProps {
 	user: UserProps;
@@ -37,7 +39,7 @@ interface Props {
 const TeamCard: React.FC<Props> = ({ team }: Props) => {
 	const auth = useAuth();
 	const userContext = useUser();
-
+	const history = useHistory();
 	const showJoinButton = useMemo(
 		() =>
 			team.members.findIndex(
@@ -85,14 +87,20 @@ const TeamCard: React.FC<Props> = ({ team }: Props) => {
 						{team.name}
 					</TextEllipsis>
 					{showJoinButton && (
-						<Button
-							style={{ marginLeft: "8px" }}
-							type="link"
-							size="small"
-							onClick={joinTeam}
-						>
-							Join
-						</Button>
+						<>
+							{" "}
+							<Button
+								style={{ marginLeft: "8px" }}
+								type="link"
+								size="small"
+								onClick={() => {
+									history.push(window.location.pathname + "/?form=join-team");
+								}}
+							>
+								Join
+							</Button>
+							<JoinTeamForm team={team}/>
+						</>
 					)}
 				</div>
 				<div

@@ -51,16 +51,21 @@ export const UserContextProvider = (props: any) => {
 					console.warn(e.response);
 					if (e.status === 401) {
 						if (e.response.status === 401) {
-							auth.refresh_token().then(res => {
-								auth.storeToken(res.data.token);
-								get_user(res.data.token)
-									.then(res => {
-										setUser(res.data);
-									})
-									.catch(e => {});
-							}).catch(e => {
-								auth.logout()
-							});
+							auth
+								.refresh_token()
+								.then(res => {
+									auth.storeToken(res.data.token);
+									get_user(res.data.token)
+										.then(res => {
+											setUser(res.data);
+										})
+										.catch(e => {});
+								})
+								.catch(e => {
+									setUser(undefined);
+									setCompetitions([]);
+									auth.logout();
+								});
 						}
 					}
 				});
@@ -71,16 +76,21 @@ export const UserContextProvider = (props: any) => {
 				.catch(e => {
 					console.warn(e.response);
 					if (e.response.status === 401) {
-						auth.refresh_token().then(res => {
-							auth.storeToken(res.data.token);
-							get_my_competitions(res.data.token)
-								.then(res => {
-									setCompetitions(res.data);
-								})
-								.catch(e => {});
-						}).catch(e => [
-							auth.logout()
-						])
+						auth
+							.refresh_token()
+							.then(res => {
+								auth.storeToken(res.data.token);
+								get_my_competitions(res.data.token)
+									.then(res => {
+										setCompetitions(res.data);
+									})
+									.catch(e => {});
+							})
+							.catch(e => {
+								setUser(undefined);
+								setCompetitions([]);
+								auth.logout();
+							});
 					}
 				});
 		}

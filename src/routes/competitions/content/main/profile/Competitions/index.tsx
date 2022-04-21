@@ -5,23 +5,18 @@ import { Button } from "antd";
 import Competition from "./competition";
 import { useUser } from "context/user";
 
-const Competitions: React.FC<any> = props => {
-	const user = useUser();
-	const competitions = useMemo(
-		() => (
-			<div className="main-page-skills">
-				{user.competitions.map((item: any, index: number) => (
-					<Competition
-						key={index}
-						content={item}
-						last={index === user.competitions.length - 1}
-					/>
-				))}
-			</div>
-		),
-		[user.competitions]
+const Competitions: React.FC<any> = React.memo(({ competitions }: any) => {
+	return (
+		<div className="main-page-skills">
+			{competitions.map((item: any, index: number) => (
+				<Competition
+					key={index}
+					content={item}
+					last={index === competitions.length - 1}
+				/>
+			))}
+		</div>
 	);
-	return competitions;
-};
+});
 
 export default Competitions;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { withUrl } from "./constant";
 
 
 export interface KaggleCompetitionProps {
@@ -15,7 +16,7 @@ export interface KaggleCompetitionProps {
 }
 
 
-export const get_competitions = async (token: string): Promise<any> => {
+export const get_competitions = async (): Promise<any> => {
 	const result = await axios({
 		method: "GET",
 		// headers: {
@@ -136,7 +137,7 @@ export const leave_team = async (
 	competition_name: string,
 ): Promise<any> => {
 	const result = await axios({
-		method: "PUT",
+		method: "DELETE",
 		headers: {
 			"Authorization": token,
 		},
@@ -187,3 +188,61 @@ export const get_my_competitions = async (
 	return result;
 };
 
+export const send_join_team_request = async (
+	token: string,
+	group_pid: string,
+	description?: string,
+	language?: string
+): Promise<any> => {
+	const result = await axios({
+		method: "POST",
+		headers: {
+			"Authorization": token,
+		},
+		url: `/kaggle_competitions/groups/join`,
+		data: {
+			group_pid,
+			description,
+			language,
+		},
+	});
+	return result;
+};
+
+
+export const make_join_request_decision = async (
+	token: string,
+	group_pid: string,
+	requester_pid: string,
+	accept: boolean,
+): Promise<any> => {
+	const result = await axios({
+		method: "POST",
+		headers: {
+			"Authorization": token,
+		},
+		url: `/kaggle_competitions/groups/join`,
+		data: {
+			group_pid,
+			requester_pid,
+			accept,
+		},
+	});
+	return result;
+};
+// export const delete_join_request = async (
+// 	token: string,
+// 	group_pid: string,
+// ): Promise<any> => {
+// 	const result = await axios({
+// 		method: "DELETE",
+// 		headers: {
+// 			"Authorization": token,
+// 		},
+// 		url: `/kaggle_competitions/groups/join`,
+// 		data: {
+// 			group_pid,
+// 		},
+// 	});
+// 	return result;
+// };

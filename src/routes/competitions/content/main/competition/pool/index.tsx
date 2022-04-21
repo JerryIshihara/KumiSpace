@@ -59,7 +59,7 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 							style={{ flex: 1 }}
 							profile={pool.user.profile}
 							skills={pool.user.skills}
-							url={process.env.REACT_APP_HOST + pool.user.avatar.url}
+							url={pool.user.avatar.url}
 						/>
 						<div style={{ flex: 1 }}>
 							{pool.user.public_id !== userContext.user?.public_id && <Button size="small" type="link" style={{padding: 0}}>Invite</Button>}

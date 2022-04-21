@@ -190,7 +190,7 @@ const UserProfile: React.FC<Props> = props => {
 				<div className="main-page-club-block main-page-club-block-tabpane-container">
 					{!tab && <Skills />}
 
-					{tab === "competitions" && <Competitions />}
+					{tab === "competitions" && <Competitions competitions={userContext.competitions}/>}
 				</div>
 			</>
 		</div>

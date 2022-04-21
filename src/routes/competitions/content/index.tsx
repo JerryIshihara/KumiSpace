@@ -1,5 +1,10 @@
 import React from "react";
-import { Redirect, Route, RouteComponentProps, withRouter } from "react-router-dom";
+import {
+	Redirect,
+	Route,
+	RouteComponentProps,
+	withRouter,
+} from "react-router-dom";
 import "./style.less";
 
 import { PrivateRoute } from "components";
@@ -26,7 +31,13 @@ const Content: React.FC<Props> = props => {
 					</PrivateRoute>
 					{/* <UserProfile /> */}
 				</Route>
-				<Route path={"/competitions"}>
+				<Route
+					exact
+					path={[
+						"/competitions/:competitionName",
+						"/competitions/:competitionName/:tab",
+					]}
+				>
 					<Competition />
 				</Route>
 			</div>
