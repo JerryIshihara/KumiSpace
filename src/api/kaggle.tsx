@@ -230,19 +230,20 @@ export const make_join_request_decision = async (
 	});
 	return result;
 };
-// export const delete_join_request = async (
-// 	token: string,
-// 	group_pid: string,
-// ): Promise<any> => {
-// 	const result = await axios({
-// 		method: "DELETE",
-// 		headers: {
-// 			"Authorization": token,
-// 		},
-// 		url: `/kaggle_competitions/groups/join`,
-// 		data: {
-// 			group_pid,
-// 		},
-// 	});
-// 	return result;
-// };
+export const sent_invite_request = async (
+	token: string,
+	competitionName: string,
+	invitee_pid: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "POST",
+		headers: {
+			"Authorization": token,
+		},
+		url: `/kaggle_competitions/${competitionName}/groups/invite`,
+		data: {
+			invitee_pid,
+		},
+	});
+	return result;
+};

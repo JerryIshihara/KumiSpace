@@ -25,6 +25,7 @@ import JoinPoolForm from "./joinPoolForm";
 import CreateTeam from "./createTeam";
 import { useUser } from "context/user";
 import { stringify } from "querystring";
+import Avatar from "routes/streaming/header/avatar";
 
 interface Props {
 	url?: string;
@@ -266,6 +267,63 @@ const MyTeam: React.FC<Props> = props => {
 							</div>
 						</>
 					)}
+					{content?.team.invite_requests.length > 0 && (
+						<>
+							<Divider />
+							<h1>Invited</h1>
+							<div className="my-team-members">
+								{content?.team.invite_requests.map((member: any) => (
+									<div style={{ display: "flex", flexDirection: "row" }}>
+										<UserItem
+											style={{ flex: 1 }}
+											profile={member.user.profile}
+											url={member.user.avatar?.url}
+											language={member.language}
+											skills={member.user.skills}
+											role={member.role}
+										/>
+										<div style={{ flex: 1 }}>
+											{
+												<div className="horizontal-center">
+													<Tag
+														color={
+															member.status === "accepted"
+																? "green"
+																: member.status === "rejected"
+																? "red"
+																: undefined
+														}
+													>
+														{member.status}
+													</Tag>
+													{isLeader && member.status === "pending" && (
+														<Button
+															size="small"
+															style={{ marginLeft: "auto" }}
+															onClick={() => {}}
+														>
+															Withdraw
+														</Button>
+													)}
+												</div>
+											}
+
+											{member.language && (
+												<TextEllipsis>
+													<IconLanguage /> {member.language}
+												</TextEllipsis>
+											)}
+											{member.description && (
+												<p style={{ color: "GrayText", fontSize: 12 }}>
+													{member.description}
+												</p>
+											)}
+										</div>
+									</div>
+								))}
+							</div>
+						</>
+					)}
 					<Divider />
 
 					<Messages />
@@ -333,6 +391,74 @@ const MyTeam: React.FC<Props> = props => {
 							<Button onClick={leave_competition}>Leave the pool</Button>
 						</div>
 					</div>
+					{content?.invite_requests.length > 0 && (
+						<>
+							<Divider />
+							<h1>Inviters</h1>
+							<div className="my-team-members">
+								{content?.invite_requests.map(({invite_request, group}: any) => (
+									<div style={{ display: "flex", flexDirection: "row" }}>
+										<div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+											<TextEllipsis style={{fontSize: 20, fontWeight: 'bold'}}>
+												{group.name}
+											</TextEllipsis>
+											{group.members.map((member: MemberProps) => 
+													<UserItem
+													profile={member.user.profile}
+													url={member.user.avatar?.url}
+													language={member.language}
+													skills={member.user.skills}
+													role={member.role}
+												/>)}
+										</div>
+										<div style={{ flex: 1 }}>
+											{
+												<div className="horizontal-center">
+													<Tag
+														color={
+															invite_request.status === "accepted"
+																? "green"
+																: invite_request.status === "rejected"
+																? "red"
+																: undefined
+														}
+													>
+														{invite_request.status}
+													</Tag>
+													{invite_request.status === "pending" && (
+														<div
+															className="horizontal-center"
+															style={{ marginLeft: "auto", gap: "8px" }}
+														>
+															<Button
+																size="small"
+																// type="link"
+																onClick={() => {}}
+															>
+																Reject
+															</Button>
+															<Button
+																size="small"
+																type="primary"
+																onClick={() => {}}
+															>
+																Accept
+															</Button>
+														</div>
+													)}
+												</div>
+											}
+											{invite_request.description && (
+												<p style={{ color: "GrayText", fontSize: 12 }}>
+													{invite_request.description}
+												</p>
+											)}
+										</div>
+									</div>
+								))}
+							</div>
+						</>
+					)}
 				</>
 			)}
 			{contentType === "join_request" && (
@@ -386,9 +512,9 @@ const MyTeam: React.FC<Props> = props => {
 											.split(".")[0]}
 								</span>
 								<Tag
-																		style={{
-																			marginRight: "8px",
-																		}}
+									style={{
+										marginRight: "8px",
+									}}
 									color={
 										content.join_request.my_request.status === "accepted"
 											? "green"
@@ -399,7 +525,11 @@ const MyTeam: React.FC<Props> = props => {
 								>
 									{content.join_request.my_request.status}
 								</Tag>
-								<Button type="text" onClick={leave_competition} icon={<IconDelete />}/>
+								<Button
+									type="text"
+									onClick={leave_competition}
+									icon={<IconDelete />}
+								/>
 							</div>
 						</div>
 					</div>

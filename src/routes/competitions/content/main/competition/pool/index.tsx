@@ -7,6 +7,7 @@ import "./style.less";
 import { get_pool_by_competition } from "api/kaggle";
 import { UserItem, TextEllipsis } from "components";
 import { useUser } from "context/user";
+import InviteForm from "./inviteForm";
 
 interface Props {
 	competitionName: string;
@@ -26,7 +27,6 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 				console.warn(e.response);
 			});
 	}, [competitionName]);
-
 
 	return (
 		<div className="pool-container">
@@ -62,14 +62,30 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 							url={pool.user.avatar.url}
 						/>
 						<div style={{ flex: 1 }}>
-							{pool.user.public_id !== userContext.user?.public_id && <Button size="small" type="link" style={{padding: 0}}>Invite</Button>}
+							{pool.user.public_id !== userContext.user?.public_id && (
+								<>
+									<Button
+										size="small"
+										type="link"
+										style={{ padding: 0 }}
+										onClick={() => {
+											history.push(
+												window.location.pathname + "?tab=pool&form=invite"
+											);
+										}}
+									>
+										Invite
+									</Button>
+									<InviteForm user={pool.user} />
+								</>
+							)}
 							{pool.language && (
 								<TextEllipsis>
 									<IconLanguage /> {pool.language}
 								</TextEllipsis>
 							)}
 							{pool.description && (
-								<p style={{ color: "GrayText", fontSize: 12}}>
+								<p style={{ color: "GrayText", fontSize: 12 }}>
 									{pool.description}
 								</p>
 							)}
