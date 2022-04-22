@@ -8,6 +8,7 @@ import { get_pool_by_competition } from "api/kaggle";
 import { UserItem, TextEllipsis } from "components";
 import { useUser } from "context/user";
 import InviteForm from "./inviteForm";
+import { useCompetition } from "context/kaggleCompetition";
 
 interface Props {
 	competitionName: string;
@@ -16,17 +17,18 @@ interface Props {
 const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 	const history = useHistory();
 	const userContext = useUser();
-	const [pools, setPools] = useState([]);
-	useEffect(() => {
-		get_pool_by_competition(competitionName)
-			.then(res => {
-				setPools(res.data);
-				console.log(res.data);
-			})
-			.catch(e => {
-				console.warn(e.response);
-			});
-	}, [competitionName]);
+	const compContext = useCompetition()
+	const [pool, setPools] = useState([]);
+	// useEffect(() => {
+	// 	get_pool_by_competition(competitionName)
+	// 		.then(res => {
+	// 			setPools(res.data);
+	// 			console.log(res.data);
+	// 		})
+	// 		.catch(e => {
+	// 			console.warn(e.response);
+	// 		});
+	// }, [competitionName]);
 
 	return (
 		<div className="pool-container">
@@ -52,7 +54,7 @@ const Pool: React.FC<Props> = ({ competitionName }: Props) => {
 					</>
 			)} */}
 
-			{pools.map((pool: any) => (
+			{compContext.pool?.map((pool: any) => (
 				<>
 					<div style={{ display: "flex", flexDirection: "row" }}>
 						<UserItem

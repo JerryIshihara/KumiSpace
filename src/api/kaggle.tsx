@@ -2,19 +2,6 @@ import axios from "axios";
 import { withUrl } from "./constant";
 
 
-export interface KaggleCompetitionProps {
-	name: string;
-	category: string;
-	reward: string;
-	team_count: number;
-	url: string;
-	title: string;
-	deadline: string;
-	description: string;
-	competition_header_image_url: string;
-	organization_thumbnail_url: string;
-}
-
 
 export const get_competitions = async (): Promise<any> => {
 	const result = await axios({
@@ -221,7 +208,7 @@ export const make_join_request_decision = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/kaggle_competitions/groups/join`,
+		url: `/kaggle_competitions/groups/join/decision`,
 		data: {
 			group_pid,
 			requester_pid,
@@ -243,6 +230,25 @@ export const sent_invite_request = async (
 		url: `/kaggle_competitions/${competitionName}/groups/invite`,
 		data: {
 			invitee_pid,
+		},
+	});
+	return result;
+};
+
+export const make_invite_request_decision = async (
+	token: string,
+	group_pid: string,
+	accept: boolean,
+): Promise<any> => {
+	const result = await axios({
+		method: "POST",
+		headers: {
+			"Authorization": token,
+		},
+		url: `/kaggle_competitions/groups/invite/decision`,
+		data: {
+			group_pid,
+			accept,
 		},
 	});
 	return result;

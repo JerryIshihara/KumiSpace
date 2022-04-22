@@ -17,6 +17,7 @@ import {
 	edit_pool,
 	leave_team,
 	make_join_request_decision,
+	make_invite_request_decision,
 } from "api/kaggle";
 import { TextEllipsis, UserItem, Messages } from "components";
 import { MemberProps } from "../card/card.team";
@@ -24,8 +25,6 @@ import { useAuth } from "context/auth";
 import JoinPoolForm from "./joinPoolForm";
 import CreateTeam from "./createTeam";
 import { useUser } from "context/user";
-import { stringify } from "querystring";
-import Avatar from "routes/streaming/header/avatar";
 
 interface Props {
 	url?: string;
@@ -132,6 +131,20 @@ const MyTeam: React.FC<Props> = props => {
 				console.warn(e.response);
 			});
 	};
+
+	const decide_invite_request = (
+		group_pid: string,
+		accept: boolean
+	) => {
+		make_invite_request_decision(auth.token, group_pid, accept)
+		.then(res => {
+			console.log(res);
+		})
+		.catch(e => {
+			console.warn(e.response);
+		});
+	
+	}
 
 	return (
 		<div className="strm-page-card my-team-container">
@@ -433,14 +446,16 @@ const MyTeam: React.FC<Props> = props => {
 															<Button
 																size="small"
 																// type="link"
-																onClick={() => {}}
+																onClick={() => {decide_invite_request(group.public_id, false)}}
 															>
 																Reject
 															</Button>
 															<Button
 																size="small"
 																type="primary"
-																onClick={() => {}}
+																onClick={() => {
+																	decide_invite_request(group.public_id, true)
+																}}
 															>
 																Accept
 															</Button>
