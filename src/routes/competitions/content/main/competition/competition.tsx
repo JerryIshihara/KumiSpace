@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
 	withRouter,
 	RouteComponentProps,
@@ -14,110 +14,101 @@ import "./style.less";
 import TextEllipsis from "components/TextEllipsis";
 import MyTeam from "./myTeam";
 import Pool from "./pool";
-import { TeamCard } from "./card";
+import { timeToDeadline } from "utils/time";
+import {utf16ToText} from 'utils/text'
+import { useCompetition } from "context/kaggleCompetition";
 import { tab_constants } from "./tab.constant";
 
-import {
-	get_competition,
-	KaggleCompetitionProps,
-} from "../../../../../api/kaggle";
 import Teams from "./groups";
+import { KaggleCompetitionProps } from "types/kaggle";
 
 const { TabPane } = Tabs;
 
-interface Props extends RouteComponentProps {}
-
-const Competition: React.FC<Props> = props => {
-	const history = useHistory();
-	const { competitionName } = useParams<{
-		competitionName: string;
-	}>();
-	const params = new URLSearchParams(window.location.search);
-	const tab = params.get("tab");
-	const [competition, setCompetition] = useState<
-		KaggleCompetitionProps | undefined
-	>();
-	const [tabs, setTabs] = useState<Array<any>>(tab_constants);
-	const [loading, setLoading] = useState(true);
-	useEffect(() => {
-		console.log(competitionName);
-
-		get_competition(competitionName).then(res => {
-			setCompetition(res.data);
-		});
-		setLoading(false);
-		return () => {
-			setLoading(true);
-		};
-	}, [competitionName]);
-	return (
-		<div className="main-page">
+interface CompetitionBannerProps {
+	competition: KaggleCompetitionProps;
+	numTeams: number,
+	numUsers: number,
+}
+const CompetitionBanner: React.FC<CompetitionBannerProps> = React.memo(
+	({ competition, numTeams, numUsers }: CompetitionBannerProps) => (
+		<div
+			className="main-page-club-block"
+			style={{
+				backgroundImage: `url(${competition.competition_header_image_url})`,
+				backgroundSize: "cover",
+			}}
+		>
 			<div
-				className="main-page-club-block"
+				className="main-page-club-header-info-container"
 				style={{
-					backgroundImage: `url(${competition?.competition_header_image_url})`,
-					backgroundSize: "cover",
+					background: "linear-gradient(transparent, #00000095)",
 				}}
 			>
-				<div
-					className="main-page-club-header-info-container"
-					style={{
-						background: "linear-gradient(transparent, #00000095)",
-					}}
-				>
-					<div className="main-page-club-header-info-profile-container">
-						<TextEllipsis className="main-page-club-header-info-profile-text">
-							<a
-								href={
-									"https://www.kaggle.com/competitions/" + competition?.name
-								}
-								target="_blank"
-								rel="noreferrer"
-								style={{
-									fontWeight: "bold",
-									fontSize: 30,
-									display: "flex",
-									flexDirection: "row",
-									alignItems: "center",
-									lineHeight: 1.5,
-								}}
-							>
-								{competition?.title} <FiExternalLink style={{ margin: 4 }} />
-							</a>
-						</TextEllipsis>
-						<TextEllipsis
-							className="main-page-club-header-info-profile-text"
-							numLines={2}
-						>
-							<h4>{competition?.description}</h4>
-						</TextEllipsis>
-						<TextEllipsis className="main-page-club-header-info-profile-text">
-							<h4>
-								{/* <div className="strm-card-team-num">{}</div> */}
-								{Math.floor(Math.random() * 100)} teams to join &middot;{" "}
-								{Math.floor(Math.random() * 100)} days to go &middot;{" "}
-								{competition?.category}
-							</h4>
-						</TextEllipsis>
-					</div>
-					{/* <div className="main-page-club-header-info-admin">
-						<Button
-							href="https://www.kaggle.com/competitions/ubiquant-market-prediction/overview"
+				<div className="main-page-club-header-info-profile-container">
+					<TextEllipsis className="main-page-club-header-info-profile-text">
+						<a
+							href={"https://www.kaggle.com/competitions/" + competition.name}
 							target="_blank"
-							type="link"
+							rel="noreferrer"
 							style={{
-								color: "white",
+								fontWeight: "bold",
+								fontSize: 30,
 								display: "flex",
 								flexDirection: "row",
 								alignItems: "center",
-								width: "fit-content",
+								lineHeight: 1.5,
 							}}
 						>
-							 Go to the competition page
-						</Button>
-					</div> */}
+							{utf16ToText(competition.title)} <FiExternalLink style={{ margin: 4 }} />
+						</a>
+					</TextEllipsis>
+					<TextEllipsis
+						className="main-page-club-header-info-profile-text"
+						numLines={2}
+					>
+						<h4>{utf16ToText(competition.description)}</h4>
+					</TextEllipsis>
+					<TextEllipsis className="main-page-club-header-info-profile-text">
+						<h4>
+							{/* <div className="strm-card-team-num">{}</div> */}
+							{numTeams} teams to join &middot;{" "}
+							{timeToDeadline(competition.deadline)} &middot;{" "}
+							{competition.category}
+						</h4>
+					</TextEllipsis>
 				</div>
+				{/* <div className="main-page-club-header-info-admin">
+			<Button
+				href="https://www.kaggle.com/competitions/ubiquant-market-prediction/overview"
+				target="_blank"
+				type="link"
+				style={{
+					color: "white",
+					display: "flex",
+					flexDirection: "row",
+					alignItems: "center",
+					width: "fit-content",
+				}}
+			>
+				 Go to the competition page
+			</Button>
+		</div> */}
 			</div>
+		</div>
+	)
+);
+
+interface Props extends RouteComponentProps {}
+const Competition: React.FC<Props> = props => {
+	const compContext = useCompetition();
+	const params = new URLSearchParams(window.location.search);
+	const tab = params.get("tab");
+	const [tabs, setTabs] = useState<Array<any>>(tab_constants);
+	const [loading, setLoading] = useState(true);
+
+	return (
+		<div className="main-page">
+			{compContext.competition && <CompetitionBanner numTeams={compContext.teams?.length || 0} competition={compContext.competition} numUsers={0}/>}
 			<>
 				<div className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky">
 					{/* <Tabs
@@ -134,14 +125,15 @@ const Competition: React.FC<Props> = props => {
 					<nav>
 						{tabs.map(t => (
 							<Link
+								key={t.key}
 								className={
 									t.isActive(tab) ? "main-page-club-block-tab-active" : ""
 								}
 								// to={`/competitions/${competitionName}${t.path}`}
 								to={
 									t.path
-										? `/competitions/${competitionName}/?tab=${t.path}`
-										: `/competitions/${competitionName}`
+										? `/competitions/${compContext.competition?.name}/?tab=${t.path}`
+										: `/competitions/${compContext.competition?.name}`
 								}
 							>
 								{t.key}
@@ -149,11 +141,15 @@ const Competition: React.FC<Props> = props => {
 						))}
 					</nav>
 				</div>
-				<div className="main-page-club-block main-page-club-block-tabpane-container">
-					{!tab && <Teams competitionName={competitionName} />}
-					{tab === "pool" && <Pool competitionName={competitionName} />}
-					{tab === "my-team" && <MyTeam competitionName={competitionName} />}
-				</div>
+				{compContext.competition?.name && (
+					<div className="main-page-club-block main-page-club-block-tabpane-container">
+						{!tab && <Teams teams={compContext.teams || []}/>}
+						{tab === "pool" && <Pool />}
+						{tab === "my-team" && (
+							<MyTeam competitionName={compContext.competition?.name} />
+						)}
+					</div>
+				)}
 			</>
 		</div>
 	);

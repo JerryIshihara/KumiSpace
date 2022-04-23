@@ -7,13 +7,13 @@ import { UserOutlined } from "@ant-design/icons";
 import event_img from "assets/event.png";
 import { TextEllipsis } from "components";
 import { utf16ToText } from "utils/text";
-import { KaggleCompetitionProps } from "api/kaggle";
+import { KaggleCompetitionProps } from "types/kaggle";
 
 interface Props {
 	item: KaggleCompetitionProps;
 }
 
-const ClubCard: React.FC<Props> = ({ item }) => {
+const CompetitionCard: React.FC<Props> = ({ item }) => {
 	const history = useHistory();
 	const date = new Date(item.deadline);
 	const today = Date.now();
@@ -91,4 +91,4 @@ const ClubCard: React.FC<Props> = ({ item }) => {
 	);
 };
 
-export default ClubCard;
+export default CompetitionCard;

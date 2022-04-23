@@ -8,58 +8,25 @@ import { get_pool_by_competition } from "api/kaggle";
 import { UserItem, TextEllipsis } from "components";
 import { useUser } from "context/user";
 import InviteForm from "./inviteForm";
+import { useCompetition } from "context/kaggleCompetition";
+import { PoolProps } from "types/kaggle";
 
-interface Props {
-	competitionName: string;
-}
-
-const Pool: React.FC<Props> = ({ competitionName }: Props) => {
+const Pool: React.FC = (props) => {
 	const history = useHistory();
 	const userContext = useUser();
-	const [pools, setPools] = useState([]);
-	useEffect(() => {
-		get_pool_by_competition(competitionName)
-			.then(res => {
-				setPools(res.data);
-				console.log(res.data);
-			})
-			.catch(e => {
-				console.warn(e.response);
-			});
-	}, [competitionName]);
+	const compContext = useCompetition()
 
 	return (
 		<div className="pool-container">
-			{/* <JoinPoolForm
-				competitionName={competitionName}
-				onCancel={() => {
-					history.goBack();
-				}}
-			/> */}
-			{/* {showJoinButton && (
-				<><Button
-					type="primary"
-					ghost
-					onClick={() => {
-						history.push({
-							pathname: window.location.pathname + "?tab=pool&form=pool",
-						});
-					}}
-				>
-					Join the pool
-				</Button>
-					<Divider />
-					</>
-			)} */}
 
-			{pools.map((pool: any) => (
+			{compContext.pool?.map((pool: PoolProps) => (
 				<>
 					<div style={{ display: "flex", flexDirection: "row" }}>
 						<UserItem
 							style={{ flex: 1 }}
 							profile={pool.user.profile}
 							skills={pool.user.skills}
-							url={pool.user.avatar.url}
+							url={pool.user.avatar?.url}
 						/>
 						<div style={{ flex: 1 }}>
 							{pool.user.public_id !== userContext.user?.public_id && (

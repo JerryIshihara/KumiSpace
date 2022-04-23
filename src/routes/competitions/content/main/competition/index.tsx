@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import "./style.less";
 
+import { CompetitionProvider } from "context/kaggleCompetition";
 import Competition from "./competition";
 
 interface Props extends RouteComponentProps {}
@@ -21,9 +22,10 @@ const Content: React.FC<Props> = props => {
 					"/competitions/:competitionName/:tab",
 				]}
 			>
-				<Competition />
+				<CompetitionProvider>
+					<Competition />
+				</CompetitionProvider>
 			</Route>
-
 		</Switch>
 	);
 };
