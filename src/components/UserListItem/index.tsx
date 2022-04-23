@@ -20,7 +20,7 @@ interface Props {
 		name: string;
 		level?: "beginner" | "intermediate" | "expert";
 	}>;
-	url?: string;
+	url?: string | null;
 	language?: string;
 	role?: "leader" | "member";
 	style?: React.CSSProperties;

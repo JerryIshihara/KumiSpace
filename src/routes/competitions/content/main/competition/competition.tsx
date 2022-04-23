@@ -135,9 +135,7 @@ const Competition: React.FC<Props> = props => {
 				{compContext.competition?.name && (
 					<div className="main-page-club-block main-page-club-block-tabpane-container">
 						{!tab && <Teams />}
-						{tab === "pool" && (
-							<Pool competitionName={compContext.competition?.name} />
-						)}
+						{tab === "pool" && <Pool />}
 						{tab === "my-team" && (
 							<MyTeam competitionName={compContext.competition?.name} />
 						)}

@@ -9,28 +9,15 @@ import {
 	EllipsisOutlined,
 } from "@ant-design/icons";
 import { IconLanguage } from "@arco-design/web-react/icon";
-
-import { UserProps, useUser } from "context/user";
-import { join_team } from "api/kaggle";
-import { TextEllipsis, UserItem } from "components";
-import JoinTeamForm from "./joinTeamForm";
-import { Bullet } from "utils/text.constant";
-import { useAuth } from "context/auth";
 import { useHistory, useParams } from "react-router-dom";
 
-export interface MemberProps {
-	user: UserProps;
-	role: "leader" | "member";
-	language?: string;
-}
-
-export interface TeamProps {
-	name: string;
-	public_id: string;
-	num_members: number;
-	description?: string;
-	members: Array<MemberProps>;
-}
+import { useAuth } from "context/auth";
+import { useUser } from "context/user";
+import { MemberProps, TeamProps } from "types/kaggle";
+import { join_team } from "api/kaggle";
+import { TextEllipsis, UserItem } from "components";
+import { Bullet } from "utils/text.constant";
+import JoinTeamForm from "./joinTeamForm";
 
 interface Props {
 	team: TeamProps;
@@ -99,7 +86,7 @@ const TeamCard: React.FC<Props> = ({ team }: Props) => {
 							>
 								Join
 							</Button>
-							<JoinTeamForm team={team}/>
+							<JoinTeamForm team={team} />
 						</>
 					)}
 				</div>
@@ -113,6 +100,7 @@ const TeamCard: React.FC<Props> = ({ team }: Props) => {
 				>
 					{team.members.map((member: MemberProps) => (
 						<UserItem
+							key={member.user.public_id}
 							profile={member.user.profile}
 							url={member.user.avatar?.url}
 							language={member.language}

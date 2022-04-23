@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.less";
 import { message, Button, Divider, Input } from "antd";
@@ -19,12 +19,15 @@ import {
 	make_join_request_decision,
 	make_invite_request_decision,
 } from "api/kaggle";
-import { TextEllipsis, UserItem, Messages } from "components";
-import { MemberProps } from "../card/card.team";
 import { useAuth } from "context/auth";
+import { useUser } from "context/user";
+import { MemberProps } from "types/kaggle";
+
+import { TextEllipsis, UserItem, Messages } from "components";
 import JoinPoolForm from "./joinPoolForm";
 import CreateTeam from "./createTeam";
-import { useUser } from "context/user";
+import { useCompetition } from "context/kaggleCompetition";
+import MyPool from "./myPool";
 
 interface Props {
 	url?: string;
@@ -35,120 +38,47 @@ interface Props {
 const MyTeam: React.FC<Props> = props => {
 	const auth = useAuth();
 	const userContext = useUser();
+	const compContext = useCompetition()
 	const history = useHistory();
-	const [content, setContent] = useState<any>();
 	const [teamName, setTeamName] = useState<string>();
 	const [description, setDescription] = useState<string>();
 	const [language, setLanguage] = useState<string>();
 
 	useEffect(() => {
-		if (props.competitionName && auth.token) {
-			get_my_team(auth.token, props.competitionName)
-				.then(res => {
-					console.log(res.data);
-					setContent(res.data);
-					if (res.data.pool) {
-						setLanguage(res.data.pool.language);
-						setDescription(res.data.pool.description);
-					} else if (res.data.team) {
-						setTeamName(res.data.team.name);
-					}
-				})
-				.catch(e => {
-					console.warn(e.response);
-					if (e.response.status) {
-						auth
-							.refresh_token()
-							.then(res => {
-								auth.storeToken(res.data.token);
-								get_my_team(res.data.token, props.competitionName)
-									.then(res => {
-										console.log(res.data);
-										setContent(res.data);
-										if (res.data.pool || res.data.join_request) {
-											var data =
-												res.data.pool || res.data.join_request?.my_request;
-											setLanguage(data.language);
-											setDescription(data.description);
-										} else if (res.data.team) {
-											setTeamName(res.data.team.name);
-										}
-									})
-									.catch(e => {
-										console.warn(e.response);
-									});
-							})
-							.catch(e => {
-								auth.logout();
-							});
-					}
-				});
+		if (compContext.myTeam) {
+			if (compContext.myTeam.pool || compContext.myTeam.join_requests) {
+				var data =
+					compContext.myTeam.pool /* || compContext.myTeam?.join_requests[0].my_request; */
+				setLanguage(data?.language);
+				setDescription(data?.description);
+			} if (compContext.myTeam.team) {
+				
+				setTeamName(compContext.myTeam.team.name);
+			}
 		}
-	}, [props.competitionName, auth.token]);
+	}, [compContext.mySectionType, compContext.myTeam]);
 
-	type ContentType = "no-content" | "pool" | "join_request" | "team";
-	let contentType: ContentType = useMemo(() => {
-		if (content?.pool) {
-			return "pool";
-		} else if (content?.team) {
-			return "team";
-		} else if (content?.join_request) {
-			return "join_request";
-		}
-		return "no-content";
-	}, [content]);
 
-	const leave_competition = () => {
-		leave_team(auth.token, props.competitionName)
-			.then(res => {
-				setContent(undefined);
-			})
-			.catch(e => {
-				console.warn(e.response);
-			});
-	};
 
-	const isLeader = useMemo(() => {
-		if (!content?.team) {
-			return false;
-		}
-		const leader = content?.team.members.find(
-			(member: MemberProps) => member.role === "leader"
-		);
-		return leader.user.public_id === userContext.user.public_id;
-	}, [content, userContext.user]);
-
-	const make_decision = (
-		group_pid: string,
+	const make_decision = useCallback((
 		requester_pid: string,
 		accept: boolean
 	) => {
-		make_join_request_decision(auth.token, group_pid, requester_pid, accept)
+		if (compContext.myTeam?.team?.public_id) {
+			make_join_request_decision(auth.token, compContext.myTeam.team.public_id, requester_pid, accept)
 			.then(res => {
 				console.log(res);
 			})
 			.catch(e => {
 				console.warn(e.response);
 			});
-	};
+		}
+	}, [auth.token, compContext.myTeam?.team?.public_id]);
 
-	const decide_invite_request = (
-		group_pid: string,
-		accept: boolean
-	) => {
-		make_invite_request_decision(auth.token, group_pid, accept)
-		.then(res => {
-			console.log(res);
-		})
-		.catch(e => {
-			console.warn(e.response);
-		});
-	
-	}
 
 	return (
 		<div className="strm-page-card my-team-container">
-			{contentType === "team" && (
+			{compContext.mySectionType === "team" && (
 				<>
 					<div
 						style={{
@@ -157,17 +87,16 @@ const MyTeam: React.FC<Props> = props => {
 							alignItems: "center",
 						}}
 					>
-						{isLeader ? (
+						{compContext.isLeader ? (
 							<Input.Group compact>
 								<Input
 									style={{ width: "calc(50%)", fontWeight: "bold" }}
 									value={teamName}
-									disabled={!isLeader}
 									onChange={e => {
 										setTeamName(e.target.value);
 									}}
 								/>
-								<Button type="primary" disabled={!isLeader}>
+								<Button type="primary">
 									Save
 								</Button>
 							</Input.Group>
@@ -181,7 +110,7 @@ const MyTeam: React.FC<Props> = props => {
 				>
 					({numMember}/5)
 				</span> */}
-						<Button style={{ marginLeft: "auto" }} onClick={leave_competition}>
+						<Button style={{ marginLeft: "auto" }} onClick={compContext.leave_competition}>
 							Leave the team
 						</Button>
 					</div>
@@ -189,7 +118,7 @@ const MyTeam: React.FC<Props> = props => {
 					<Divider />
 					<h1>Team members</h1>
 					<div className="my-team-members">
-						{content?.team.members.map((member: MemberProps) => (
+						{compContext.myTeam?.team?.members.map((member: MemberProps) => (
 							<UserItem
 								profile={member.user.profile}
 								url={member.user.avatar?.url}
@@ -199,12 +128,12 @@ const MyTeam: React.FC<Props> = props => {
 							/>
 						))}
 					</div>
-					{content?.team.join_requests.length > 0 && (
+					{compContext.myTeam?.team?.join_requests && compContext.myTeam?.team?.join_requests?.length > 0 && (
 						<>
 							<Divider />
 							<h1>Join requests</h1>
 							<div className="my-team-members">
-								{content?.team.join_requests.map((member: any) => (
+								{compContext.myTeam?.team.join_requests.map((member: any) => (
 									<div style={{ display: "flex", flexDirection: "row" }}>
 										<UserItem
 											style={{ flex: 1 }}
@@ -228,7 +157,7 @@ const MyTeam: React.FC<Props> = props => {
 													>
 														{member.status}
 													</Tag>
-													{isLeader && member.status === "pending" && (
+													{compContext.isLeader && member.status === "pending" && compContext.myTeam?.team?.public_id && (
 														<div
 															className="horizontal-center"
 															style={{ marginLeft: "auto", gap: "8px" }}
@@ -238,7 +167,6 @@ const MyTeam: React.FC<Props> = props => {
 																// type="link"
 																onClick={() => {
 																	make_decision(
-																		content?.team?.public_id,
 																		member.user.public_id,
 																		false
 																	);
@@ -251,7 +179,6 @@ const MyTeam: React.FC<Props> = props => {
 																type="primary"
 																onClick={() => {
 																	make_decision(
-																		content?.team?.public_id,
 																		member.user.public_id,
 																		true
 																	);
@@ -280,12 +207,12 @@ const MyTeam: React.FC<Props> = props => {
 							</div>
 						</>
 					)}
-					{content?.team.invite_requests.length > 0 && (
+					{compContext.myTeam?.team?.invite_requests && compContext.myTeam?.team.invite_requests.length > 0 && (
 						<>
 							<Divider />
 							<h1>Invited</h1>
 							<div className="my-team-members">
-								{content?.team.invite_requests.map((member: any) => (
+								{compContext.myTeam?.team.invite_requests.map((member: any) => (
 									<div style={{ display: "flex", flexDirection: "row" }}>
 										<UserItem
 											style={{ flex: 1 }}
@@ -309,7 +236,7 @@ const MyTeam: React.FC<Props> = props => {
 													>
 														{member.status}
 													</Tag>
-													{isLeader && member.status === "pending" && (
+													{compContext.isLeader && member.status === "pending" && (
 														<Button
 															size="small"
 															style={{ marginLeft: "auto" }}
@@ -342,141 +269,10 @@ const MyTeam: React.FC<Props> = props => {
 					<Messages />
 				</>
 			)}
-			{contentType === "pool" && (
-				<>
-					<h2>My Pool</h2>
-					<Divider />
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							// alignItems: "center",
-						}}
-					>
-						<h4>Description</h4>
-						<Input.TextArea
-							value={description}
-							onChange={e => {
-								setDescription(e.target.value);
-							}}
-						/>
-						<h4 style={{ marginTop: "16px" }}>Language</h4>
-						<Input
-							value={language}
-							onChange={e => {
-								setLanguage(e.target.value);
-							}}
-						/>
-						<div
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								gap: "16px",
-								marginTop: "32px",
-							}}
-						>
-							<Button
-								type="primary"
-								disabled={
-									language === content.pool.language &&
-									description === content.pool.description
-								}
-								onClick={() => {
-									edit_pool(
-										auth.token,
-										props.competitionName,
-										description,
-										language
-									)
-										.then(res => {
-											console.log(res.data);
-											setContent({ pool: { description, language } });
-											message.success("Successfully updated the pool!");
-										})
-										.catch(e => {
-											console.warn(e.response);
-											message.error("Pool update failed!");
-										});
-								}}
-							>
-								Save
-							</Button>
-							<Button onClick={leave_competition}>Leave the pool</Button>
-						</div>
-					</div>
-					{content?.invite_requests.length > 0 && (
-						<>
-							<Divider />
-							<h1>Inviters</h1>
-							<div className="my-team-members">
-								{content?.invite_requests.map(({invite_request, group}: any) => (
-									<div style={{ display: "flex", flexDirection: "row" }}>
-										<div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-											<TextEllipsis style={{fontSize: 20, fontWeight: 'bold'}}>
-												{group.name}
-											</TextEllipsis>
-											{group.members.map((member: MemberProps) => 
-													<UserItem
-													profile={member.user.profile}
-													url={member.user.avatar?.url}
-													language={member.language}
-													skills={member.user.skills}
-													role={member.role}
-												/>)}
-										</div>
-										<div style={{ flex: 1 }}>
-											{
-												<div className="horizontal-center">
-													<Tag
-														color={
-															invite_request.status === "accepted"
-																? "green"
-																: invite_request.status === "rejected"
-																? "red"
-																: undefined
-														}
-													>
-														{invite_request.status}
-													</Tag>
-													{invite_request.status === "pending" && (
-														<div
-															className="horizontal-center"
-															style={{ marginLeft: "auto", gap: "8px" }}
-														>
-															<Button
-																size="small"
-																// type="link"
-																onClick={() => {decide_invite_request(group.public_id, false)}}
-															>
-																Reject
-															</Button>
-															<Button
-																size="small"
-																type="primary"
-																onClick={() => {
-																	decide_invite_request(group.public_id, true)
-																}}
-															>
-																Accept
-															</Button>
-														</div>
-													)}
-												</div>
-											}
-											{invite_request.description && (
-												<p style={{ color: "GrayText", fontSize: 12 }}>
-													{invite_request.description}
-												</p>
-											)}
-										</div>
-									</div>
-								))}
-							</div>
-						</>
-					)}
-				</>
+			{compContext.mySectionType === "pool" && compContext.myTeam?.pool && (
+				<MyPool pool={compContext.myTeam?.pool} invite_requests={compContext.myTeam?.invite_requests || []}/>
 			)}
-			{contentType === "join_request" && (
+			{/* {compContext.mySectionType === "join_requests" && (
 				<>
 					<h2>My Join Request</h2>
 					<Divider />
@@ -612,8 +408,8 @@ const MyTeam: React.FC<Props> = props => {
 						</>
 					)}
 				</>
-			)}
-			{contentType === "no-content" && (
+			)} */}
+			{compContext.mySectionType === "no-content" && (
 				<>
 					{" "}
 					<div className="vertical-center">

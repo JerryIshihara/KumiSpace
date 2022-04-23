@@ -34,10 +34,33 @@ export interface MemberProps {
 	language?: string;
 }
 
+export type RequestStatusType = "pending" | "accepted" | "rejected" | "expired"
+
+export interface JoinRequestProps {
+	language?: string,
+	description?: string,
+	status: RequestStatusType,
+	user: UserProps,
+}
+
+export interface InviteRequestProps {
+	description?: string,
+	status: RequestStatusType,
+	user: UserProps,
+}
+
 export interface TeamProps {
 	name: string;
 	public_id: string;
 	num_members: number;
 	description?: string;
 	members: Array<MemberProps>;
+	join_requests: Array<JoinRequestProps>;
+	invite_requests: Array<InviteRequestProps>
+}
+
+export interface PoolProps {
+	user: UserProps,
+	language?: string,
+	description?: string,
 }
