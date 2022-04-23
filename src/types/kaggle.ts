@@ -5,7 +5,7 @@ export interface KaggleCompetitionProps {
 	team_count: number;
 	url: string;
 	title: string;
-	deadline: string;
+	deadline: Date;
 	description: string;
 	competition_header_image_url: string;
 	organization_thumbnail_url: string;

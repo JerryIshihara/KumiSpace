@@ -9,20 +9,22 @@ import { UserItem, TextEllipsis } from "components";
 import { TeamCard } from "../card";
 import { useUser } from "context/user";
 import { useCompetition } from "context/kaggleCompetition";
-import {TeamProps} from 'types/kaggle'
+import { TeamProps } from "types/kaggle";
 
-
-const Teams: React.FC = (props) => {
+interface Props {
+	teams: Array<TeamProps>;
+}
+const Teams: React.FC<Props> = React.memo(({ teams }: Props) => {
 	const userContext = useUser();
-	const compContext = useCompetition()
+	const compContext = useCompetition();
 
 	return (
 		<div>
-			{compContext.teams?.map((team: TeamProps) => (
+			{teams.map((team: TeamProps) => (
 				<TeamCard key={team.public_id} team={team} />
 			))}
 		</div>
 	);
-};
+});
 
 export default Teams;
