@@ -41,6 +41,7 @@ export interface JoinRequestProps {
 	description?: string,
 	status: RequestStatusType,
 	user: UserProps,
+	updated_on: string
 }
 
 export interface InviteRequestProps {

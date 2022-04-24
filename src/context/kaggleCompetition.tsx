@@ -31,7 +31,7 @@ import { useUser } from "./user";
 interface MyTeamProps {
 	team?: TeamProps;
 	pool?: Partial<PoolProps>;
-	join_requests?: Array<{my_request: JoinRequestProps, group: TeamProps}>;
+	join_requests?: {my_request: JoinRequestProps, group: TeamProps};
 	invite_requests?: Array<InviteRequestProps>;
 }
 type MySectionType = "no-content" | "pool" | "join_requests" | "team";
