@@ -28,7 +28,6 @@ import JoinPoolForm from "./joinPoolForm";
 import CreateTeam from "./createTeam";
 import { useCompetition } from "context/kaggleCompetition";
 import MyPool from "./myPool";
-import { RiQuestionAnswerLine } from "react-icons/ri";
 import MyJoinRequest from "./joinRequest";
 import Team from "./team";
 
@@ -58,8 +57,6 @@ const MyTeam: React.FC<Props> = props => {
 			}
 		}
 	}, [compContext.mySectionType, compContext.myTeam]);
-
-
 
 	return (
 		<div className="strm-page-card my-team-container">

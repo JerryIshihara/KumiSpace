@@ -17,7 +17,6 @@ const MyPool: React.FC<Props> = React.memo(
 		const compContext = useCompetition();
 		const [description, setDescription] = useState<string>();
 		const [language, setLanguage] = useState<string>();
-
         
         React.useEffect(() => {
             if (pool) {

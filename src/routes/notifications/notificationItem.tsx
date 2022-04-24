@@ -29,11 +29,6 @@ const NotificationItem: React.FC = () => {
 					<TextEllipsis>notification title</TextEllipsis>
 					<p className="notification-date">date</p>
                 </div>
-                <div
-					className={`notification-dot ${
-						isRead ? "" : "notification-dot-unread"
-					}`}
-				/>
 			</div>
 			<Divider style={{ margin: 0 }} />
 		</>
