@@ -6,6 +6,7 @@ import { PageTitleSetter, PrivateRoute } from "components";
 import LandingPage from "./landing";
 import LoginPage from "./login";
 import Competitions from "./competitions";
+import NotificationPage from "./notifications";
 
 const App: React.FC<any> = props => {
 	return (
@@ -14,6 +15,9 @@ const App: React.FC<any> = props => {
 				<Switch>
 					<Route exact path="/auth/:authMode">
 						<LoginPage {...props} />
+					</Route>
+					<Route exact path="/notifications">
+						<NotificationPage {...props} />
 					</Route>
 					<Route path="/">
 						{/* <PrivateRoute {...props} altComponent={<LandingPage />}>

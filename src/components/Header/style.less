@@ -1,0 +1,43 @@
+@import "../../App.less";
+// @import "../style.less";
+
+.strm-header {
+    width: 100%;
+    height: @streaming-header-height;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: @streaming-header-padding;
+    padding-right: 1.5 * @streaming-header-padding;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+
+    &-icons {
+        .horizontal-center;
+    }
+    &-icons &-icon {
+        font-size: 20px;
+        // color: @text-color-secondary;
+        margin-right: @margin-lg;
+        cursor: pointer;
+    }
+    &-search {
+        width: 30%;
+    }
+}
+
+
+@side-menu-prefix: ~"ant-menu";
+.shadow .@{side-menu-prefix} {
+    font-size: 14px;
+    &-item {
+        padding-left: @padding-md !important;
+    }
+    &-item:hover {
+        // font-weight: 600 !important;
+        color: @text-color !important;
+    }
+}

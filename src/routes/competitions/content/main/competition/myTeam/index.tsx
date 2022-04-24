@@ -28,6 +28,8 @@ import JoinPoolForm from "./joinPoolForm";
 import CreateTeam from "./createTeam";
 import { useCompetition } from "context/kaggleCompetition";
 import MyPool from "./myPool";
+import MyJoinRequest from "./joinRequest";
+import Team from "./team";
 
 interface Props {
 	url?: string;
@@ -38,7 +40,7 @@ interface Props {
 const MyTeam: React.FC<Props> = props => {
 	const auth = useAuth();
 	const userContext = useUser();
-	const compContext = useCompetition()
+	const compContext = useCompetition();
 	const history = useHistory();
 	const [teamName, setTeamName] = useState<string>();
 	const [description, setDescription] = useState<string>();
@@ -48,367 +50,29 @@ const MyTeam: React.FC<Props> = props => {
 		if (compContext.myTeam) {
 			if (compContext.myTeam.pool || compContext.myTeam.join_requests) {
 				var data =
-					compContext.myTeam.pool /* || compContext.myTeam?.join_requests[0].my_request; */
+					compContext.myTeam
+						.pool; /* || compContext.myTeam?.join_requests[0].my_request; */
 				setLanguage(data?.language);
 				setDescription(data?.description);
-			} if (compContext.myTeam.team) {
-				
-				setTeamName(compContext.myTeam.team.name);
 			}
 		}
 	}, [compContext.mySectionType, compContext.myTeam]);
 
-
-
-	const make_decision = useCallback((
-		requester_pid: string,
-		accept: boolean
-	) => {
-		if (compContext.myTeam?.team?.public_id) {
-			make_join_request_decision(auth.token, compContext.myTeam.team.public_id, requester_pid, accept)
-			.then(res => {
-				console.log(res);
-			})
-			.catch(e => {
-				console.warn(e.response);
-			});
-		}
-	}, [auth.token, compContext.myTeam?.team?.public_id]);
-
-
 	return (
 		<div className="strm-page-card my-team-container">
 			{compContext.mySectionType === "team" && (
-				<>
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "row",
-							alignItems: "center",
-						}}
-					>
-						{compContext.isLeader ? (
-							<Input.Group compact>
-								<Input
-									style={{ width: "calc(50%)", fontWeight: "bold" }}
-									value={teamName}
-									onChange={e => {
-										setTeamName(e.target.value);
-									}}
-								/>
-								<Button type="primary">
-									Save
-								</Button>
-							</Input.Group>
-						) : (
-							<span style={{ fontSize: 25, fontWeight: "bold" }}>
-								{teamName}
-							</span>
-						)}
-						{/* <span
-					style={{ fontSize: 20, fontWeight: "bold", width: "fit-content" }}
-				>
-					({numMember}/5)
-				</span> */}
-						<Button style={{ marginLeft: "auto" }} onClick={compContext.leave_competition}>
-							Leave the team
-						</Button>
-					</div>
-
-					<Divider />
-					<h1>Team members</h1>
-					<div className="my-team-members">
-						{compContext.myTeam?.team?.members.map((member: MemberProps) => (
-							<UserItem
-								profile={member.user.profile}
-								url={member.user.avatar?.url}
-								language={member.language}
-								skills={member.user.skills}
-								role={member.role}
-							/>
-						))}
-					</div>
-					{compContext.myTeam?.team?.join_requests && compContext.myTeam?.team?.join_requests?.length > 0 && (
-						<>
-							<Divider />
-							<h1>Join requests</h1>
-							<div className="my-team-members">
-								{compContext.myTeam?.team.join_requests.map((member: any) => (
-									<div style={{ display: "flex", flexDirection: "row" }}>
-										<UserItem
-											style={{ flex: 1 }}
-											profile={member.user.profile}
-											url={member.user.avatar?.url}
-											language={member.language}
-											skills={member.user.skills}
-											role={member.role}
-										/>
-										<div style={{ flex: 1 }}>
-											{
-												<div className="horizontal-center">
-													<Tag
-														color={
-															member.status === "accepted"
-																? "green"
-																: member.status === "rejected"
-																? "red"
-																: undefined
-														}
-													>
-														{member.status}
-													</Tag>
-													{compContext.isLeader && member.status === "pending" && compContext.myTeam?.team?.public_id && (
-														<div
-															className="horizontal-center"
-															style={{ marginLeft: "auto", gap: "8px" }}
-														>
-															<Button
-																size="small"
-																// type="link"
-																onClick={() => {
-																	make_decision(
-																		member.user.public_id,
-																		false
-																	);
-																}}
-															>
-																Reject
-															</Button>
-															<Button
-																size="small"
-																type="primary"
-																onClick={() => {
-																	make_decision(
-																		member.user.public_id,
-																		true
-																	);
-																}}
-															>
-																Accept
-															</Button>
-														</div>
-													)}
-												</div>
-											}
-
-											{member.language && (
-												<TextEllipsis>
-													<IconLanguage /> {member.language}
-												</TextEllipsis>
-											)}
-											{member.description && (
-												<p style={{ color: "GrayText", fontSize: 12 }}>
-													{member.description}
-												</p>
-											)}
-										</div>
-									</div>
-								))}
-							</div>
-						</>
-					)}
-					{compContext.myTeam?.team?.invite_requests && compContext.myTeam?.team.invite_requests.length > 0 && (
-						<>
-							<Divider />
-							<h1>Invited</h1>
-							<div className="my-team-members">
-								{compContext.myTeam?.team.invite_requests.map((member: any) => (
-									<div style={{ display: "flex", flexDirection: "row" }}>
-										<UserItem
-											style={{ flex: 1 }}
-											profile={member.user.profile}
-											url={member.user.avatar?.url}
-											language={member.language}
-											skills={member.user.skills}
-											role={member.role}
-										/>
-										<div style={{ flex: 1 }}>
-											{
-												<div className="horizontal-center">
-													<Tag
-														color={
-															member.status === "accepted"
-																? "green"
-																: member.status === "rejected"
-																? "red"
-																: undefined
-														}
-													>
-														{member.status}
-													</Tag>
-													{compContext.isLeader && member.status === "pending" && (
-														<Button
-															size="small"
-															style={{ marginLeft: "auto" }}
-															onClick={() => {}}
-														>
-															Withdraw
-														</Button>
-													)}
-												</div>
-											}
-
-											{member.language && (
-												<TextEllipsis>
-													<IconLanguage /> {member.language}
-												</TextEllipsis>
-											)}
-											{member.description && (
-												<p style={{ color: "GrayText", fontSize: 12 }}>
-													{member.description}
-												</p>
-											)}
-										</div>
-									</div>
-								))}
-							</div>
-						</>
-					)}
-					<Divider />
-
-					<Messages />
-				</>
+				<Team />
 			)}
 			{compContext.mySectionType === "pool" && compContext.myTeam?.pool && (
-				<MyPool pool={compContext.myTeam?.pool} invite_requests={compContext.myTeam?.invite_requests || []}/>
+				<MyPool
+					pool={compContext.myTeam?.pool}
+					invite_requests={compContext.myTeam?.invite_requests || []}
+				/>
 			)}
-			{/* {compContext.mySectionType === "join_requests" && (
-				<>
-					<h2>My Join Request</h2>
-					<Divider />
-					<div
-						className="strm-page-card strm-card-team-container"
-						style={{
-							display: "flex",
-							flexDirection: "row",
-						}}
-					>
-						<div
-							style={{
-								flex: 1,
-								display: "flex",
-								flexDirection: "column",
-								margin: 0,
-							}}
-						>
-							<div
-								style={{
-									display: "flex",
-									flexDirection: "row",
-									alignItems: "center",
-								}}
-							>
-								<TextEllipsis
-									numLines={1}
-									style={{
-										fontSize: 18,
-										fontWeight: "bold",
-										width: "fit-content",
-									}}
-								>
-									{content.join_request.group.name}
-								</TextEllipsis>
-								<span
-									style={{
-										marginLeft: "auto",
-										marginRight: "8px",
-										color: "GrayText",
-									}}
-								>
-									Updated on:{" "}
-									{content.join_request.my_request.updated_on.split("T")[0] +
-										" " +
-										content.join_request.my_request.updated_on
-											.split("T")[1]
-											.split(".")[0]}
-								</span>
-								<Tag
-									style={{
-										marginRight: "8px",
-									}}
-									color={
-										content.join_request.my_request.status === "accepted"
-											? "green"
-											: content.join_request.my_request.status === "rejected"
-											? "red"
-											: undefined
-									}
-								>
-									{content.join_request.my_request.status}
-								</Tag>
-								<Button
-									type="text"
-									onClick={leave_competition}
-									icon={<IconDelete />}
-								/>
-							</div>
-						</div>
-					</div>
-					{content.join_request.my_request.status === "pending" && (
-						<>
-							<Divider />
-							<div
-								style={{
-									display: "flex",
-									flexDirection: "column",
-									// alignItems: "center",
-								}}
-							>
-								<h4>Description</h4>
-								<Input.TextArea
-									value={description}
-									onChange={e => {
-										setDescription(e.target.value);
-									}}
-								/>
-								<h4 style={{ marginTop: "16px" }}>Language</h4>
-								<Input
-									value={language}
-									onChange={e => {
-										setLanguage(e.target.value);
-									}}
-								/>
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "column",
-										gap: "16px",
-										marginTop: "32px",
-									}}
-								>
-									<Button
-										type="primary"
-										disabled={
-											language === content.join_request.language &&
-											description === content.join_request.description
-										}
-										onClick={() => {
-											edit_pool(
-												auth.token,
-												props.competitionName,
-												description,
-												language
-											)
-												.then(res => {
-													console.log(res.data);
-													setContent({ pool: { description, language } });
-													message.success("Successfully updated the request!");
-												})
-												.catch(e => {
-													console.warn(e.response);
-													message.error("Request update failed!");
-												});
-										}}
-									>
-										Save
-									</Button>
-									<Button onClick={leave_competition}>Withdraw request</Button>
-								</div>
-							</div>
-						</>
-					)}
-				</>
-			)} */}
+			{compContext.mySectionType === "join_requests" &&
+				compContext.myTeam?.join_requests && (
+					<MyJoinRequest myJoinRequest={compContext.myTeam?.join_requests} />
+				)}
 			{compContext.mySectionType === "no-content" && (
 				<>
 					{" "}
