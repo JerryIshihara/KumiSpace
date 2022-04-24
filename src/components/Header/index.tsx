@@ -4,7 +4,7 @@ import { Input } from "antd";
 import { BellOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import "./style.less";
 
-import { Logo } from "../../../components";
+import { Logo } from "components";
 import Avatar from "./avatar";
 import Plus from "./plus";
 import { useAuth } from "context/auth";

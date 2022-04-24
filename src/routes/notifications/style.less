@@ -1,0 +1,38 @@
+@import "../../App.less";
+
+@ntf: ~".notification";
+
+@{ntf}-container {
+    width: 500px;
+    padding: @padding-md 0;
+}
+
+@{ntf}-item {
+    width: '100%';
+    padding: @padding-md;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: row;
+    gap: @margin-md;
+    background-color: @component-background;
+    cursor: pointer;
+    &-unread {
+        background-color: color(~`colorPalette('@{primary-color}', 1) `);
+    }
+}
+
+@{ntf}-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: @margin-xs;
+}
+@{ntf}-content > p, h4 {
+    line-height: 1;
+    margin: 0;
+}
+
+@{ntf}-date {
+    font-size: small;
+    color: @text-color-secondary;
+}
