@@ -1,17 +1,24 @@
-import React from "react";
+import React, {useMemo} from "react";
 import "./style.less";
 
 import { Avatar, Divider } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import { TextEllipsis } from "components";
+import { NotificationProps } from "types/notification";
+import { timePassed } from "utils/time";
 
-const NotificationItem: React.FC = () => {
-	const isRead = Math.random() > 0.5;
+interface Props {
+    item: NotificationProps;
+    last: boolean
+}
+
+const NotificationItem: React.FC<Props> = ({ item, last }) => {
+    const date = useMemo(() => new Date(item.created_on), [item.created_on])
 	return (
 		<>
 			<div
 				className={`notification-item ${
-					isRead ? "" : "notification-item-unread"
+					item.is_read ? "" : "notification-item-unread"
 				}`}
 			>
 				<Avatar
@@ -25,12 +32,13 @@ const NotificationItem: React.FC = () => {
 					icon={<UserOutlined />}
 				/>
 				<div className="notification-content">
-					<h4>Category</h4>
-					<TextEllipsis>notification title</TextEllipsis>
-					<p className="notification-date">date</p>
+                    <h3>{item.title}</h3>
+                    {/* <TextEllipsis>notification title</TextEllipsis> */}
+                    <div dangerouslySetInnerHTML={{__html: item.text}}/>
+                    <p className="notification-date">{timePassed(date)}</p>
                 </div>
 			</div>
-			<Divider style={{ margin: 0 }} />
+            {!last && <Divider style={{ margin: 0 }} />}
 		</>
 	);
 };

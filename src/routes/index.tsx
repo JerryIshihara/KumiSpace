@@ -1,9 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-// import { authConnector, AuthProps } from "redux/lib/auth.type";
+
 import { PageTitleSetter, PrivateRoute } from "components";
 
-import LandingPage from "./landing";
 import LoginPage from "./login";
 import Competitions from "./competitions";
 import NotificationPage from "./notifications";
@@ -16,7 +15,8 @@ const App: React.FC<any> = props => {
 					<Route exact path="/auth/:authMode">
 						<LoginPage {...props} />
 					</Route>
-					<Route exact path="/notifications">
+
+					<Route exact path="/notificationss">
 						<NotificationPage {...props} />
 					</Route>
 					<Route path="/">
