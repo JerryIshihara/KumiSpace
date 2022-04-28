@@ -14,7 +14,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { useAuth } from "context/auth";
 import { useUser } from "context/user";
 import { MemberProps, TeamProps } from "types/kaggle";
-import { join_team } from "api/kaggle";
 import { TextEllipsis, UserItem } from "components";
 import { Bullet } from "utils/text.constant";
 import JoinTeamForm from "./joinTeamForm";
@@ -24,7 +23,6 @@ interface Props {
 }
 
 const TeamCard: React.FC<Props> = ({ team }: Props) => {
-	const auth = useAuth();
 	const userContext = useUser();
 	const history = useHistory();
 	const showJoinButton = useMemo(
@@ -35,15 +33,6 @@ const TeamCard: React.FC<Props> = ({ team }: Props) => {
 			) < 0,
 		[userContext.user?.public_id, team]
 	);
-	const joinTeam = () => {
-		join_team(auth.token, team.public_id, undefined)
-			.then(res => {
-				console.log(res.data);
-			})
-			.catch(e => {
-				console.warn(e.response);
-			});
-	};
 	return (
 		<div
 			className="strm-page-card strm-card-team-container"

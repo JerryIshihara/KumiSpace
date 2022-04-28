@@ -3,9 +3,10 @@ import { withRouter, RouteComponentProps, useHistory } from "react-router-dom";
 import { message, Tabs, Button, Space, Select, Input, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-import { create_team } from "api/kaggle";
+import { create_team } from "api/kaggle/group";
 import "./style.less";
 import { useAuth } from "context/auth";
+import { useCompetition } from "context/kaggleCompetition";
 
 interface InputItemProps {
 	label: string;
@@ -26,9 +27,10 @@ interface Props {
 const CreatePage: React.FC<Props> = (props: Props) => {
 	const history = useHistory();
 	const auth = useAuth();
+	const compContext = useCompetition()
 	const params = new URLSearchParams(window.location.search);
 	const [name, setName] = useState<string>();
-	const [numMembers, setNumMembers] = useState<number>();
+	const [numMembers, setNumMembers] = useState<number>(5);
 	const [language, setLanguage] = useState<string>();
 	const [description, setDescription] = useState<string>();
 	const [confirmLoading, setConfirmLoading] = useState(false);
@@ -47,34 +49,34 @@ const CreatePage: React.FC<Props> = (props: Props) => {
 			return;
 		}
 		setConfirmLoading(true);
-		create_team(
-			auth.token,
-			props.competitionName,
-			name,
-			numMembers,
-			language,
-			description
-		)
-			.then(res => {
-				setTimeout(() => {
-					setConfirmLoading(false);
-
-					setTimeout(() => {
-						history.goBack();
-					}, 1000);
-				}, 1000);
-			})
-			.catch(e => {
-				if (e.response.status === 409) {
-					message.error(
-						`You already created/joined a team under competition ${props.competitionName}`
-					);
-				}
-				console.warn(e.response);
-			})
-			.finally(() => {
+		auth.authorizedAPI(
+			(token: string) => create_team(
+				token,
+				props.competitionName,
+				name,
+				numMembers,
+				language,
+				description
+			),
+			(res) => {
+				compContext.fetch_my_team && compContext.fetch_my_team()
+				compContext.fetch_teams && compContext.fetch_teams()
 				setConfirmLoading(false);
-			});
+				message.success(
+					`Team ${name} created!`
+				);
+			},
+			(e) => {
+				console.warn(e.response);
+				message.error(
+					`You already created/joined a team under competition ${props.competitionName}`
+				);
+			},
+				() => {
+					history.goBack();
+					setConfirmLoading(false);
+				}
+		)
 	};
 
 	const handleCancel = () => {
@@ -101,7 +103,7 @@ const CreatePage: React.FC<Props> = (props: Props) => {
 					/>
 				</InputItem>
 
-				<InputItem label="Team size">
+				{/* <InputItem label="Team size">
 					<Select
 						style={{ width: "200px" }}
 						onChange={value => {
@@ -116,7 +118,7 @@ const CreatePage: React.FC<Props> = (props: Props) => {
 								)),
 						]}
 					</Select>
-				</InputItem>
+				</InputItem> */}
 				<InputItem label="Language (optional)">
 					<Input
 						required

@@ -1,3 +1,4 @@
+
 export type NotificationType = "join" | "invite" | "admin";
 
 export interface NotificationProps {
@@ -8,6 +9,8 @@ export interface NotificationProps {
 	title: string;
 	text: string;
 	is_read: boolean;
+	redirect_memo: string;
+	image_url: string | null;
 	created_on: Date;
 	updated_on: Date;
 }

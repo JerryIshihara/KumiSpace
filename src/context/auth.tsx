@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { login, signup, log_out, refresh } from "api/auth";
 import { AxiosResponse } from "axios";
 import { useHistory } from "react-router-dom";
@@ -16,6 +16,12 @@ export interface AuthContextProps {
 	logout: () => void;
 	refresh_token: () => Promise<AxiosResponse<any, any>>;
 	storeToken: (token: string) => void;
+	authorizedAPI: (
+		func: (token: string) => Promise<any>,
+		callBack?: (res: any) => any,
+		fallback?: (e: any) => any,
+		final?: () => any
+	) => void;
 }
 
 export const AuthContext = React.createContext<Partial<AuthContextProps> | any>(
@@ -105,6 +111,49 @@ export const AuthContextProvider = (props: any) => {
 				console.warn(e.response);
 			});
 	};
+
+	const authorizedAPI = useCallback(
+		(
+			func: (token: string) => Promise<any>,
+			callBack?: (res: any) => any,
+			fallback?: (e: any) => any,
+			final?: () => any
+		) => {
+			if (token) {
+				func(token)
+					.then(res => {
+						callBack && callBack(res);
+					})
+					.catch(e => {
+						console.warn(e.response);
+						if (e.response.status === 401) {
+							refresh().then(res => {
+								setToken(res.data.token);
+								func(res.data.token)
+									.then(res => {
+										callBack && callBack(res);
+									})
+									.catch(e => {
+										console.warn(e);
+										if (e.response.status === 401) {
+											logout();
+										} else {
+											fallback && fallback(e);
+										}
+									});
+							});
+						} else {
+							fallback && fallback(e);
+						}
+					})
+					.finally(() => {
+						final && final();
+					});
+			}
+		},
+		[token]
+	);
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -116,6 +165,7 @@ export const AuthContextProvider = (props: any) => {
 				getTokenFromSecureStore,
 				logout,
 				refresh_token,
+				authorizedAPI,
 			}}
 		>
 			{props.children}

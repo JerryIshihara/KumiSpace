@@ -41,7 +41,7 @@ export interface JoinRequestProps {
 	description?: string,
 	status: RequestStatusType,
 	user: UserProps,
-	updated_on: string
+	updated_on: Date
 }
 
 export interface InviteRequestProps {
@@ -61,7 +61,9 @@ export interface TeamProps {
 }
 
 export interface PoolProps {
+	public_id: string,
 	user: UserProps,
 	language?: string,
 	description?: string,
+	updated_on: Date,
 }

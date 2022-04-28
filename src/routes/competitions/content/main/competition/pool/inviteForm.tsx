@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Input, Avatar } from "antd";
+import { Modal, Select, Input, Avatar, message } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -10,10 +10,11 @@ import {
 } from "@arco-design/web-react";
 import { IconPlus } from "@arco-design/web-react/icon";
 
-import { sent_invite_request } from "api/kaggle";
+import { sent_invite_request } from "api/kaggle/group";
 import FormItem from "components/FormItem";
 import "./style.less";
 import { useAuth } from "context/auth";
+import { useCompetition } from "context/kaggleCompetition";
 
 interface Props {
 	user: {
@@ -29,7 +30,7 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 	const { competitionName } = useParams<{
 		competitionName: string;
 	}>();
-	
+	const compContext = useCompetition()
 	const history = useHistory()
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
@@ -55,17 +56,41 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 		// 	return;
 		// }
 		setConfirmLoading(true);
-		sent_invite_request(auth.token, competitionName, props.user.public_id)
-			.then(res => {
+		if (!compContext.myTeam?.team) {
+			setConfirmLoading(false);
+			history.goBack();
+			message.warning("You need to be a team leader to invite.")
+			return
+		}  
+		auth.authorizedAPI(
+			(token) => sent_invite_request(token, competitionName, props.user.public_id),
+			res => {
 				console.log(res.data);
-				history.goBack()
-			})
-			.catch(e => {
-				console.warn(e.response);
-			})
-			.finally(() => {
 				setConfirmLoading(false);
-			});
+				history.goBack();
+				message.success("You have invited " + props.user.profile.username)
+			},
+			e => {
+				setConfirmLoading(false);
+				console.warn(e.response);
+				if (e.response.status === 409) {
+					history.goBack();
+					switch (e.response.data.status) {
+						case "pending":
+							message.warn(`You have invited ${props.user.profile.username} already`)
+							break;
+						case "rejected":
+							message.warn(`${props.user.profile.username} has rejected you invitation already`)
+							break;
+						default:
+							break;
+					}
+				}
+			},
+			() => {
+				setConfirmLoading(false);
+			}
+		)
 	};
 
 	const handleCancel = () => {

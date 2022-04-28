@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Input, Avatar, message } from "antd";
+import { Modal, Select, Input, message } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -10,39 +10,31 @@ import {
 } from "@arco-design/web-react";
 import { IconPlus } from "@arco-design/web-react/icon";
 
-import { join_pool } from "api/kaggle/pool";
+import { edit_join_team_request } from "api/kaggle/group";
 import FormItem from "components/FormItem";
 import "./style.less";
 import { useAuth } from "context/auth";
 import { useCompetition } from "context/kaggleCompetition";
 
 interface Props {
-	competitionName: string;
-	onCancel: () => void;
+	pid: string;
 }
 
-const JoinPoolForm: React.FC<Props> = ({
-	competitionName,
-	onCancel,
-}: Props) => {
+const EditJoinForm: React.FC<Props> = (props: Props) => {
 	const auth = useAuth();
+	const compContext = useCompetition();
 	const history = useHistory();
-	const compContext = useCompetition()
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [description, setDescription] = useState<string>();
 	const [language, setLanguage] = useState<string>();
+	const [status, setStatus] = useState<{ code: "error"; msg: string }>();
 	const [errMsg, setErrMsg] = useState<string>();
 
-	// useEffect(() => {
-	// 	setUsername(userContext.user?.profile.username);
-	// 	setOccupation(userContext.user?.profile.occupation);
-	// 	setOrganization(userContext.user?.profile.organization);
-	// 	setDescription(userContext.user?.profile.description);
-	// 	return () => {
-	// 		setConfirmLoading(false);
-	// 	};
-	// }, [userContext.user?.profile]);
+	useEffect(() => {
+		setLanguage(compContext.myTeam?.join_requests?.my_request?.language);
+		setDescription(compContext.myTeam?.join_requests?.my_request?.description);
+	}, [compContext.myTeam?.join_requests?.my_request]);
 
 	const handleOk = () => {
 		// setStatus(undefined);
@@ -52,31 +44,37 @@ const JoinPoolForm: React.FC<Props> = ({
 		// }
 		setConfirmLoading(true);
 		auth.authorizedAPI(
-			(token: string) =>
-				join_pool(token, competitionName, description, language),
-			(res: any) => {
-				compContext.fetch_my_team && compContext.fetch_my_team()
-				compContext.fetch_pool && compContext.fetch_pool()
-				message.success("You have joined the competition");
+			token => edit_join_team_request(token, props.pid, description, language),
+			res => {
+				compContext.fetch_my_team && compContext.fetch_my_team();
 				setConfirmLoading(false);
+				message.success("Join request updated");
 			},
-			() => {},
+			e => {
+				console.warn(e.response);
+			},
 			() => {
+				setConfirmLoading(false);
 				history.goBack();
 			}
 		);
+	};
+
+	const handleCancel = () => {
+		setStatus(undefined);
+		history.goBack();
 	};
 
 	return (
 		<>
 			<Modal
 				// title="Add skill"
-				visible={params.get("form") === "pool"}
+				visible={params.get("form") === "edit-join-request"}
 				onOk={handleOk}
 				confirmLoading={confirmLoading}
-				onCancel={onCancel}
+				onCancel={handleCancel}
 			>
-				<h1>Join the pool</h1>
+				<h1>Edit join team request</h1>
 				<div className="main-page-form-container">
 					<FormItem label="Description">
 						<Input.TextArea
@@ -106,4 +104,4 @@ const JoinPoolForm: React.FC<Props> = ({
 	);
 };
 
-export default JoinPoolForm;
+export default EditJoinForm;

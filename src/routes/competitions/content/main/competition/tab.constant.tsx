@@ -1,8 +1,13 @@
 export const tab_constants = [
 	{
-		key: "Teams",
+		key: "All Teams",
         path: "",
-        isActive: (tab: string | undefined) => { console.log(!tab); return !tab}
+        isActive: (tab: string | undefined) => {return !tab}
+	},
+	{
+		key: "To Join",
+        path: "join",
+        isActive: (tab: string | undefined) => tab === "join"
 	},
 		{
 		key: "Pool",

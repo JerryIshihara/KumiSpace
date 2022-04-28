@@ -16,6 +16,23 @@ const NotificationPage: React.FC = () => {
 					<NotificationItem
 						key={item.public_id}
 						item={item}
+						onRead={() => {
+                            notification.read_by_pid(item.public_id)
+                        }}
+                        onDelete={() => {
+                            notification.delete_by_pid(item.public_id)
+                        }}
+						last={index === notification.unread.length - 1}
+					/>
+				))}
+				{notification.read.map((item: NotificationProps, index: number) => (
+					<NotificationItem
+						key={item.public_id}
+						item={item}
+						onRead={() => {}}
+                        onDelete={() => {
+                            notification.delete_by_pid(item.public_id)
+                        }}
 						last={index === notification.unread.length - 1}
 					/>
 				))}

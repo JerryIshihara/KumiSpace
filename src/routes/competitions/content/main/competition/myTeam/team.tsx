@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Input, Divider, Button } from "antd";
+import { Input, Divider, Button, message } from "antd";
 import { Tag } from "@arco-design/web-react";
 import { IconLanguage } from "@arco-design/web-react/icon";
 
 import { useCompetition } from "context/kaggleCompetition";
 import { MemberProps } from "types/kaggle";
 import { UserItem, TextEllipsis, Messages } from "components";
-import { make_join_request_decision } from "api/kaggle";
+import { edit_team, make_join_request_decision } from "api/kaggle/group";
 import { useAuth } from "context/auth";
 import InviteRequests from "./inviteRequests";
 
@@ -24,22 +24,39 @@ const Team: React.FC = () => {
 	const make_decision = useCallback(
 		(requester_pid: string, accept: boolean) => {
 			if (compContext.myTeam?.team?.public_id) {
-				make_join_request_decision(
-					auth.token,
-					compContext.myTeam.team.public_id,
-					requester_pid,
-					accept
-				)
-					.then(res => {
-						console.log(res);
-					})
-					.catch(e => {
-						console.warn(e.response);
-					});
+				let pid = compContext.myTeam?.team?.public_id;
+				auth.authorizedAPI(
+					(token: string) =>
+						make_join_request_decision(token, pid, requester_pid, accept),
+					res => {
+						compContext.fetch_my_team && compContext.fetch_my_team();
+						message.info(
+							`You have ${accept ? "accepted" : "rejected"} the join request`
+						);
+					}
+				);
 			}
 		},
 		[auth.token, compContext.myTeam?.team?.public_id]
 	);
+
+	const edit_group_setting = () => {
+		if (compContext.competitionName && teamName) {
+			var compName: string = compContext.competitionName;
+			auth.authorizedAPI((token: string) =>
+				edit_team(
+					token,
+					compName,
+					teamName,
+					compContext.myTeam?.team?.num_members || 5,
+					compContext.myTeam?.team?.description
+				),
+				(res) => {
+					message.success("You have updated the group setting")
+				}
+			);
+		}
+	};
 
 	return (
 		<>
@@ -59,7 +76,13 @@ const Team: React.FC = () => {
 								setTeamName(e.target.value);
 							}}
 						/>
-						<Button type="primary">Save</Button>
+						<Button
+							disabled={!teamName || teamName === ""}
+							type="primary"
+							onClick={edit_group_setting}
+						>
+							Save
+						</Button>
 					</Input.Group>
 				) : (
 					<span style={{ fontSize: 25, fontWeight: "bold" }}>{teamName}</span>
@@ -91,7 +114,9 @@ const Team: React.FC = () => {
 				))}
 			</div>
 			{compContext.myTeam?.team?.join_requests &&
-				compContext.myTeam?.team?.join_requests?.length > 0 && (
+				compContext.myTeam?.team?.join_requests?.filter(
+					j => j.status === "pending"
+				).length > 0 && (
 					<>
 						<Divider />
 						<h1>Join requests</h1>
@@ -115,7 +140,7 @@ const Team: React.FC = () => {
 															? "green"
 															: member.status === "rejected"
 															? "red"
-															: undefined
+															: "gold"
 													}
 												>
 													{member.status}
@@ -150,11 +175,11 @@ const Team: React.FC = () => {
 											</div>
 										}
 
-										{member.language && (
+										{/* {member.language && (
 											<TextEllipsis>
 												<IconLanguage /> {member.language}
 											</TextEllipsis>
-										)}
+										)} */}
 										{member.description && (
 											<p style={{ color: "GrayText", fontSize: 12 }}>
 												{member.description}
@@ -166,10 +191,16 @@ const Team: React.FC = () => {
 						</div>
 					</>
 				)}
-			<InviteRequests
-				admin={false}
-				invites={compContext.myTeam?.team?.invite_requests || []}
-			/>
+			{(
+				compContext.myTeam?.team?.invite_requests?.filter(
+					i => i.status === "pending"
+				) || []
+			).length > 0 && (
+				<InviteRequests
+					admin={false}
+					invites={compContext.myTeam?.team?.invite_requests || []}
+				/>
+			)}
 			{/* {compContext.myTeam?.team?.invite_requests && (
                 
 							<>

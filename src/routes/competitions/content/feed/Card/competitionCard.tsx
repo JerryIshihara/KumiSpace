@@ -48,7 +48,7 @@ const CompetitionCard: React.FC<Props> = ({ item }) => {
 			<div className="strm-card-avatar-title-container">
 				<div className="strm-card-title-container">
 					<TextEllipsis
-						numLines={2}
+						numLines={1}
 						style={{ fontSize: 16, fontWeight: "600", color: "InfoText" }}
 					>
 						{/* <h3> */}
@@ -70,7 +70,7 @@ const CompetitionCard: React.FC<Props> = ({ item }) => {
 					<div style={{ display: "flex", flexDirection: "row" }}>
 						<h4>
 							{/* <div className="strm-card-team-num">{}</div> */}
-							{Math.floor(Math.random() * 100)} teams to join
+							{item.team_count} teams
 						</h4>
 						<div
 							className="strm-card-title-container-days"

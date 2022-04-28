@@ -4,7 +4,6 @@ import { Button, Divider } from "antd";
 import { IconLanguage } from "@arco-design/web-react/icon";
 import "./style.less";
 
-import { get_pool_by_competition } from "api/kaggle";
 import { UserItem, TextEllipsis } from "components";
 import { useUser } from "context/user";
 import InviteForm from "./inviteForm";

@@ -16,7 +16,7 @@ const App: React.FC<any> = props => {
 						<LoginPage {...props} />
 					</Route>
 
-					<Route exact path="/notificationss">
+					<Route exact path="/notifications">
 						<NotificationPage {...props} />
 					</Route>
 					<Route path="/">

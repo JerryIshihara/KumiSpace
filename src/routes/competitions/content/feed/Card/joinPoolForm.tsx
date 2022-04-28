@@ -10,7 +10,7 @@ import {
 } from "@arco-design/web-react";
 import { IconPlus } from "@arco-design/web-react/icon";
 
-import { join_pool } from "api/kaggle";
+import { join_pool } from "api/kaggle/pool";
 import FormItem from "components/FormItem";
 import "./style.less";
 import { useAuth } from "context/auth";

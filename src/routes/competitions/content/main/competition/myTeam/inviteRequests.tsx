@@ -1,12 +1,12 @@
 import React from "react";
-import { Divider, Button } from "antd";
+import { Divider, Button, message } from "antd";
 import { Tag } from "@arco-design/web-react";
 import { IconLanguage } from "@arco-design/web-react/icon";
 
 import { InviteRequestProps, MemberProps, TeamProps } from "types/kaggle";
 import { TextEllipsis, UserItem } from "components";
 import { useCompetition } from "context/kaggleCompetition";
-import { make_invite_request_decision } from "api/kaggle";
+import { make_invite_request_decision } from "api/kaggle/group";
 import { useAuth } from "context/auth";
 
 interface Props {
@@ -20,23 +20,24 @@ const InviteRequests: React.FC<Props> = React.memo(
         const auth = useAuth()
 		const compContext = useCompetition();
 		const decide_invite_request = (group_pid: string, accept: boolean) => {
-			make_invite_request_decision(auth.token, group_pid, accept)
-				.then(res => {
-					console.log(res);
-				})
-				.catch(e => {
-					console.warn(e.response);
-				});
+			auth.authorizedAPI(
+				(token: string) => make_invite_request_decision(token, group_pid, accept),
+				(res) => {
+					compContext.fetch_my_team && compContext.fetch_my_team();
+					message.info(`You have ${accept ? "accepted" : "rejected"} the invitation`)
+				}
+			)
 		};
 
 		return invites.length > 0 ? (
 			<>
-				<Divider />
 				<h1>{admin ? "Inviters" : "Invited"}</h1>
 				<div className="my-team-members">
 					{admin
 						? invites.map(({ invite_request, group }: any) => (
-								<div style={{ display: "flex", flexDirection: "row" }}>
+							<div
+							className="strm-card-team-container"
+								style={{ display: "flex", flexDirection: "row" }}>
 									<div
 										style={{
 											flex: 1,
@@ -45,7 +46,7 @@ const InviteRequests: React.FC<Props> = React.memo(
 											gap: "4px",
 										}}
 									>
-										<TextEllipsis style={{ fontSize: 20, fontWeight: "bold" }}>
+										<TextEllipsis style={{ fontSize: 20, fontWeight: "bold", marginBottom: '8px' }}>
 											{group.name}
 										</TextEllipsis>
 										{group.members.map((member: MemberProps) => (
@@ -67,7 +68,7 @@ const InviteRequests: React.FC<Props> = React.memo(
 															? "green"
 															: invite_request.status === "rejected"
 															? "red"
-															: undefined
+															: "gold"
 													}
 												>
 													{invite_request.status}
@@ -78,7 +79,6 @@ const InviteRequests: React.FC<Props> = React.memo(
 														style={{ marginLeft: "auto", gap: "8px" }}
 													>
 														<Button
-															size="small"
 															// type="link"
 															onClick={() => {
 																decide_invite_request(group.public_id, false);
@@ -87,7 +87,6 @@ const InviteRequests: React.FC<Props> = React.memo(
 															Reject
 														</Button>
 														<Button
-															size="small"
 															type="primary"
 															onClick={() => {
 																decide_invite_request(group.public_id, true);
@@ -108,7 +107,7 @@ const InviteRequests: React.FC<Props> = React.memo(
 								</div>
 						  ))
 						: invites.map((invite: any) => (
-								<div style={{ display: "flex", flexDirection: "row" }}>
+							invite.status === "pending" && <div style={{ display: "flex", flexDirection: "row" }}>
 									<UserItem
 										style={{ flex: 1 }}
 										profile={invite.user.profile}
@@ -126,14 +125,13 @@ const InviteRequests: React.FC<Props> = React.memo(
 															? "green"
 															: invite.status === "rejected"
 															? "red"
-															: undefined
+															: "gold"
 													}
 												>
 													{invite.status}
 												</Tag>
 												{compContext.isLeader && invite.status === "pending" && (
 													<Button
-														size="small"
 														style={{ marginLeft: "auto" }}
 														onClick={() => {}}
 													>

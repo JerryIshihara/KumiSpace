@@ -19,3 +19,11 @@ export const read_notification = async (pid: string): Promise<any> => {
 	});
 	return response;
 };
+
+export const delete_notification = async (pid: string): Promise<any> => {
+	const response = await axios({
+		method: "DELETE",
+        url: `/notifications/${pid}`,
+	});
+	return response;
+};

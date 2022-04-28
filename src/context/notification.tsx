@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 import { NotificationProps } from "types/notification";
-import { get_notifications } from "api/notification";
+import { get_notifications, delete_notification, read_notification } from "api/notification";
 import { useAuth } from "./auth";
 
 
 export interface NotificationContextProps {
     unread: Array<NotificationProps>;
     read: Array<NotificationProps>;
+    delete_by_pid: (pid: string) => void;
+    read_by_pid: (pid: string) => void;
 }
 
 export const NotificationContext = React.createContext<Partial<NotificationContextProps> | any>(
@@ -22,23 +24,38 @@ export const NotificationContextProvider = (props: any) => {
 
     useEffect(() => {
         if (auth.token) {
-            get_notifications(auth.token).then(res => {
-                console.log(res.data);
-                setRead(res.data.filter((notification: NotificationProps) => notification.is_read))
-                setUnread(res.data.filter((notification: NotificationProps) => !notification.is_read))
-            })
+            fetch_notifications()
         } else {
             setRead([])
             setUnread([]);
         }
     }, [auth.token])
+
+    const fetch_notifications = () => {
+        get_notifications(auth.token).then(res => {
+            console.log(res.data);
+            setRead(res.data.filter((notification: NotificationProps) => notification.is_read))
+            setUnread(res.data.filter((notification: NotificationProps) => !notification.is_read))
+        })
+    }
+
+    const read_by_pid = (pid: string) => {
+        read_notification(pid).then(res => {fetch_notifications()})
+    }
     
+    const delete_by_pid = (pid: string) => {
+        delete_notification(pid).then(res => {
+            fetch_notifications()
+        })
+    }
 
 	return (
 		<NotificationContext.Provider
 			value={{
 				unread,
-				read,
+                read,
+                delete_by_pid,
+                read_by_pid
 			}}
 		>
 			{props.children}

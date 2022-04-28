@@ -11,12 +11,10 @@ import { message } from "antd";
 
 import {
 	get_competition,
-	get_teams_by_competition_name,
-	get_pool_by_competition,
 	get_my_team,
-	leave_team,
-	edit_pool,
 } from "api/kaggle";
+import { get_pool_by_competition } from 'api/kaggle/pool'
+import {get_teams_by_competition_name, leave_team, send_join_team_request,} from 'api/kaggle/group'
 import {
 	KaggleCompetitionProps,
 	PoolProps,
@@ -30,12 +28,13 @@ import { useUser } from "./user";
 
 interface MyTeamProps {
 	team?: TeamProps;
-	pool?: Partial<PoolProps>;
+	pool?: PoolProps;
 	join_requests?: {my_request: JoinRequestProps, group: TeamProps};
 	invite_requests?: Array<InviteRequestProps>;
 }
 type MySectionType = "no-content" | "pool" | "join_requests" | "team";
 interface CompetitionContextProps {
+	competitionName: string,
 	competition: KaggleCompetitionProps;
 	teams: Array<TeamProps>;
 	pool: Array<PoolProps>;
@@ -43,10 +42,10 @@ interface CompetitionContextProps {
 	isLeader: boolean;
 	mySectionType: MySectionType;
 	leave_competition: () => void;
-	edit_my_pool: (
-		description: string | undefined,
-		language: string | undefined
-	) => void;
+	join_team:(team_pid: string, description: string | undefined, language: string | undefined) => void;
+	fetch_my_team: () => void;
+	fetch_pool: () => void;
+	fetch_teams: () => void;
 }
 
 const CompetitionContext = createContext<Partial<CompetitionContextProps>>({});
@@ -103,96 +102,89 @@ export const CompetitionProvider = (props: any) => {
 	// fetch teams and pool
 	useEffect(() => {
 		if (competition) {
-			get_teams_by_competition_name(competitionName)
-				.then(res => {
-					console.log("teams", res.data);
-					setTeams(res.data);
-				})
-				.catch(e => {
-					console.warn(e.response);
-				});
-			get_pool_by_competition(competitionName)
-				.then(res => {
-					setPool(res.data);
-					console.log("pool", res.data);
-					console.log(res.data);
-				})
-				.catch(e => {
-					console.warn(e.response);
-				});
+			fetch_teams()
+			fetch_pool()
 		}
 	}, [competition]);
 
 	// fetch my team of the competition
 	useEffect(() => {
 		if (competitionName && auth.token) {
-			get_my_team(auth.token, competitionName)
-				.then(res => {
-					console.log(res.data);
-					setMyTeam(res.data);
-				})
-				.catch(e => {
-					console.warn(e.response);
-					if (e.response.status === 401) {
-						auth
-							.refresh_token()
-							.then(res => {
-								auth.storeToken(res.data.token);
-								get_my_team(res.data.token, competitionName)
-									.then(res => {
-										console.log(res.data);
-										setMyTeam(res.data);
-									})
-									.catch(e => {
-										console.warn(e.response);
-									});
-							})
-							.catch(e => {
-								auth.logout();
-							});
-					}
-				});
+			fetch_my_team()
 		}
 	}, [competitionName, auth.token]);
 
-	const edit_my_pool = useCallback(
-        (description: string | undefined, language: string | undefined) => {
-            if (auth.token && competitionName) {
-                edit_pool(auth.token, competitionName, description, language)
-				.then(res => {
-					console.log(res.data);
-					setMyTeam({ ...myTeam, pool: { ...pool, description, language } });
-					message.success("Successfully updated the pool!");
-				})
-				.catch(e => {
-					console.warn(e.response);
-					message.error("Pool update failed!");
-				});
-            }
-		},
-		[auth.token, competitionName]
-	);
-	const leave_competition = () => {
-		leave_team(auth.token, competitionName)
+	const fetch_teams = () => {
+		get_teams_by_competition_name(competitionName)
+		.then(res => {
+			console.log("teams", res.data);
+			setTeams(res.data);
+		})
+		.catch(e => {
+			console.warn(e.response);
+		});
+	}
+
+	const fetch_my_team = () => {
+		auth.authorizedAPI(
+			(token: string) => get_my_team(token, competitionName),
+			(res) => { setMyTeam(res.data); },
+			() => { },
+			() => {}
+		)
+	}
+
+	const fetch_pool = () => {
+		get_pool_by_competition(competitionName)
+		.then(res => {
+			setPool(res.data);
+			console.log("pool", res.data);
+			console.log(res.data);
+		})
+		.catch(e => {
+			console.warn(e.response);
+		});
+	}
+
+	const join_team = (team_pid: string, description: string | undefined, language: string | undefined) => {
+		send_join_team_request(auth.token, team_pid, undefined)
 			.then(res => {
-				setMyTeam(undefined);
+				console.log(res.data);
 			})
 			.catch(e => {
 				console.warn(e.response);
 			});
 	};
 
+	const leave_competition = () => {
+		auth.authorizedAPI(
+			(token) => leave_team(token, competitionName),
+			res => {
+				fetch_my_team()
+				fetch_teams()
+				message.success(`You have left the competition ${competitionName}`)
+			},
+			e => {
+				console.warn(e.response);
+			},
+		)
+	};
+
 	return (
 		<CompetitionContext.Provider
 			value={{
+				competitionName,
 				competition,
 				teams,
 				pool,
 				myTeam,
 				isLeader,
 				mySectionType,
+				join_team,
 				leave_competition,
-				edit_my_pool,
+				fetch_my_team,
+				fetch_pool,
+				fetch_teams,
 			}}
 		>
 			{props.children}

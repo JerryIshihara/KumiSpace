@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Input, Avatar } from "antd";
-import { UserOutlined, CameraOutlined } from "@ant-design/icons";
+import { Modal, Select, Input, message } from "antd";
+import { UserOutlined, CameraOutlined }
+	from "@ant-design/icons";
 import { useHistory, useParams } from "react-router-dom";
 import {
 	Tag,
@@ -10,24 +11,23 @@ import {
 } from "@arco-design/web-react";
 import { IconPlus } from "@arco-design/web-react/icon";
 
-import { send_join_team_request } from "api/kaggle";
+import { send_join_team_request } from "api/kaggle/group";
 import FormItem from "components/FormItem";
 import "./style.less";
 import { useAuth } from "context/auth";
+import { useCompetition } from "context/kaggleCompetition";
 
 interface Props {
 	team: {
-		name: string,
-		public_id: string,
+		name: string;
+		public_id: string;
 	};
 }
 
 const JoinPoolForm: React.FC<Props> = (props: Props) => {
 	const auth = useAuth();
-	const { competitionName } = useParams<{
-		competitionName: string;
-	}>();
-	const history = useHistory()
+	const compContext = useCompetition()
+	const history = useHistory();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [description, setDescription] = useState<string>();
@@ -52,23 +52,52 @@ const JoinPoolForm: React.FC<Props> = (props: Props) => {
 		// 	return;
 		// }
 		setConfirmLoading(true);
-		send_join_team_request(auth.token, props.team.public_id, description, language)
-			.then(res => {
-				console.log(res.data);
-				history.goBack()
-			})
-			.catch(e => {
+		if (compContext.myTeam?.join_requests) {
+			setConfirmLoading(false);
+			history.goBack();
+			message.warning(
+				"You can only send one team join request at a time."
+			);
+			return 
+		}
+		auth.authorizedAPI(
+			token =>
+				send_join_team_request(
+					token,
+					props.team.public_id,
+					description,
+					language
+				),
+			res => {
+				compContext.fetch_my_team && compContext.fetch_my_team()
+				history.goBack();
+				message.success("Join request sent to " + props.team.name);
+			},
+			e => {
 				console.warn(e.response);
-			})
-			.finally(() => {
+				if (e.response.status === 409) {
+					history.goBack();
+					switch (e.response.data.status) {
+						case "rejected":
+							message.warn(`${props.team.name} has rejected you join request already`)
+							break;
+						default:
+							message.warning(
+								"You already created/joined the team: " + props.team.name
+							);
+							break;
+					}
+				}
+			},
+			() => {
 				setConfirmLoading(false);
-			});
+			}
+		);
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
-		console.log("Clicked cancel button");
-		history.goBack()
+		history.goBack();
 	};
 
 	return (

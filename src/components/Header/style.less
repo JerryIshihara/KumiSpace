@@ -1,7 +1,6 @@
 @import "../../App.less";
-// @import "../style.less";
 
-.strm-header {
+.header {
     width: 100%;
     height: @streaming-header-height;
     display: flex;
@@ -17,11 +16,11 @@
 
     &-icons {
         .horizontal-center;
+        gap: @margin-lg;
     }
     &-icons &-icon {
         font-size: 20px;
         // color: @text-color-secondary;
-        margin-right: @margin-lg;
         cursor: pointer;
     }
     &-search {

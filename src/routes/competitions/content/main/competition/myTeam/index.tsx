@@ -13,12 +13,8 @@ import { IconLanguage, IconDelete } from "@arco-design/web-react/icon";
 import { Tag, Message } from "@arco-design/web-react";
 
 import {
-	get_my_team,
 	edit_pool,
-	leave_team,
-	make_join_request_decision,
-	make_invite_request_decision,
-} from "api/kaggle";
+} from "api/kaggle/pool";
 import { useAuth } from "context/auth";
 import { useUser } from "context/user";
 import { MemberProps } from "types/kaggle";
@@ -60,20 +56,7 @@ const MyTeam: React.FC<Props> = props => {
 
 	return (
 		<div className="strm-page-card my-team-container">
-			{compContext.mySectionType === "team" && (
-				<Team />
-			)}
-			{compContext.mySectionType === "pool" && compContext.myTeam?.pool && (
-				<MyPool
-					pool={compContext.myTeam?.pool}
-					invite_requests={compContext.myTeam?.invite_requests || []}
-				/>
-			)}
-			{compContext.mySectionType === "join_requests" &&
-				compContext.myTeam?.join_requests && (
-					<MyJoinRequest myJoinRequest={compContext.myTeam?.join_requests} />
-				)}
-			{compContext.mySectionType === "no-content" && (
+			{(compContext.mySectionType !== "team" && compContext.mySectionType !== "pool") && (
 				<>
 					{" "}
 					<div className="vertical-center">
@@ -118,6 +101,18 @@ const MyTeam: React.FC<Props> = props => {
 					)}
 				</>
 			)}
+			{compContext.mySectionType === "team" && (
+				<Team />
+			)}
+			{compContext.mySectionType === "pool" && compContext.myTeam?.pool && (
+				<MyPool
+					pool={compContext.myTeam?.pool}
+					invite_requests={compContext.myTeam?.invite_requests || []}
+				/>
+			)}
+			{compContext.myTeam?.join_requests && compContext.myTeam?.join_requests.my_request.status !== "accepted" && (
+					<MyJoinRequest myJoinRequest={compContext.myTeam?.join_requests} />
+				)}
 		</div>
 	);
 };

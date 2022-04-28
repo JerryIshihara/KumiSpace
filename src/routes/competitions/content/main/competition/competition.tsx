@@ -15,22 +15,29 @@ import TextEllipsis from "components/TextEllipsis";
 import MyTeam from "./myTeam";
 import Pool from "./pool";
 import { timeToDeadline } from "utils/time";
-import {utf16ToText} from 'utils/text'
+import { utf16ToText } from "utils/text";
 import { useCompetition } from "context/kaggleCompetition";
 import { tab_constants } from "./tab.constant";
 
-import Teams from "./groups";
+import TeamsToJoin from "./groups";
+import AllTeams from "./allTeams";
 import { KaggleCompetitionProps } from "types/kaggle";
 
 const { TabPane } = Tabs;
 
 interface CompetitionBannerProps {
 	competition: KaggleCompetitionProps;
-	numTeams: number,
-	numUsers: number,
+	numTeams: number;
+	numTeamsToJoins: number;
+	numUsers: number;
 }
 const CompetitionBanner: React.FC<CompetitionBannerProps> = React.memo(
-	({ competition, numTeams, numUsers }: CompetitionBannerProps) => (
+	({
+		competition,
+		numTeams,
+		numUsers,
+		numTeamsToJoins,
+	}: CompetitionBannerProps) => (
 		<div
 			className="main-page-club-block"
 			style={{
@@ -59,7 +66,8 @@ const CompetitionBanner: React.FC<CompetitionBannerProps> = React.memo(
 								lineHeight: 1.5,
 							}}
 						>
-							{utf16ToText(competition.title)} <FiExternalLink style={{ margin: 4 }} />
+							{utf16ToText(competition.title)}{" "}
+							<FiExternalLink style={{ margin: 4 }} />
 						</a>
 					</TextEllipsis>
 					<TextEllipsis
@@ -71,7 +79,7 @@ const CompetitionBanner: React.FC<CompetitionBannerProps> = React.memo(
 					<TextEllipsis className="main-page-club-header-info-profile-text">
 						<h4>
 							{/* <div className="strm-card-team-num">{}</div> */}
-							{numTeams} teams to join &middot;{" "}
+							{numTeams} teams &middot; {numTeamsToJoins} teams to join &middot;{" "}
 							{timeToDeadline(competition.deadline)} &middot;{" "}
 							{competition.category}
 						</h4>
@@ -108,7 +116,20 @@ const Competition: React.FC<Props> = props => {
 
 	return (
 		<div className="main-page">
-			{compContext.competition && <CompetitionBanner numTeams={compContext.teams?.length || 0} competition={compContext.competition} numUsers={0}/>}
+			{compContext.competition && (
+				<CompetitionBanner
+					numTeams={compContext.teams?.length || 0}
+					numTeamsToJoins={
+						(
+							compContext.teams?.filter(
+								team => team.members.length < team.num_members
+							) || []
+						).length
+					}
+					competition={compContext.competition}
+					numUsers={0}
+				/>
+			)}
 			<>
 				<div className="main-page-club-block main-page-club-block-tab-container main-page-club-block-sticky">
 					{/* <Tabs
@@ -143,7 +164,16 @@ const Competition: React.FC<Props> = props => {
 				</div>
 				{compContext.competition?.name && (
 					<div className="main-page-club-block main-page-club-block-tabpane-container">
-						{!tab && <Teams teams={compContext.teams || []}/>}
+						{!tab && <AllTeams teams={compContext.teams || []} />}
+						{tab === "join" && (
+							<TeamsToJoin
+								teams={
+									compContext.teams?.filter(
+										team => team.members.length < team.num_members
+									) || []
+								}
+							/>
+						)}
 						{tab === "pool" && <Pool />}
 						{tab === "my-team" && (
 							<MyTeam competitionName={compContext.competition?.name} />

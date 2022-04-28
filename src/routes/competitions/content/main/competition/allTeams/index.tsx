@@ -6,7 +6,7 @@ import "./style.less";
 
 // import { get_teams_by_competition_name } from "api/kaggle";
 import { UserItem, TextEllipsis } from "components";
-import { TeamCard } from "../card";
+import { TeamListItem } from "../card";
 import { useUser } from "context/user";
 import { useCompetition } from "context/kaggleCompetition";
 import { TeamProps } from "types/kaggle";
@@ -21,10 +21,7 @@ const Teams: React.FC<Props> = React.memo(({ teams }: Props) => {
 	return (
 		<div>
 			{teams.map((team: TeamProps, index: number) => (
-				<TeamCard
-					key={team.public_id}
-					team={team}
-				/>
+				<TeamListItem key={team.public_id} team={team} last={index === teams.length - 1}/>
 			))}
 		</div>
 	);
