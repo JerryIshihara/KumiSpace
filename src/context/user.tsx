@@ -41,58 +41,29 @@ export const UserContextProvider = (props: any) => {
 	useEffect(() => {
 		if (auth.token) {
 			console.log(auth.token);
-
-			get_user(auth.token)
-				.then(res => {
-					console.log(res.data);
+			auth.authorizedAPI(
+				token => get_user(token),
+				res => {
 					setUser(res.data);
-				})
-				.catch(e => {
-					console.warn(e.response);
-					if (e.status === 401) {
-						if (e.response.status === 401) {
-							auth
-								.refresh_token()
-								.then(res => {
-									auth.storeToken(res.data.token);
-									get_user(res.data.token)
-										.then(res => {
-											setUser(res.data);
-										})
-										.catch(e => {});
-								})
-								.catch(e => {
-									setUser(undefined);
-									setCompetitions([]);
-									auth.logout();
-								});
-						}
-					}
-				});
-			get_my_competitions(auth.token)
-				.then(res => {
+				},
+				e => {
+					setUser(undefined);
+					setCompetitions([]);
+				}
+			);
+			auth.authorizedAPI(
+				token => get_my_competitions(token),
+				res => {
 					setCompetitions(res.data);
-				})
-				.catch(e => {
-					console.warn(e.response);
-					if (e.response.status === 401) {
-						auth
-							.refresh_token()
-							.then(res => {
-								auth.storeToken(res.data.token);
-								get_my_competitions(res.data.token)
-									.then(res => {
-										setCompetitions(res.data);
-									})
-									.catch(e => {});
-							})
-							.catch(e => {
-								setUser(undefined);
-								setCompetitions([]);
-								auth.logout();
-							});
-					}
-				});
+				},
+				e => {
+					setUser(undefined);
+					setCompetitions([]);
+				}
+			);
+		} else {
+			setUser(undefined)
+			setCompetitions([]);
 		}
 	}, [auth.token]);
 

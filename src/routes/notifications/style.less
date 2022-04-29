@@ -3,8 +3,10 @@
 @ntf: ~".notification";
 
 @{ntf}-container {
-    width: 500px;
+    width: 600px;
     padding: @padding-md 0;
+    display: flex;
+    flex-direction: column;
 }
 
 @{ntf}-item {
@@ -15,7 +17,7 @@
     flex-direction: row;
     gap: @margin-md;
     background-color: @component-background;
-    cursor: pointer;
+    // cursor: pointer;
     &-unread {
         background-color: color(~`colorPalette('@{primary-color}', 1) `);
     }
@@ -25,10 +27,13 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: @margin-xs;
+    // gap: @margin-xs;
 }
-@{ntf}-content > p, h4 {
+@{ntf}-content > span, h3 {
     line-height: 1;
+    margin: 0;
+}
+@{ntf}-content > div, p {
     margin: 0;
 }
 

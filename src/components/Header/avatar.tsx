@@ -39,7 +39,7 @@ const NavBarAvatar: React.FC<any> = props => {
 			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
 			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
 		}
-	}, [userContext.user?.avatar?.url]);
+	}, [userContext.user]);
 
 
 	return (
@@ -56,7 +56,7 @@ const NavBarAvatar: React.FC<any> = props => {
 			{show ? (
 				<Link
 					to={{
-						pathname: "/usr/lalal",
+						pathname: `/usr/${userContext.user?.public_id}`,
 						state: { isAuthenticated: auth.token },
 					}}
 				>

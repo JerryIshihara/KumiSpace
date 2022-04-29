@@ -22,11 +22,13 @@ export const login = async (email: string, password: string) => {
 	return response;
 };
 
-export const signup = async (email: string, password: string) => {
+export const signup = async (email: string, password: string, firstName: string, lastName: string) => {
 	const response = await axios({
 		method: "POST",
 		url: withUrl("/users/signup"),
 		data: {
+			firstName, 
+			lastName,
 			identity_type: IdentityType.email,
 			identifier: email.toLowerCase(),
 			credential: password,
