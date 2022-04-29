@@ -24,7 +24,7 @@ const Teams: React.FC<Props> = React.memo(({ teams }: Props) => {
 				<TeamListItem key={team.public_id} team={team} last={index === teams.length - 1}/>
 			))}
 		</div>
-	);
+	); 
 });
 
 export default Teams;
