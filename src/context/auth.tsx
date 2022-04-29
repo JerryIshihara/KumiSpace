@@ -11,7 +11,7 @@ export interface AuthContextProps {
 		passward: string,
 		callback?: () => void
 	) => void;
-	signUp: (email: string, passward: string) => void;
+	signUp: (email: string, passward: string, firstName: string, lastName: string) => void;
 	status: () => Promise<{ isAuthenticated: Boolean }>;
 	logout: () => void;
 	refresh_token: () => Promise<AxiosResponse<any, any>>;
@@ -56,8 +56,8 @@ export const AuthContextProvider = (props: any) => {
 				console.warn(e.response);
 			});
 	};
-	const signUp = async (email: string, passward: string) => {
-		signup(email, passward)
+	const signUp = async (email: string, passward: string, firstName: string, lastName: string) => {
+		signup(email, passward, firstName, lastName)
 			.then(res => {
 				localStorage.setItem("secure_token", res.data.token);
 				setToken(res.data.token);

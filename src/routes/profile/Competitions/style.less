@@ -1,0 +1,27 @@
+@import "../style.less";
+@profile-comp-prefix: ~"@{mp-prefix}-profile-competition";
+
+
+@{profile-comp-prefix}-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: @padding-md 0;
+}
+@{profile-comp-prefix}-members {
+    display: flex;
+    gap: @margin-xss;
+}
+@{profile-comp-prefix}-info {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: flex-start;
+    padding: 0 @padding-md;
+}
+@{profile-comp-prefix}-link {
+    color: @text-color;
+}
+@{profile-comp-prefix}-link:hover {
+    color: @primary-color;
+}

@@ -101,7 +101,7 @@ const ImageUploader: React.FC<Props> = (props: Props) => {
 							<img
 								src={file.url}
 								alt="upload"
-								style={{ width: "100%", height: "100%", margin: 0 }}
+								style={{ width: "100%", height: "100%", margin: 0, objectFit: "cover" }}
 							/>
 							<div
 								className="arco-upload-list-item-picture-mask"

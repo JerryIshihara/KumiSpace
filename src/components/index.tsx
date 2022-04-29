@@ -9,6 +9,7 @@ import UserItem from "./UserListItem";
 import FormItem from "./FormItem";
 import { ImageUploader } from "./Upload";
 import Messages from "./Messages";
+import Header from "./Header";
 
 export {
 	Logo,
@@ -21,5 +22,6 @@ export {
 	UserItem,
 	FormItem,
 	ImageUploader,
-	Messages
+	Messages,
+	Header
 };

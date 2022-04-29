@@ -18,9 +18,9 @@ const Content: React.FC<Props> = props => {
 	return (
 		<div className="strm-body strm-content ">
 			<div className="strm-content-container">
-				<Route exact path="/">
+				{/* <Route exact path="/">
 					<Competitions />
-				</Route>
+				</Route> */}
 				{/* <Route exact path="/feed/:feedType">
 					<Feed />
 				</Route>

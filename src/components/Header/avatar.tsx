@@ -56,7 +56,7 @@ const NavBarAvatar: React.FC<any> = props => {
 			{show ? (
 				<Link
 					to={{
-						pathname: "/usr/lalal",
+						pathname: `/usr/${userContext.user?.public_id}`,
 						state: { isAuthenticated: auth.token },
 					}}
 				>
