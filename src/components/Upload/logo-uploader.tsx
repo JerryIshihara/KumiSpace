@@ -31,7 +31,7 @@ function getBase64(img: Blob, callback: Function) {
 
 interface Props {
 	icon?: React.ReactElement;
-	onUpload: (file: any) => void;
+	onUpload: (file: Blob) => void;
 	style?: React.CSSProperties;
 	imageStyle?: React.CSSProperties;
 	url?: string;
@@ -82,7 +82,7 @@ const ImageUploader: React.FC<Props> = (props: Props) => {
 					};
 					setFile(_file);
 					if (currentFile.status !== "uploading") {
-						props.onUpload(_file);
+						props.onUpload(currentFile.originFile as Blob);
 					}
 				}}
 				onProgress={currentFile => {

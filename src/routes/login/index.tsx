@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style.less";
 
 import { Button, Input, Space } from "antd";
-import {Alert} from '@arco-design/web-react'
+import { Alert } from "@arco-design/web-react";
 import {
 	withRouter,
 	RouteComponentProps,
@@ -34,26 +34,24 @@ const LoginPage: React.FC<Props> = props => {
 	useEffect(() => {
 		setCredential(undefined);
 		setRepeatCrd(undefined);
-		setError(undefined)
+		setError(undefined);
 	}, [authMode]);
-	
-	
+
 	const onSignUp = () => {
 		if (!firstName || !lastName) {
-			setError("Please enter you first and last name")
-		}
-		else if (!identifier) {
-			setError("Please enter you email")
-		}
-		else if (!credential) {
+			setError("Please enter you first and last name");
+		} else if (!identifier) {
+			setError("Please enter you email");
+		} else if (!credential) {
 			setError("Please enter you password");
-		}
-		else if (credential !== repeatCrd) {
+		} else if (credential !== repeatCrd) {
 			setError("Passwords do not match");
 		} else {
-			auth.signUp(identifier, credential, firstName, lastName);
+			auth.signUp(identifier, credential, firstName, lastName, res => {
+				props.history.push("/");
+			});
 		}
-	}
+	};
 
 	return (
 		<div className="body-center">
@@ -86,7 +84,13 @@ const LoginPage: React.FC<Props> = props => {
 					{authMode === SIGNIN && (
 						<div className="login-form-content">
 							<span className="login-form-title">Sign in to your account</span>
-							{error && <Alert style={{ margin: "8px 0" }} type='error' content={error} />}
+							{error && (
+								<Alert
+									style={{ margin: "8px 0" }}
+									type="error"
+									content={error}
+								/>
+							)}
 							<div className="login-form-fields">
 								<Space direction="vertical" size={15} style={{ width: "100%" }}>
 									<Input
@@ -127,7 +131,13 @@ const LoginPage: React.FC<Props> = props => {
 							<span className="login-form-title">Create an account</span>
 							<div className="login-form-fields">
 								<Space direction="vertical" size={15} style={{ width: "100%" }}>
-									{error && <Alert style={{ margin: "8px 0" }} type='error' content={error} />}
+									{error && (
+										<Alert
+											style={{ margin: "8px 0" }}
+											type="error"
+											content={error}
+										/>
+									)}
 									<Input
 										size="large"
 										placeholder="First Name"

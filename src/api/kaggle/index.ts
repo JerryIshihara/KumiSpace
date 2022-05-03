@@ -8,7 +8,7 @@ export const get_competitions = async (): Promise<any> => {
 		// headers: {
 		// 	"x-access-tokens": token,
 		// },
-		url: "/kaggle",
+		url: "/api/kaggle",
 	});
 	return result;
 };
@@ -20,7 +20,7 @@ export const get_competition = async (name: string): Promise<any> => {
 		// headers: {
 		// 	"x-access-tokens": token,
 		// },
-		url: "/kaggle/" + name,
+		url: "/api/kaggle/" + name,
 	});
 	return result;
 };
@@ -32,7 +32,7 @@ export const get_my_team = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: `/kaggle/${competition_name}/my-team`,
+		url: `/api/kaggle/${competition_name}/my-team`,
 		headers: {
 			"Authorization": token,
 		}
@@ -45,7 +45,7 @@ export const get_my_competitions = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: `/kaggle/my-competitions`,
+		url: `/api/kaggle/my-competitions`,
 		headers: {
 			"Authorization": token
 		}

@@ -24,6 +24,7 @@ export type UserProps = {
 export interface UserContextProps {
 	user: UserProps;
 	competitions: Array<any>;
+	getUser: () => void;
 	updateProfile: (p: UserProfileProps, callBack: () => void) => void;
 	addSkill: (skill: UserSkillProps, callBack: () => void) => void;
 	editSkill: (pid: string, skill: UserSkillProps, callBack: () => void) => void;
@@ -41,16 +42,7 @@ export const UserContextProvider = (props: any) => {
 	useEffect(() => {
 		if (auth.token) {
 			console.log(auth.token);
-			auth.authorizedAPI(
-				token => get_user(token),
-				res => {
-					setUser(res.data);
-				},
-				e => {
-					setUser(undefined);
-					setCompetitions([]);
-				}
-			);
+			getUser()
 			auth.authorizedAPI(
 				token => get_my_competitions(token),
 				res => {
@@ -67,19 +59,35 @@ export const UserContextProvider = (props: any) => {
 		}
 	}, [auth.token]);
 
+	const getUser = () => {
+		auth.authorizedAPI(
+			token => get_user(token),
+			res => {
+				setUser(res.data);
+			},
+			e => {
+				setUser(undefined);
+				setCompetitions([]);
+			}
+		);
+	}
+
 	const updateProfile = async (
 		newProfile: UserProfileProps,
 		callBack: () => void
 	) => {
 		var _profile = { ...user?.profile, ...newProfile };
-		edit_profile(auth.token, _profile)
-			.then(res => {
+		auth.authorizedAPI(
+			token => edit_profile(token, _profile),
+			res => {
 				setUser({ ...user, profile: _profile } as UserProps);
 				callBack();
-			})
-			.catch(e => {
-				console.warn(e.response);
-			});
+			},
+			e => {
+				setUser(undefined);
+				setCompetitions([]);
+			}
+		);
 	};
 
 	const addSkill = async (skill: UserSkillProps, callBack: () => void) => {
@@ -117,6 +125,7 @@ export const UserContextProvider = (props: any) => {
 			value={{
 				user,
 				competitions,
+				getUser,
 				updateProfile,
 				addSkill,
 				editSkill,

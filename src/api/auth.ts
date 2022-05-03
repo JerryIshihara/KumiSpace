@@ -12,7 +12,7 @@ export const login = async (email: string, password: string) => {
 	const response = await axios({
 		method: "PUT",
 		// url: withUrl("/users/login"),
-		url: "/users/login",
+		url: "/api/users/login",
 		data: {
 			identity_type: IdentityType.email,
 			identifier: email.toLowerCase(),
@@ -25,7 +25,7 @@ export const login = async (email: string, password: string) => {
 export const signup = async (email: string, password: string, firstName: string, lastName: string) => {
 	const response = await axios({
 		method: "POST",
-		url: withUrl("/users/signup"),
+		url: "/api/users/signup",
 		data: {
 			firstName, 
 			lastName,
@@ -41,7 +41,7 @@ export const log_out = async () => {
 	const response = await axios({
 		method: "PUT",
 		// url: withUrl("/users/logout"),
-		url: "/users/logout",
+		url: "/api/users/logout",
 	});
 	return response;
 };
@@ -50,7 +50,7 @@ export const refresh = async (): Promise<AxiosResponse<any, any>> => {
 	const response = await axios({
 		method: "PUT",
 		// url: withUrl("/users/logout"),
-		url: "/users/refresh",
+		url: "/api/users/refresh",
 	});
 	return response;
 };

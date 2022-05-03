@@ -18,7 +18,7 @@ const Content: React.FC<Props> = props => {
 		<div className="strm-page">
 			<Header />
 			<div className="strm-body strm-content ">
-				<div className="strm-content-container">
+				<div className="strm-content-container main-page">
 					<Switch>
 						<Route
 							exact

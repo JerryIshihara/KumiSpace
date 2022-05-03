@@ -17,6 +17,7 @@ import { useUser } from "context/user";
 
 import { tab_constants } from "./user.constant";
 import ProfileEditForm from "./profileEditForm";
+import AvatarEditForm from "./avatarEdit";
 import Skills from "./Skills";
 import Competitions from "./Competitions";
 import "./style.less";
@@ -48,8 +49,7 @@ const UserProfile: React.FC<Props> = props => {
 	const [url, setUrl] = useState<string>();
 	useEffect(() => {
 		if (userContext.user?.avatar?.url) {
-			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
-			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
+			setUrl(userContext.user?.avatar?.url);
 		}
 	}, [userContext.user?.avatar?.url]);
 	// const [tabKey, setTabKey] = useState<string>("Home");
@@ -60,7 +60,7 @@ const UserProfile: React.FC<Props> = props => {
 		<div className="strm-page">
 			<Header />
 			<div className="strm-body strm-content ">
-				<div className="strm-content-container">
+				<div className="strm-content-container main-page">
 					<div className="main-page">
 						<div
 							className="main-page-club-block main-page-profile-container"
@@ -72,7 +72,24 @@ const UserProfile: React.FC<Props> = props => {
 					size={{ xs: 100, sm: 120, md: 120, lg: 150, xl: 150, xxl: 150 }}
 					icon={<UserOutlined />}
 				/> */}
-							<ImageUploader
+							<Link
+								style={{margin: 0, padding: 0,}}
+								to={
+									window.location.pathname +
+									"?" +
+									(tab ? `tab=${tab}&` : "") +
+									"form=avatar"
+								}
+							>
+								<Avatar
+									shape="square"
+									size={150}
+									src={url}
+									icon={<UserOutlined />}
+								/>
+							</Link>
+							<AvatarEditForm onCancel={() => history.goBack()}/>
+							{/* <ImageUploader
 								url={url}
 								style={{ width: 150, height: 150 }}
 								icon={<UserOutlined />}
@@ -85,7 +102,7 @@ const UserProfile: React.FC<Props> = props => {
 											console.warn(e.response);
 										});
 								}}
-							/>
+							/> */}
 							<div className="main-page-profile">
 								<TextEllipsis
 									style={{

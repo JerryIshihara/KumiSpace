@@ -36,8 +36,7 @@ const NavBarAvatar: React.FC<any> = props => {
 
 	useEffect(() => {
 		if (userContext.user?.avatar?.url) {
-			console.log(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
-			setUrl(process.env.REACT_APP_HOST + userContext.user?.avatar?.url);
+			setUrl(userContext.user?.avatar?.url);
 		}
 	}, [userContext.user]);
 

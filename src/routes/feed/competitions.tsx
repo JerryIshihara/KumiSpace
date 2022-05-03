@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./style.less"
 
 import { Header } from "components"
 import { CompetitionCard } from "./Card";
@@ -20,8 +21,8 @@ const Competitions: React.FC = () => {
 	return (
 		<div className="strm-page">
 			<Header />
-			<div className="strm-body strm-content ">
-				<div className="strm-content-container">
+			<div className="strm-body strm-content">
+				<div className="feed-grid" style={{width: "80%", minWidth: "800px", padding: "20px 0"}}>
 					{competitions.map(
 						(item: any, index) =>
 							item.category === "Featured" && (
