@@ -8,30 +8,31 @@ export const IdentityType = {
 	phone: "phone",
 };
 
-export const login = async (email: string, password: string) => {
+export const login = async (idToken: string/* email: string, password: string */) => {
 	const response = await axios({
-		method: "PUT",
+		method: "POST",
 		// url: withUrl("/users/login"),
-		url: "/api/users/login",
+		url: "/api/users/sessionLogin",
 		data: {
-			identity_type: IdentityType.email,
-			identifier: email.toLowerCase(),
-			credential: password,
+			idToken
+			// identity_type: IdentityType.email,
+			// identifier: email.toLowerCase(),
+			// credential: password,
 		},
 	});
 	return response;
 };
 
-export const signup = async (email: string, password: string, firstName: string, lastName: string) => {
+export const signup = async (idToken: string, firstName: string, lastName: string) => {
 	const response = await axios({
 		method: "POST",
-		url: "/api/users/signup",
+		// url: "/api/users/signup",
+		url: "/api/users/sessionSignUp",
 		data: {
+			idToken,
 			firstName, 
 			lastName,
 			identity_type: IdentityType.email,
-			identifier: email.toLowerCase(),
-			credential: password,
 		},
 	});
 	return response;

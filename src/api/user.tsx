@@ -90,7 +90,6 @@ export const upload_avatar = async (
 	// 		"Authorization": token,
 	// 	},
 	// });
-	console.log(response);
 	
 	return response;
 };

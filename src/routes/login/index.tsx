@@ -10,7 +10,7 @@ import {
 	useLocation,
 	useHistory,
 } from "react-router-dom";
-
+import axios from "axios"
 import Navbar from "./navbar";
 import OAuth from "./oauth";
 // import { AuthProps } from "../../redux/lib/auth.type";
@@ -47,9 +47,9 @@ const LoginPage: React.FC<Props> = props => {
 		} else if (credential !== repeatCrd) {
 			setError("Passwords do not match");
 		} else {
-			auth.signUp(identifier, credential, firstName, lastName, res => {
+			auth.signUpWithEmailAndPassword(identifier, credential, firstName, lastName, res => {
 				props.history.push("/");
-			});
+			})
 		}
 	};
 
@@ -113,7 +113,7 @@ const LoginPage: React.FC<Props> = props => {
 										loading={false}
 										onClick={() => {
 											if (identifier && credential) {
-												auth.authenticate(identifier, credential, () => {
+												auth.signInWithEmailAndPassword(identifier, credential, () => {
 													props.history.push("/");
 												});
 											}
