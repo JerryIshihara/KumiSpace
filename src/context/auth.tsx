@@ -3,6 +3,8 @@ import { login, signup, log_out, refresh } from "api/auth";
 import { AxiosResponse } from "axios";
 import { useHistory } from "react-router-dom";
 import firebase from "firebase";
+import { getAuth, sendEmailVerification } from "firebase/auth";
+import { actionCodeSettings } from "firebase";
 
 export interface AuthContextProps {
 	token: string;
@@ -62,6 +64,14 @@ export const AuthContextProvider = (props: any) => {
 			.auth()
 			.signInWithEmailAndPassword(email, password)
 			.then(({ user }: any) => {
+				console.log("verified: ", user.emailVerified);
+				// sendEmailVerification(user).then(() => {
+				// 	// Email verification sent!
+				// 	// ...
+				// 	console.log("verified!!!");
+					
+				// });
+
 				// Get the user's ID token as it is needed to exchange for a session cookie.
 				return user.getIdToken().then((idToken: string) => {
 					// Session login endpoint is queried and the session cookie is set.
