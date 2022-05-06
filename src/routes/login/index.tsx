@@ -8,16 +8,21 @@ import {
 	RouteComponentProps,
 	useParams,
 	useLocation,
-	useHistory,
+	Link,
 } from "react-router-dom";
-import axios from "axios"
+import { getAuth, sendEmailVerification } from "firebase/auth";
+import axios from "axios";
 import Navbar from "./navbar";
 import OAuth from "./oauth";
+import EmailVerification from "./emailVerification";
+import ResetPassword from "./resetPassword";
 // import { AuthProps } from "../../redux/lib/auth.type";
 import { useAuth } from "context/auth";
 
 const SIGNIN = "sign-in";
 const SIGNUP = "sign-up";
+const EMAIL_VERIFICATION = "email-verification";
+const RESET_PASSWORD = "reset-password";
 
 interface Props extends RouteComponentProps {}
 
@@ -47,9 +52,24 @@ const LoginPage: React.FC<Props> = props => {
 		} else if (credential !== repeatCrd) {
 			setError("Passwords do not match");
 		} else {
-			auth.signUpWithEmailAndPassword(identifier, credential, firstName, lastName, res => {
-				props.history.push("/");
-			})
+			auth.signUpWithEmailAndPassword(
+				identifier,
+				credential,
+				firstName,
+				lastName,
+				user => {
+					sendEmailVerification(user).then(() => {
+						// Email verification sent!
+						props.history.push({
+							pathname: "/auth/email-verification",
+							state: { email: identifier, password: credential },
+						});
+					});
+				},
+				res => {
+					// props.history.push("/");
+				}
+			);
 		}
 	};
 
@@ -59,27 +79,28 @@ const LoginPage: React.FC<Props> = props => {
 			<div className="page-body-container login-form-container">
 				{/* Login Form */}
 				<div className="login-form">
-					{/* Login Form Tabs */}
-					<div className="login-form-tabs">
-						<div
-							className={
-								`login-form-tab` +
-								(authMode === SIGNIN ? ` login-form-tab-hover` : ``)
-							}
-							onClick={() => props.history.push("/auth/sign-in")}
-						>
-							<span>Sign in</span>
+					{(authMode === SIGNIN || authMode === SIGNUP) && (
+						<div className="login-form-tabs">
+							<div
+								className={
+									`login-form-tab` +
+									(authMode === SIGNIN ? ` login-form-tab-hover` : ``)
+								}
+								onClick={() => props.history.push("/auth/sign-in")}
+							>
+								<span>Sign in</span>
+							</div>
+							<div
+								className={
+									`login-form-tab` +
+									(authMode === SIGNUP ? ` login-form-tab-hover` : ``)
+								}
+								onClick={() => props.history.push("/auth/sign-up")}
+							>
+								<span>Sign up</span>
+							</div>
 						</div>
-						<div
-							className={
-								`login-form-tab` +
-								(authMode === SIGNUP ? ` login-form-tab-hover` : ``)
-							}
-							onClick={() => props.history.push("/auth/sign-up")}
-						>
-							<span>Sign up</span>
-						</div>
-					</div>
+					)}
 					{/* Login Form Sign In */}
 					{authMode === SIGNIN && (
 						<div className="login-form-content">
@@ -105,6 +126,14 @@ const LoginPage: React.FC<Props> = props => {
 										value={credential}
 										onChange={e => setCredential(e.target.value)}
 									/>
+									<Link
+										to={{
+											pathname: "/auth/reset-password",
+											state: { email: identifier },
+										}}
+									>
+										Forgot Password?
+									</Link>
 									<Button
 										className="login-form-submit"
 										size="large"
@@ -113,9 +142,25 @@ const LoginPage: React.FC<Props> = props => {
 										loading={false}
 										onClick={() => {
 											if (identifier && credential) {
-												auth.signInWithEmailAndPassword(identifier, credential, () => {
-													props.history.push("/");
-												});
+												auth.signInWithEmailAndPassword(
+													identifier,
+													credential,
+													user => {
+														sendEmailVerification(user).then(() => {
+															// Email verification sent!
+															props.history.push({
+																pathname: "/auth/email-verification",
+																state: {
+																	email: identifier,
+																	password: credential,
+																},
+															});
+														});
+													},
+													() => {
+														props.history.push("/");
+													}
+												);
 											}
 										}}
 									>
@@ -184,6 +229,8 @@ const LoginPage: React.FC<Props> = props => {
 					)}
 					<OAuth />
 				</div>
+				{authMode === EMAIL_VERIFICATION && <EmailVerification />}
+				{authMode === RESET_PASSWORD && <ResetPassword />}
 			</div>
 		</div>
 	);

@@ -5,7 +5,7 @@ import { Button, Input, Space } from "antd";
 import {
 	CheckCircleTwoTone,
 	LoadingOutlined,
-	ExclamationCircleTwoTone,
+	ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { Alert } from "@arco-design/web-react";
 import {
@@ -28,7 +28,7 @@ const EMAIL_VERIFICATION = "email-verification";
 
 interface Props extends RouteComponentProps {}
 
-const EmailVerification: React.FC<Props> = props => {
+const ResetPassword: React.FC<Props> = props => {
 	const auth = useAuth();
 	const state = useLocation().state as { email: string; password: string };
 	const [email, setEmail] = useState<string>();
@@ -37,7 +37,7 @@ const EmailVerification: React.FC<Props> = props => {
 	const [done, setDone] = useState<boolean>(false);
 	const [checkAgain, setCheckAgain] = useState<boolean>(false);
 	const Title = useMemo(
-		() => (done ? "Email verified!" : "Verify your e-mail"),
+		() => (done ? "Instruction sent" : "Reset password"),
 		[done]
 	);
 	const Message = useMemo(
@@ -62,9 +62,19 @@ const EmailVerification: React.FC<Props> = props => {
 			props.history.push("/page-not-found");
 		} else {
 			setEmail(state.email);
-			setPassword(state.password);
 		}
 	}, [state]);
+
+	const resetPassword = () => {
+		setLoading(true);
+		setTimeout(() => {
+			email &&
+				auth.resetPassword(email, () => {
+					setLoading(false);
+					setDone(true);
+				});
+		}, 500);
+	};
 
 	return (
 		<div className="login-form">
@@ -92,44 +102,54 @@ const EmailVerification: React.FC<Props> = props => {
 								)} */}
 							{Title}
 						</span>
-						{Message}
+						{/* {Message} */}
+						{done ? (
+							<p>
+								Reset instruction has been sent to <b>{email}</b>
+							</p>
+						) : (
+							<Input
+								style={{ width: 400 }}
+								size="large"
+								placeholder="Email Address"
+								value={email}
+								onChange={e => setEmail(e.target.value)}
+							/>
+						)}
 
+						{!done && (
+							<Button
+								className="login-form-submit"
+								// size="large"
+								type="primary"
+								// style={{ width: "100%" }}
+								disabled={loading || done}
+								onClick={resetPassword}
+							>
+								Send instruction
+							</Button>
+						)}
+						{done && (
+							<p style={{ color: "GrayText" }}>
+								Didn't get an email?{" "}
+								<Button
+									style={{ margin: 0, padding: 0 }}
+									size="small"
+									type="link"
+									onClick={resetPassword}
+								>
+									Send again
+								</Button>
+							</p>
+						)}
 						<Button
-							className="login-form-submit"
-							// size="large"
-							type="primary"
-							// style={{ width: "100%" }}
-							disabled={loading || done}
-							onClick={() => {
-								setLoading(true);
-								setTimeout(() => {
-									email &&
-										password &&
-										auth.signInWithEmailAndPassword(
-											email,
-											password,
-											// onNotVerified
-											user => {
-												setLoading(false);
-												setCheckAgain(true);
-											},
-											// callback
-											() => {
-												setLoading(false);
-												setDone(true);
-												setTimeout(() => {
-													props.history.push("/");
-												}, 1000);
-											}
-										);
-								}, 1000);
-							}}
+							type="text"
+							style={{ color: "GrayText" }}
+							icon={<ArrowLeftOutlined />}
+							onClick={() => {props.history.goBack()}}
 						>
-							Done
+							Back to log in
 						</Button>
-						<p style={{ color: "GrayText" }}>
-							Didn't get an email? <a>Send again.</a>
-						</p>
 					</Space>
 				</div>
 			</div>
@@ -137,4 +157,4 @@ const EmailVerification: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(EmailVerification);
+export default withRouter(ResetPassword);

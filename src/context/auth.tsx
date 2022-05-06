@@ -26,13 +26,16 @@ export interface AuthContextProps {
 		passward: string,
 		firstName: string,
 		lastName: string,
+		onNotVerified?: (user: any) => void,
 		callback?: (res: any) => void
 	) => void;
 	signInWithEmailAndPassword: (
 		email: string,
 		passward: string,
+		onNotVerified?: (user: any) => void,
 		callback?: () => void
 	) => void;
+	resetPassword: (email: string, callback?: () => void) => void;
 	status: () => Promise<{ isAuthenticated: Boolean }>;
 	logout: () => void;
 	refresh_token: () => Promise<AxiosResponse<any, any>>;
@@ -50,7 +53,6 @@ export const AuthContext = React.createContext<Partial<AuthContextProps> | any>(
 );
 
 export const AuthContextProvider = (props: any) => {
-	const history = useHistory();
 	const [token, setToken] = useState<string>();
 
 	useEffect(() => {
@@ -58,50 +60,69 @@ export const AuthContextProvider = (props: any) => {
 
 		getTokenFromSecureStore();
 	}, []);
-	const signInWithEmailAndPassword = (email: string, password: string) => {
+
+	const resetPassword = (email: string, callback?: () => void) => {
+		firebase
+			.auth()
+			.sendPasswordResetEmail(email)
+			.then(() => {
+				// Password reset email sent!
+				// ..
+				console.log("sent reset email");
+				
+				callback && callback();
+			})
+			.catch(error => {
+				// ..
+				console.warn(error);
+			});
+	};
+	const signInWithEmailAndPassword = (
+		email: string,
+		password: string,
+		onNotVerified?: (user: any) => void,
+		callback?: () => void
+	) => {
 		// When the user signs in with email and password.
 		firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password)
 			.then(({ user }: any) => {
-				console.log("verified: ", user.emailVerified);
-				// sendEmailVerification(user).then(() => {
-				// 	// Email verification sent!
-				// 	// ...
-				// 	console.log("verified!!!");
-					
-				// });
-
-				// Get the user's ID token as it is needed to exchange for a session cookie.
-				return user.getIdToken().then((idToken: string) => {
-					// Session login endpoint is queried and the session cookie is set.
-					// CSRF protection should be taken into account.
-					// ...
-					console.log(idToken);
-					login(idToken)
-						.then(res => {
-							storeToken(res.data.token);
-						})
-						.catch(e => {
-							console.warn(e.response);
-						});
-					// const csrfToken = getCookie('csrfToken')
-					// return postIdTokenToSessionLogin("/sessionLogin", idToken, csrfToken);
-				});
+				if (!user.emailVerified) {
+					onNotVerified && onNotVerified(user);
+					console.log("email not verified");
+				} else {
+					// Get the user's ID token as it is needed to exchange for a session cookie.
+					return user.getIdToken().then((idToken: string) => {
+						// Session login endpoint is queried and the session cookie is set.
+						// CSRF protection should be taken into account.
+						// ...
+						console.log(idToken);
+						login(idToken)
+							.then(res => {
+								storeToken(res.data.token);
+								callback && callback();
+							})
+							.catch(e => {
+								console.warn(e.response);
+							});
+						// const csrfToken = getCookie('csrfToken')
+						// return postIdTokenToSessionLogin("/sessionLogin", idToken, csrfToken);
+					});
+				}
 			})
 			.then(() => {
 				// A page redirect would suffice as the persistence is set to NONE.
 				return firebase.auth().signOut();
 			})
-			.then(() => {
-				// window.location.assign('/profile');
-			});
+			.then(() => {});
 	};
 	const signUpWithEmailAndPassword = (
 		email: string,
 		passward: string,
 		firstName: string,
 		lastName: string,
+		onNotVerified?: (user: any) => void,
 		callback?: (res: any) => void
 	) => {
 		// When the user signs in with email and password.
@@ -109,6 +130,10 @@ export const AuthContextProvider = (props: any) => {
 			.auth()
 			.createUserWithEmailAndPassword(email, passward)
 			.then(({ user }: any) => {
+				if (!user.emailVerified) {
+					onNotVerified && onNotVerified(user);
+					console.log("email not verified");
+				}
 				// Get the user's ID token as it is needed to exchange for a session cookie.
 				return user.getIdToken().then((idToken: string) => {
 					// Session login endpoint is queried and the session cookie is set.
@@ -117,7 +142,7 @@ export const AuthContextProvider = (props: any) => {
 					// const csrfToken = getCookie('csrfToken')
 					// return postIdTokenToSessionLogin('/sessionLogin', idToken, csrfToken);
 					signup(idToken, firstName, lastName).then(res => {
-						storeToken(res.data.token);
+						// storeToken(res.data.token);
 						callback && callback(res);
 					});
 				});
@@ -271,7 +296,7 @@ export const AuthContextProvider = (props: any) => {
 			value={{
 				token,
 				// authenticate,
-				// signUp,
+				resetPassword,
 				status,
 				storeToken,
 				getTokenFromSecureStore,
