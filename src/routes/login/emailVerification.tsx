@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./style.less";
 
+import { getAuth, sendEmailVerification } from "firebase/auth";
 import { Button, Input, Space } from "antd";
 import {
 	CheckCircleTwoTone,
@@ -128,7 +129,33 @@ const EmailVerification: React.FC<Props> = props => {
 							Done
 						</Button>
 						<p style={{ color: "GrayText" }}>
-							Didn't get an email? <a>Send again.</a>
+							Didn't get an email?{" "}
+							<Button
+								disabled={loading || done}
+								style={{ margin: 0, padding: 0 }}
+								size="small"
+								type="link"
+								onClick={() => {
+									setLoading(true);
+									email &&
+										password &&
+										auth.signInWithEmailAndPassword(
+											email,
+											password,
+											user => {
+												sendEmailVerification(user).then(() => {
+													setLoading(false);
+													setCheckAgain(false);
+												});
+											},
+											() => {
+												props.history.push("/");
+											}
+										);
+								}}
+							>
+								Send again
+							</Button>
 						</p>
 					</Space>
 				</div>
