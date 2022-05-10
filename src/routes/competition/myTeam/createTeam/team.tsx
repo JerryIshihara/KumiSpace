@@ -27,7 +27,7 @@ interface Props {
 const CreatePage: React.FC<Props> = (props: Props) => {
 	const history = useHistory();
 	const auth = useAuth();
-	const compContext = useCompetition()
+	const compContext = useCompetition();
 	const params = new URLSearchParams(window.location.search);
 	const [name, setName] = useState<string>();
 	const [numMembers, setNumMembers] = useState<number>(5);
@@ -50,33 +50,35 @@ const CreatePage: React.FC<Props> = (props: Props) => {
 		}
 		setConfirmLoading(true);
 		auth.authorizedAPI(
-			(token: string) => create_team(
-				token,
-				props.competitionName,
-				name,
-				numMembers,
-				language,
-				description
-			),
-			(res) => {
-				compContext.fetch_my_team && compContext.fetch_my_team()
-				compContext.fetch_teams && compContext.fetch_teams()
+			(token: string) =>
+				create_team(
+					token,
+					props.competitionName,
+					name,
+					numMembers,
+					language,
+					description
+				),
+			res => {
+				compContext.fetch_my_team && compContext.fetch_my_team();
+				compContext.fetch_teams && compContext.fetch_teams();
 				setConfirmLoading(false);
-				message.success(
-					`Team ${name} created!`
-				);
+				message.success(`Team ${name} created!`);
 			},
-			(e) => {
+			e => {
 				console.warn(e.response);
 				message.error(
 					`You already created/joined a team under competition ${props.competitionName}`
 				);
 			},
-				() => {
-					history.goBack();
-					setConfirmLoading(false);
-				}
-		)
+			() => {
+				history.goBack();
+				setConfirmLoading(false);
+			},
+			() => {
+				history.push("/auth/sign-in");
+			}
+		);
 	};
 
 	const handleCancel = () => {

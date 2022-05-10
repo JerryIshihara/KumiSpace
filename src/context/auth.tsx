@@ -44,7 +44,8 @@ export interface AuthContextProps {
 		func: (token: string) => Promise<any>,
 		callBack?: (res: any) => any,
 		fallback?: (e: any) => any,
-		final?: () => any
+		final?: () => any,
+		onNotLoggedIn?: () => void,
 	) => void;
 }
 
@@ -53,6 +54,7 @@ export const AuthContext = React.createContext<Partial<AuthContextProps> | any>(
 );
 
 export const AuthContextProvider = (props: any) => {
+	const history = useHistory()
 	const [token, setToken] = useState<string>();
 
 	useEffect(() => {
@@ -254,7 +256,8 @@ export const AuthContextProvider = (props: any) => {
 			func: (token: string) => Promise<any>,
 			callBack?: (res: any) => any,
 			fallback?: (e: any) => any,
-			final?: () => any
+			final?: () => any,
+			onNotLoggedIn?: () => void,
 		) => {
 			if (token) {
 				func(token)
@@ -286,6 +289,8 @@ export const AuthContextProvider = (props: any) => {
 					.finally(() => {
 						final && final();
 					});
+			} else {
+				onNotLoggedIn && onNotLoggedIn()
 			}
 		},
 		[token]
