@@ -63,6 +63,9 @@ const JoinPoolForm: React.FC<Props> = ({
 			() => {},
 			() => {
 				history.goBack();
+			},
+			() => {
+				history.push("/auth/sign-in");
 			}
 		);
 	};

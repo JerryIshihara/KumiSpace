@@ -19,9 +19,9 @@ import { useCompetition } from "context/kaggleCompetition";
 interface Props {
 	user: {
 		profile: {
-			username: string
-		},
-		public_id: string,
+			username: string;
+		};
+		public_id: string;
 	};
 }
 
@@ -30,8 +30,8 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 	const { competitionName } = useParams<{
 		competitionName: string;
 	}>();
-	const compContext = useCompetition()
-	const history = useHistory()
+	const compContext = useCompetition();
+	const history = useHistory();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [description, setDescription] = useState<string>();
@@ -59,16 +59,17 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 		if (!compContext.myTeam?.team) {
 			setConfirmLoading(false);
 			history.goBack();
-			message.warning("You need to be a team leader to invite.")
-			return
-		}  
+			message.warning("You need to be a team leader to invite.");
+			return;
+		}
 		auth.authorizedAPI(
-			(token) => sent_invite_request(token, competitionName, props.user.public_id),
+			token =>
+				sent_invite_request(token, competitionName, props.user.public_id),
 			res => {
 				console.log(res.data);
 				setConfirmLoading(false);
 				history.goBack();
-				message.success("You have invited " + props.user.profile.username)
+				message.success("You have invited " + props.user.profile.username);
 			},
 			e => {
 				setConfirmLoading(false);
@@ -77,10 +78,14 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 					history.goBack();
 					switch (e.response.data.status) {
 						case "pending":
-							message.warn(`You have invited ${props.user.profile.username} already`)
+							message.warn(
+								`You have invited ${props.user.profile.username} already`
+							);
 							break;
 						case "rejected":
-							message.warn(`${props.user.profile.username} has rejected you invitation already`)
+							message.warn(
+								`${props.user.profile.username} has rejected you invitation already`
+							);
 							break;
 						default:
 							break;
@@ -89,14 +94,17 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 			},
 			() => {
 				setConfirmLoading(false);
+			},
+			() => {
+				history.push("/auth/sign-in");
 			}
-		)
+		);
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
 		console.log("Clicked cancel button");
-		history.goBack()
+		history.goBack();
 	};
 
 	return (

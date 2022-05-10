@@ -91,6 +91,9 @@ const JoinPoolForm: React.FC<Props> = (props: Props) => {
 			},
 			() => {
 				setConfirmLoading(false);
+			},
+			() => {
+				history.push("/auth/sign-in");
 			}
 		);
 	};

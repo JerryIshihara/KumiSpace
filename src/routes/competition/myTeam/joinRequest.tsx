@@ -51,6 +51,12 @@ const MyJoinRequest: React.FC<Props> = React.memo(
 				},
 				(e) => {
 					console.warn(e);
+				},
+				() => {
+
+				},
+				() => {
+					history.push("/auth/sign-in");
 				}
 				)
 		}
