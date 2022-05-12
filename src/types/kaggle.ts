@@ -67,3 +67,10 @@ export interface PoolProps {
 	description?: string,
 	updated_on: Date,
 }
+
+export interface GroupCommentProps {
+	public_id: string,
+	user: UserProps,
+	content: string,
+	sent_on: Date,
+}

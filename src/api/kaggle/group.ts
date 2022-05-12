@@ -207,3 +207,22 @@ export const make_invite_request_decision = async (
 	});
 	return result;
 };
+
+export const write_comment = async (
+	token: string,
+	group_pid: string,
+	content: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "POST",
+		headers: {
+			"Authorization": token,
+		},
+		url: `/api/kaggle/groups/comments`,
+		data: {
+			group_pid,
+			content,
+		},
+	});
+	return result;
+};

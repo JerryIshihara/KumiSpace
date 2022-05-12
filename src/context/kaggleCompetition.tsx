@@ -22,6 +22,7 @@ import {
 	MemberProps,
 	JoinRequestProps,
 	InviteRequestProps,
+	GroupCommentProps,
 } from "types/kaggle";
 import { useAuth } from "./auth";
 import { useUser } from "./user";
@@ -31,6 +32,7 @@ interface MyTeamProps {
 	pool?: PoolProps;
 	join_requests?: {my_request: JoinRequestProps, group: TeamProps};
 	invite_requests?: Array<InviteRequestProps>;
+	comments: Array<GroupCommentProps>
 }
 type MySectionType = "no-content" | "pool" | "join_requests" | "team";
 interface CompetitionContextProps {
@@ -128,7 +130,11 @@ export const CompetitionProvider = (props: any) => {
 	const fetch_my_team = () => {
 		auth.authorizedAPI(
 			(token: string) => get_my_team(token, competitionName),
-			(res) => { setMyTeam(res.data); },
+			(res) => {
+				console.log("my team: ", res.data);
+				
+				setMyTeam(res.data);
+			},
 			() => { },
 			() => {}
 		)
