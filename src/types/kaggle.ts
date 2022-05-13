@@ -50,6 +50,13 @@ export interface InviteRequestProps {
 	user: UserProps,
 }
 
+export interface GroupCommentProps {
+	public_id: string,
+	user: UserProps,
+	content: string,
+	sent_on: Date,
+}
+
 export interface TeamProps {
 	name: string;
 	public_id: string;
@@ -57,7 +64,9 @@ export interface TeamProps {
 	description?: string;
 	members: Array<MemberProps>;
 	join_requests: Array<JoinRequestProps>;
-	invite_requests: Array<InviteRequestProps>
+	invite_requests: Array<InviteRequestProps>;
+	comments: Array<GroupCommentProps>
+
 }
 
 export interface PoolProps {
@@ -68,9 +77,3 @@ export interface PoolProps {
 	updated_on: Date,
 }
 
-export interface GroupCommentProps {
-	public_id: string,
-	user: UserProps,
-	content: string,
-	sent_on: Date,
-}

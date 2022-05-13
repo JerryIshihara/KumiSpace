@@ -18,7 +18,7 @@ const Messages = () => {
 	const [content, setContent] = useState<string>();
 	const messeges = useMemo(
 		() =>
-			compContext.myTeam?.comments.map(comment => (
+			compContext.myTeam?.team?.comments.map(comment => (
 				<Comment
 					align="right"
 					// actions={

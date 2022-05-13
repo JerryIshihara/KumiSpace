@@ -32,7 +32,7 @@ interface MyTeamProps {
 	pool?: PoolProps;
 	join_requests?: {my_request: JoinRequestProps, group: TeamProps};
 	invite_requests?: Array<InviteRequestProps>;
-	comments: Array<GroupCommentProps>
+	// comments: Array<GroupCommentProps>
 }
 type MySectionType = "no-content" | "pool" | "join_requests" | "team";
 interface CompetitionContextProps {
