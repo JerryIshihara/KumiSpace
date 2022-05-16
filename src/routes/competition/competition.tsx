@@ -59,7 +59,7 @@ const CompetitionBanner: React.FC<CompetitionBannerProps> = React.memo(
 							rel="noreferrer"
 							style={{
 								fontWeight: "bold",
-								fontSize: 30,
+								fontSize: 27,
 								display: "flex",
 								flexDirection: "row",
 								alignItems: "center",

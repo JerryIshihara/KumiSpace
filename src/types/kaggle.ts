@@ -34,27 +34,27 @@ export interface MemberProps {
 	language?: string;
 }
 
-export type RequestStatusType = "pending" | "accepted" | "rejected" | "expired"
+export type RequestStatusType = "pending" | "accepted" | "rejected" | "expired";
 
 export interface JoinRequestProps {
-	language?: string,
-	description?: string,
-	status: RequestStatusType,
-	user: UserProps,
-	updated_on: Date
+	language?: string;
+	description?: string;
+	status: RequestStatusType;
+	user: UserProps;
+	updated_on: Date;
 }
 
 export interface InviteRequestProps {
-	description?: string,
-	status: RequestStatusType,
-	user: UserProps,
+	description?: string;
+	status: RequestStatusType;
+	user: UserProps;
 }
 
 export interface GroupCommentProps {
-	public_id: string,
-	user: UserProps,
-	content: string,
-	sent_on: Date,
+	public_id: string;
+	user: UserProps;
+	content: string;
+	sent_on: Date;
 }
 
 export interface TeamProps {
@@ -65,15 +65,13 @@ export interface TeamProps {
 	members: Array<MemberProps>;
 	join_requests: Array<JoinRequestProps>;
 	invite_requests: Array<InviteRequestProps>;
-	comments: Array<GroupCommentProps>
-
+	comments: Array<GroupCommentProps>;
 }
 
 export interface PoolProps {
-	public_id: string,
-	user: UserProps,
-	language?: string,
-	description?: string,
-	updated_on: Date,
+	public_id: string;
+	user: UserProps;
+	language?: string;
+	description?: string;
+	updated_on: Date;
 }
-

@@ -5,7 +5,7 @@ export const tab_constants = [
         isActive: (tab: string | undefined) => {return !tab}
 	},
 	{
-		key: "To Join",
+		key: "Team You Can Join",
         path: "join",
         isActive: (tab: string | undefined) => tab === "join"
 	},

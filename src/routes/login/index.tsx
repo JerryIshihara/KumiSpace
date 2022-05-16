@@ -105,15 +105,16 @@ const LoginPage: React.FC<Props> = props => {
 					{authMode === SIGNIN && (
 						<div className="login-form-content">
 							<span className="login-form-title">Sign in to your account</span>
-							{error && (
+							<div className="login-form-fields">
+								
+								<Space direction="vertical" size={15} style={{ width: "100%" }}>
+								{error && (
 								<Alert
 									style={{ margin: "8px 0" }}
 									type="error"
 									content={error}
 								/>
 							)}
-							<div className="login-form-fields">
-								<Space direction="vertical" size={15} style={{ width: "100%" }}>
 									<Input
 										size="large"
 										placeholder="Email Address"
@@ -156,6 +157,12 @@ const LoginPage: React.FC<Props> = props => {
 																},
 															});
 														});
+													},
+													(error) => {
+														if (error.code === "auth/user-not-found") {
+															console.warn(error);
+															setError("Email not registered")
+														}
 													},
 													() => {
 														props.history.push("/");
