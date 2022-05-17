@@ -27,6 +27,7 @@ export interface AuthContextProps {
 		firstName: string,
 		lastName: string,
 		onNotVerified?: (user: any) => void,
+		onError?: (error: any) => void,
 		callback?: (res: any) => void
 	) => void;
 	signInWithEmailAndPassword: (
@@ -133,6 +134,7 @@ export const AuthContextProvider = (props: any) => {
 		firstName: string,
 		lastName: string,
 		onNotVerified?: (user: any) => void,
+		onError?: (error: any) => void,
 		callback?: (res: any) => void
 	) => {
 		// When the user signs in with email and password.
@@ -156,6 +158,9 @@ export const AuthContextProvider = (props: any) => {
 						callback && callback(res);
 					});
 				});
+			})
+			.catch((e) => {
+				onError && onError(e)
 			})
 			.then(() => {
 				// A page redirect would suffice as the persistence is set to NONE.

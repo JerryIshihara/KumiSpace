@@ -66,6 +66,12 @@ const LoginPage: React.FC<Props> = props => {
 						});
 					});
 				},
+				(error) => {
+					console.warn(error);
+					if (error.code === "auth/email-already-in-use") {
+						setError("Email is already registerd")
+					}
+				},
 				res => {
 					// props.history.push("/");
 				}

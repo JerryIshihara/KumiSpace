@@ -114,6 +114,10 @@ const EmailVerification: React.FC<Props> = props => {
 												setLoading(false);
 												setCheckAgain(true);
 											},
+											(error) => {
+												console.warn(error);
+												
+											},
 											// callback
 											() => {
 												setLoading(false);
