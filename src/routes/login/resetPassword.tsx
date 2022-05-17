@@ -32,7 +32,7 @@ const ResetPassword: React.FC<Props> = props => {
 	const auth = useAuth();
 	const state = useLocation().state as { email: string; password: string };
 	const [email, setEmail] = useState<string>();
-	const [password, setPassword] = useState<string>();
+	const [error, setError] = useState<string>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [done, setDone] = useState<boolean>(false);
 	const [checkAgain, setCheckAgain] = useState<boolean>(false);
@@ -69,7 +69,15 @@ const ResetPassword: React.FC<Props> = props => {
 		setLoading(true);
 		setTimeout(() => {
 			email &&
-				auth.resetPassword(email, () => {
+				auth.resetPassword(email,
+					(error) => {
+						setLoading(false);
+						if (error.code === "auth/user-not-found") {
+							console.warn(error);
+							setError("Email not registered")
+						}
+					},
+					() => {
 					setLoading(false);
 					setDone(true);
 				});
@@ -86,6 +94,13 @@ const ResetPassword: React.FC<Props> = props => {
 						style={{ width: "100%" }}
 						className="vertical-center"
 					>
+							{error && (
+								<Alert
+									style={{ margin: "8px 0" }}
+									type="error"
+									content={error}
+								/>
+							)}
 						<span className="login-form-title">
 							{loading && <LoadingOutlined style={{ marginRight: "16px" }} />}
 							{!loading && done && (

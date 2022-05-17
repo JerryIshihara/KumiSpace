@@ -36,7 +36,7 @@ export interface AuthContextProps {
 		onError?: (error: any) => void,
 		callback?: () => void
 	) => void;
-	resetPassword: (email: string, callback?: () => void) => void;
+	resetPassword: (email: string, onError?: (error: any) => void, callback?: () => void) => void;
 	status: () => Promise<{ isAuthenticated: Boolean }>;
 	logout: () => void;
 	refresh_token: () => Promise<AxiosResponse<any, any>>;
@@ -64,7 +64,7 @@ export const AuthContextProvider = (props: any) => {
 		getTokenFromSecureStore();
 	}, []);
 
-	const resetPassword = (email: string, callback?: () => void) => {
+	const resetPassword = (email: string, onError?: (error: any) => void, callback?: () => void) => {
 		firebase
 			.auth()
 			.sendPasswordResetEmail(email)
@@ -74,6 +74,9 @@ export const AuthContextProvider = (props: any) => {
 				console.log("sent reset email");
 				
 				callback && callback();
+			})
+			.catch((e) => {
+				onError && onError(e)
 			})
 			.catch(error => {
 				// ..
