@@ -11,13 +11,13 @@ import {
 	Link,
 } from "react-router-dom";
 import { getAuth, sendEmailVerification } from "firebase/auth";
-import axios from "axios";
 import Navbar from "./navbar";
 import OAuth from "./oauth";
 import EmailVerification from "./emailVerification";
 import ResetPassword from "./resetPassword";
 // import { AuthProps } from "../../redux/lib/auth.type";
 import { useAuth } from "context/auth";
+import { FIREBASE_ERROR_CODE } from "firebase";
 
 const SIGNIN = "sign-in";
 const SIGNUP = "sign-up";
@@ -68,7 +68,7 @@ const LoginPage: React.FC<Props> = props => {
 				},
 				(error) => {
 					console.warn(error);
-					if (error.code === "auth/email-already-in-use") {
+					if (error.code === FIREBASE_ERROR_CODE.AUTH.EMAIL_IN_USE) {
 						setError("Email is already registerd")
 					}
 				},
@@ -165,7 +165,7 @@ const LoginPage: React.FC<Props> = props => {
 														});
 													},
 													(error) => {
-														if (error.code === "auth/user-not-found") {
+														if (error.code === FIREBASE_ERROR_CODE.AUTH.USER_NOT_FOUND) {
 															console.warn(error);
 															setError("Email not registered")
 														}

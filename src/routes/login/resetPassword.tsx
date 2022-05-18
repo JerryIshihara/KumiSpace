@@ -16,7 +16,7 @@ import {
 	useHistory,
 	Redirect,
 } from "react-router-dom";
-import axios from "axios";
+import { FIREBASE_ERROR_CODE } from 'firebase';
 import Navbar from "./navbar";
 import OAuth from "./oauth";
 // import { AuthProps } from "../../redux/lib/auth.type";
@@ -72,7 +72,7 @@ const ResetPassword: React.FC<Props> = props => {
 				auth.resetPassword(email,
 					(error) => {
 						setLoading(false);
-						if (error.code === "auth/user-not-found") {
+						if (error.code === FIREBASE_ERROR_CODE.AUTH.USER_NOT_FOUND) {
 							console.warn(error);
 							setError("Email not registered")
 						}

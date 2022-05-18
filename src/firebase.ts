@@ -4,6 +4,13 @@ import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
 
 // TODO: hide this!
+export const FIREBASE_ERROR_CODE = {
+	AUTH: {
+		USER_NOT_FOUND: "auth/user-not-found",
+		EMAIL_IN_USE: "auth/email-already-in-use"
+	}
+}
+
 const firebaseConfig = {
 	apiKey: "AIzaSyDbrm1fKmn1-wb7Axs6YUNDzdyyUdLG63k",
 	authDomain: "kumi-dev.firebaseapp.com",
