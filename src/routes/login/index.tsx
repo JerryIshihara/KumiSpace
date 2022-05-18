@@ -165,9 +165,16 @@ const LoginPage: React.FC<Props> = props => {
 														});
 													},
 													(error) => {
-														if (error.code === FIREBASE_ERROR_CODE.AUTH.USER_NOT_FOUND) {
-															console.warn(error);
-															setError("Email not registered")
+														console.warn(error);
+														switch (error.code) {
+															case FIREBASE_ERROR_CODE.AUTH.USER_NOT_FOUND:
+																setError("Email not registered.")
+																break;
+															case FIREBASE_ERROR_CODE.AUTH.WRONG_PASSWORD:
+																setError("Incorrect username or password.")
+																break;
+															default:
+																break;
 														}
 													},
 													() => {
