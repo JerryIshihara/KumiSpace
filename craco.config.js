@@ -14,7 +14,8 @@ module.exports = {
 	],
 	devServer: {
 		proxy: {
-			"/api": "http://localhost:8000",
+			// "/api": "http://localhost:8000",
+			"/api": "http://137.184.229.102:8000",
 		},
 	},
 };

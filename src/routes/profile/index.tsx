@@ -106,7 +106,7 @@ const UserProfile: React.FC<Props> = props => {
 							<div className="main-page-profile">
 								<TextEllipsis
 									style={{
-										fontSize: 25,
+										fontSize: 20,
 										fontWeight: "bold",
 										width: "fit-content",
 									}}

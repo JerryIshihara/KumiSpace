@@ -64,6 +64,9 @@ const LoginPage: React.FC<Props> = props => {
 							pathname: "/auth/email-verification",
 							state: { email: identifier, password: credential },
 						});
+					}).catch(e => {
+						console.warn(e);
+						
 					});
 				},
 				(error) => {

@@ -142,10 +142,6 @@ export const AuthContextProvider = (props: any) => {
 			.auth()
 			.createUserWithEmailAndPassword(email, passward)
 			.then(({ user }: any) => {
-				if (!user.emailVerified) {
-					onNotVerified && onNotVerified(user);
-					console.log("email not verified");
-				}
 				// Get the user's ID token as it is needed to exchange for a session cookie.
 				return user.getIdToken().then((idToken: string) => {
 					// Session login endpoint is queried and the session cookie is set.
@@ -156,8 +152,13 @@ export const AuthContextProvider = (props: any) => {
 					signup(idToken, firstName, lastName).then(res => {
 						// storeToken(res.data.token);
 						callback && callback(res);
+						if (!user.emailVerified) {
+							onNotVerified && onNotVerified(user);
+							console.log("email not verified");
+						}
 					});
 				});
+
 			})
 			.catch((e) => {
 				onError && onError(e)
