@@ -60,9 +60,12 @@ const JoinPoolForm: React.FC<Props> = ({
 				message.success("You have joined the competition");
 				setConfirmLoading(false);
 			},
-			() => {},
+			() => {
+				message.error("Join competition failed");
+			},
 			() => {
 				history.goBack();
+				setConfirmLoading(false);
 			},
 			() => {
 				history.push("/auth/sign-in");

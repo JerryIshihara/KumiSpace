@@ -14,7 +14,8 @@ module.exports = {
 	],
 	devServer: {
 		proxy: {
-			// "/api": "http://localhost:8000",
+			// use IP address instead of localhost!
+			// "/api": "http://127.0.0.1:8000",
 			"/api": "http://137.184.229.102:8000",
 		},
 	},

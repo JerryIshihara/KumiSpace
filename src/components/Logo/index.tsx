@@ -10,7 +10,7 @@ interface Props extends RouteComponentProps {
 
 const Logo: React.FC<Props> = props => (
   <div className="logo" style={props.style} onClick={() => { if (props.href) {props.history.push(props.href)}}}>
-      <span><span style={{color: "#039dfc"}}>K</span>umi</span>
+      <span><span style={{color: "#039dfc"}}>Kumi</span>Space</span>
   </div>
 );
 
