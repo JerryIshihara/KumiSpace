@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
-	withRouter,
-	RouteComponentProps,
 	useParams,
 	Link,
-	useHistory,
-	Redirect,
+	useNavigate,
 } from "react-router-dom";
 import { Avatar, Tabs, Button, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -24,7 +21,7 @@ import "./style.less";
 
 const { TabPane } = Tabs;
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 export type ProfileProps = {
 	username: string | undefined;
@@ -34,7 +31,7 @@ export type ProfileProps = {
 };
 
 const UserProfile: React.FC<Props> = props => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const auth = useAuth();
 	const userContext = useUser();
 	const params = new URLSearchParams(window.location.search);
@@ -88,7 +85,7 @@ const UserProfile: React.FC<Props> = props => {
 									icon={<UserOutlined />}
 								/>
 							</Link>
-							<AvatarEditForm onCancel={() => history.goBack()}/>
+							<AvatarEditForm onCancel={() => navigate(-1)}/>
 							{/* <ImageUploader
 								url={url}
 								style={{ width: 150, height: 150 }}
@@ -134,13 +131,10 @@ const UserProfile: React.FC<Props> = props => {
 								{/* <Button style={{ fontWeight: 600 }}>Follow</Button> */}
 								<Button
 									onClick={() => {
-										history.push({
-											pathname:
-												window.location.pathname +
-												"?" +
-												(tab ? `tab=${tab}&` : "") +
-												"form=profile",
-										});
+										navigate(window.location.pathname +
+											"?" +
+											(tab ? `tab=${tab}&` : "") +
+											"form=profile");
 									}}
 									style={{ fontWeight: 600 }}
 								>
@@ -157,9 +151,7 @@ const UserProfile: React.FC<Props> = props => {
 									Log out
 								</Button>
 								<ProfileEditForm
-									onCancel={() => {
-										history.goBack();
-									}}
+									onCancel={() => {navigate(-1)}}
 									// onSubmit={(profile: ProfileProps) => {
 									// 	setProfile(profile);
 									// }}
@@ -235,4 +227,4 @@ const UserProfile: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(UserProfile);
+export default UserProfile;

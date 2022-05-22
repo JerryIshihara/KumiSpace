@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Divider, Button, message, Input } from "antd";
 import {EditFilled} from "@ant-design/icons"
 import { Tag } from "@arco-design/web-react";
@@ -20,7 +20,7 @@ interface Props {
 }
 const MyJoinRequest: React.FC<Props> = React.memo(
 	({ myJoinRequest }: Props) => {
-		const history = useHistory()
+		const navigate = useNavigate()
 		const auth = useAuth()
 		const compContext = useCompetition();
 		const [description, setDescription] = useState<string>();
@@ -56,7 +56,7 @@ const MyJoinRequest: React.FC<Props> = React.memo(
 
 				},
 				() => {
-					history.push("/auth/sign-in");
+					navigate("/auth/sign-in");
 				}
 				)
 		}
@@ -120,8 +120,8 @@ const MyJoinRequest: React.FC<Props> = React.memo(
 						type="text"
 						
 						icon={<EditFilled />}
-						onClick={() => {
-							history.push(
+									onClick={() => {
+										navigate(
 								window.location.pathname + "?tab=my-team&form=edit-join-request"
 							);
 						}}

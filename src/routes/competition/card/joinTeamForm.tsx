@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Select, Input, message } from "antd";
 import { UserOutlined, CameraOutlined }
 	from "@ant-design/icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	Tag,
 	Button,
@@ -27,7 +27,7 @@ interface Props {
 const JoinPoolForm: React.FC<Props> = (props: Props) => {
 	const auth = useAuth();
 	const compContext = useCompetition()
-	const history = useHistory();
+	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [description, setDescription] = useState<string>();
@@ -54,7 +54,7 @@ const JoinPoolForm: React.FC<Props> = (props: Props) => {
 		setConfirmLoading(true);
 		if (compContext.myTeam?.join_requests) {
 			setConfirmLoading(false);
-			history.goBack();
+			navigate(-1);
 			message.warning(
 				"You can only send one team join request at a time."
 			);
@@ -70,13 +70,13 @@ const JoinPoolForm: React.FC<Props> = (props: Props) => {
 				),
 			res => {
 				compContext.fetch_my_team && compContext.fetch_my_team()
-				history.goBack();
+				navigate(-1);
 				message.success("Join request sent to " + props.team.name);
 			},
 			e => {
 				console.warn(e.response);
 				if (e.response.status === 409) {
-					history.goBack();
+					navigate(-1);
 					switch (e.response.data.status) {
 						case "rejected":
 							message.warn(`${props.team.name} has rejected you join request already`)
@@ -93,14 +93,14 @@ const JoinPoolForm: React.FC<Props> = (props: Props) => {
 				setConfirmLoading(false);
 			},
 			() => {
-				history.push("/auth/sign-in");
+				navigate("/auth/sign-in");
 			}
 		);
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
-		history.goBack();
+		navigate(-1);
 	};
 
 	return (

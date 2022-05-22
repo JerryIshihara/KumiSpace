@@ -1,17 +1,30 @@
-import React from 'react';
-import './style.less';
+import React from "react";
+import "./style.less";
 
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-interface Props extends RouteComponentProps {
-  style?: React.CSSProperties;
-  href?: string;
+interface Props {
+	style?: React.CSSProperties;
+	href?: string;
 }
 
-const Logo: React.FC<Props> = props => (
-  <div className="logo" style={props.style} onClick={() => { if (props.href) {props.history.push(props.href)}}}>
-      <span><span style={{color: "#039dfc"}}>Kumi</span>Space</span>
-  </div>
-);
+const Logo: React.FC<Props> = props => {
+	const navigate = useNavigate();
+	return (
+		<div
+			className="logo"
+			style={props.style}
+			onClick={() => {
+				if (props.href) {
+					navigate(props.href);
+				}
+			}}
+		>
+			<span>
+				<span style={{ color: "#039dfc" }}>Kumi</span>Space
+			</span>
+		</div>
+	);
+};
 
-export default withRouter(Logo);
+export default Logo;

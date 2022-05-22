@@ -4,7 +4,7 @@ import { Modal, Select, Input } from "antd";
 import FormItem from "components/FormItem";
 import { Level } from "./skill";
 import "./style.less";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useUser, UserSkillProps } from "context/user";
 
 interface Props {

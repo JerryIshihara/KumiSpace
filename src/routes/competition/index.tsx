@@ -1,17 +1,12 @@
 import React from "react";
-import {
-	Route,
-	RouteComponentProps,
-	Switch,
-	withRouter,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./style.less";
 
 import { CompetitionProvider } from "context/kaggleCompetition";
 import Competition from "./competition";
 import { Header } from "components";
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 const Content: React.FC<Props> = props => {
 	return (
@@ -19,23 +14,22 @@ const Content: React.FC<Props> = props => {
 			<Header />
 			<div className="strm-body strm-content ">
 				<div className="strm-content-container main-page">
-					<Switch>
-						<Route
-							exact
-							path={[
-								"/competitions/:competitionName",
-								"/competitions/:competitionName/:tab",
-							]}
-						>
+					<Routes>
+						<Route path="/competitions/:competitionName">
 							<CompetitionProvider>
 								<Competition />
 							</CompetitionProvider>
 						</Route>
-					</Switch>
+						<Route path="/competitions/:competitionName/:tab">
+							<CompetitionProvider>
+								<Competition />
+							</CompetitionProvider>
+						</Route>
+					</Routes>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default withRouter(Content);
+export default Content;

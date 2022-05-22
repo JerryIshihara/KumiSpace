@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Select, Input, Avatar } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
-import { useHistory, useParams } from "react-router-dom";
 import {
 	Tag,
 	Button,

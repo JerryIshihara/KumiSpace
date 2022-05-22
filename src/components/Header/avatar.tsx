@@ -54,10 +54,8 @@ const NavBarAvatar: React.FC<any> = props => {
 		<>
 			{show ? (
 				<Link
-					to={{
-						pathname: `/usr/${userContext.user?.public_id}`,
-						state: { isAuthenticated: auth.token },
-					}}
+					to={`/usr/${userContext.user?.public_id}`}
+					state={{ isAuthenticated: auth.token }}
 				>
 					<Avatar
 						size={36}

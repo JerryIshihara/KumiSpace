@@ -1,6 +1,8 @@
 {
   "name": "kumi",
   "version": "0.1.0",
+  "homepage": ".",
+  "proxy": "http://localhost:3000",
   "private": true,
   "dependencies": {
     "@arco-design/web-react": "^2.31.3",
@@ -29,7 +31,7 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "react-scroll": "^1.8.2",
     "react-sticky": "^6.0.3",

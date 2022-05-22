@@ -1,9 +1,6 @@
 import React, { useState, useMemo } from "react";
 import {
-	withRouter,
-	RouteComponentProps,
 	useParams,
-	useHistory,
 	Link,
 } from "react-router-dom";
 import { Avatar, Tabs, Button } from "antd";
@@ -106,7 +103,7 @@ const CompetitionBanner: React.FC<CompetitionBannerProps> = React.memo(
 	)
 );
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 const Competition: React.FC<Props> = props => {
 	const compContext = useCompetition();
 	const params = new URLSearchParams(window.location.search);
@@ -185,4 +182,4 @@ const Competition: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(Competition);
+export default Competition;

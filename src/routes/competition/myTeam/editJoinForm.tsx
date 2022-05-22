@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Select, Input, message } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	Tag,
 	Button,
@@ -23,7 +23,7 @@ interface Props {
 const EditJoinForm: React.FC<Props> = (props: Props) => {
 	const auth = useAuth();
 	const compContext = useCompetition();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [description, setDescription] = useState<string>();
@@ -55,14 +55,14 @@ const EditJoinForm: React.FC<Props> = (props: Props) => {
 			},
 			() => {
 				setConfirmLoading(false);
-				history.goBack();
+				navigate(-1);
 			}
 		);
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
-		history.goBack();
+		navigate(-1);
 	};
 
 	return (

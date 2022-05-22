@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Select, Input, Avatar, message } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	Tag,
 	Button,
@@ -31,7 +31,7 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 		competitionName: string;
 	}>();
 	const compContext = useCompetition();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 	const [description, setDescription] = useState<string>();
@@ -58,24 +58,24 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 		setConfirmLoading(true);
 		if (!compContext.myTeam?.team) {
 			setConfirmLoading(false);
-			history.goBack();
+			navigate(-1);
 			message.warning("You need to be a team leader to invite.");
 			return;
 		}
-		auth.authorizedAPI(
+		competitionName && auth.authorizedAPI(
 			token =>
 				sent_invite_request(token, competitionName, props.user.public_id),
 			res => {
 				console.log(res.data);
 				setConfirmLoading(false);
-				history.goBack();
+				navigate(-1);
 				message.success("You have invited " + props.user.profile.username);
 			},
 			e => {
 				setConfirmLoading(false);
 				console.warn(e.response);
 				if (e.response.status === 409) {
-					history.goBack();
+					navigate(-1);
 					switch (e.response.data.status) {
 						case "pending":
 							message.warn(
@@ -96,7 +96,7 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 				setConfirmLoading(false);
 			},
 			() => {
-				history.push("/auth/sign-in");
+				navigate("/auth/sign-in");
 			}
 		);
 	};
@@ -104,7 +104,7 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 	const handleCancel = () => {
 		setStatus(undefined);
 		console.log("Clicked cancel button");
-		history.goBack();
+		navigate(-1);
 	};
 
 	return (

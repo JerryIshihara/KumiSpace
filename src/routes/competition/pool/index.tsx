@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Divider } from "antd";
 import { IconLanguage } from "@arco-design/web-react/icon";
 import "./style.less";
@@ -11,7 +11,7 @@ import { useCompetition } from "context/kaggleCompetition";
 import { PoolProps } from "types/kaggle";
 
 const Pool: React.FC = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const userContext = useUser();
 	const compContext = useCompetition()
 
@@ -35,9 +35,7 @@ const Pool: React.FC = (props) => {
 										type="link"
 										style={{ padding: 0 }}
 										onClick={() => {
-											history.push(
-												window.location.pathname + "?tab=pool&form=invite"
-											);
+											navigate(window.location.pathname + "?tab=pool&form=invite");
 										}}
 									>
 										Invite

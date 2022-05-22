@@ -9,7 +9,7 @@ import { useAuth } from "context/auth";
 import { useCompetition } from "context/kaggleCompetition";
 import { FormItem, TextEllipsis, UserItem } from "components";
 import InviteRequests from "./inviteRequests";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { timePassed } from "utils/time";
 
 interface Props {
@@ -21,7 +21,7 @@ const MyPool: React.FC<Props> = React.memo(
 	({ pool, invite_requests }: Props) => {
 		const auth = useAuth();
 		const compContext = useCompetition();
-		const history = useHistory();
+		const navigate = useNavigate();
 		const params = new URLSearchParams(window.location.search);
 		const [description, setDescription] = useState<string>();
 		const [language, setLanguage] = useState<string>();
@@ -54,14 +54,14 @@ const MyPool: React.FC<Props> = React.memo(
 				},
 				() => {
 					setConfirmLoading(false);
-					history.goBack()
+					navigate(-1)
 				}
 			);
 		};
 
 		const handleCancel = () => {
 			console.log("Clicked cancel button");
-			history.goBack();
+			navigate(-1);
 		};
 
 		return (
@@ -102,7 +102,7 @@ const MyPool: React.FC<Props> = React.memo(
 						style={{ marginLeft: "auto" }}
 						icon={<EditFilled />}
 						onClick={() => {
-							history.push(
+							navigate(
 								window.location.pathname + "?tab=my-team&form=edit-pool"
 							);
 						}}

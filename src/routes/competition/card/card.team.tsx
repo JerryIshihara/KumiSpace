@@ -9,7 +9,7 @@ import {
 	EllipsisOutlined,
 } from "@ant-design/icons";
 import { IconLanguage } from "@arco-design/web-react/icon";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useAuth } from "context/auth";
 import { useUser } from "context/user";
@@ -24,7 +24,7 @@ interface Props {
 
 const TeamCard: React.FC<Props> = ({ team }: Props) => {
 	const userContext = useUser();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const showJoinButton = useMemo(
 		() =>
 			team.members.findIndex(
@@ -70,7 +70,7 @@ const TeamCard: React.FC<Props> = ({ team }: Props) => {
 								type="link"
 								size="small"
 								onClick={() => {
-									history.push(window.location.pathname + "?tab=join&form=join-team");
+									navigate(window.location.pathname + "?tab=join&form=join-team");
 								}}
 							>
 								Join

@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Button, Divider } from "antd";
 import { IconLanguage } from "@arco-design/web-react/icon";
 import "./style.less";

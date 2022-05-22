@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.less";
 import { Avatar, Divider } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 
 import event_img from "assets/event.png";
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const CompetitionCard: React.FC<Props> = ({ item }) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const date = new Date(item.deadline);
 	const today = Date.now();
 	const diffTime = date.getTime() - today;
@@ -25,8 +25,7 @@ const CompetitionCard: React.FC<Props> = ({ item }) => {
 			className="strm-card"
 			onClick={() => {
 				console.log(window.location.pathname + `competitions/${item.name}`);
-				
-				history.push(window.location.pathname + `competitions/${item.name}`);
+				navigate(window.location.pathname + `competitions/${item.name}`);
 			}}
 		>
 			{/* <Link to={}> */}

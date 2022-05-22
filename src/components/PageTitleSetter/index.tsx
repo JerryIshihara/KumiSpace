@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 const PageTitleSetter: React.FC<Props> = props => {
 	// const { category, id } = useParams<{ category: string | undefined,  }>();
 	useEffect(() => {
 		// Home Page
-		const parts = props.location.pathname.split("/");
+		const parts = window.location.pathname.split("/");
 		if (parts.length >= 2) {
 			const cat = parts[parts.length - 2];
 			const subCat = parts[parts.length - 1];
@@ -26,7 +26,7 @@ const PageTitleSetter: React.FC<Props> = props => {
 					break;
 			}
 		}
-	}, [props.location.pathname]);
+	}, [window.location.pathname]);
 	const StrTemplate = (name: string): string => {
 		return `${
 			name.length === 0
@@ -37,4 +37,4 @@ const PageTitleSetter: React.FC<Props> = props => {
 	return <>{props.children}</>;
 };
 
-export default withRouter(PageTitleSetter);
+export default PageTitleSetter;

@@ -4,11 +4,10 @@ import "./style.less";
 import { Button, Input, Space } from "antd";
 import { Alert } from "@arco-design/web-react";
 import {
-	withRouter,
-	RouteComponentProps,
 	useParams,
 	useLocation,
 	Link,
+	useNavigate,
 } from "react-router-dom";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import Navbar from "./navbar";
@@ -24,11 +23,12 @@ const SIGNUP = "sign-up";
 const EMAIL_VERIFICATION = "email-verification";
 const RESET_PASSWORD = "reset-password";
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 const LoginPage: React.FC<Props> = props => {
 	const { authMode } = useParams<{ authMode: string }>();
 	const auth = useAuth();
+	const navigate = useNavigate();
 	const state = useLocation().state as string;
 	const [firstName, setFirstName] = useState<string>();
 	const [lastName, setLastName] = useState<string>();
@@ -60,10 +60,7 @@ const LoginPage: React.FC<Props> = props => {
 				user => {
 					sendEmailVerification(user).then(() => {
 						// Email verification sent!
-						props.history.push({
-							pathname: "/auth/email-verification",
-							state: { email: identifier, password: credential },
-						});
+						navigate("/auth/email-verification", {state: { email: identifier, password: credential }});
 					}).catch(e => {
 						console.warn(e);
 						
@@ -95,7 +92,7 @@ const LoginPage: React.FC<Props> = props => {
 									`login-form-tab` +
 									(authMode === SIGNIN ? ` login-form-tab-hover` : ``)
 								}
-								onClick={() => props.history.push("/auth/sign-in")}
+								onClick={() => navigate("/auth/sign-in")}
 							>
 								<span>Sign in</span>
 							</div>
@@ -104,7 +101,7 @@ const LoginPage: React.FC<Props> = props => {
 									`login-form-tab` +
 									(authMode === SIGNUP ? ` login-form-tab-hover` : ``)
 								}
-								onClick={() => props.history.push("/auth/sign-up")}
+								onClick={() => navigate("/auth/sign-up")}
 							>
 								<span>Sign up</span>
 							</div>
@@ -137,10 +134,8 @@ const LoginPage: React.FC<Props> = props => {
 										onChange={e => setCredential(e.target.value)}
 									/>
 									<Link
-										to={{
-											pathname: "/auth/reset-password",
-											state: { email: identifier },
-										}}
+										to={"/auth/reset-password"}
+										state={{ email: identifier }}
 									>
 										Forgot Password?
 									</Link>
@@ -158,13 +153,11 @@ const LoginPage: React.FC<Props> = props => {
 													user => {
 														sendEmailVerification(user).then(() => {
 															// Email verification sent!
-															props.history.push({
-																pathname: "/auth/email-verification",
-																state: {
+															navigate("/auth/email-verification",
+																{state: {
 																	email: identifier,
 																	password: credential,
-																},
-															});
+																}});
 														});
 													},
 													(error) => {
@@ -181,7 +174,7 @@ const LoginPage: React.FC<Props> = props => {
 														}
 													},
 													() => {
-														props.history.push("/");
+														navigate("/");
 													}
 												);
 											}
@@ -259,4 +252,4 @@ const LoginPage: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(LoginPage);
+export default LoginPage;

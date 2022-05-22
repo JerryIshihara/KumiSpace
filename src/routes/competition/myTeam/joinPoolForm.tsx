@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Select, Input, Avatar, message } from "antd";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	Tag,
 	Button,
@@ -26,7 +26,7 @@ const JoinPoolForm: React.FC<Props> = ({
 	onCancel,
 }: Props) => {
 	const auth = useAuth();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const compContext = useCompetition()
 	const params = new URLSearchParams(window.location.search);
 	const [confirmLoading, setConfirmLoading] = useState(false);
@@ -64,11 +64,11 @@ const JoinPoolForm: React.FC<Props> = ({
 				message.error("Join competition failed");
 			},
 			() => {
-				history.goBack();
+				navigate(-1);
 				setConfirmLoading(false);
 			},
 			() => {
-				history.push("/auth/sign-in");
+				navigate("/auth/sign-in");
 			}
 		);
 	};

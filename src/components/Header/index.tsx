@@ -1,12 +1,10 @@
 import React, { useMemo } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
 import { Input, Badge } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import "./style.less";
 
 import { Logo } from "components";
 import Avatar from "./avatar";
-import Plus from "./plus";
 import { useAuth } from "context/auth";
 import { Link } from "react-router-dom";
 import { useNotification } from "context/notification";
@@ -51,4 +49,4 @@ const Header: React.FC<any> = props => {
 	);
 };
 
-export default withRouter(Header);
+export default Header;

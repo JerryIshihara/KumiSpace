@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./style.less";
 import { message, Button, Divider, Input } from "antd";
 import {
@@ -34,10 +34,10 @@ interface Props {
 }
 
 const MyTeam: React.FC<Props> = props => {
+	const navigate = useNavigate()
 	const auth = useAuth();
 	const userContext = useUser();
 	const compContext = useCompetition();
-	const history = useHistory();
 	const [teamName, setTeamName] = useState<string>();
 	const [description, setDescription] = useState<string>();
 	const [language, setLanguage] = useState<string>();
@@ -64,9 +64,7 @@ const MyTeam: React.FC<Props> = props => {
 							type="primary"
 							style={{ fontWeight: 600 }}
 							onClick={() => {
-								history.push({
-									pathname: window.location.pathname + "?tab=my-team&form=pool",
-								});
+								navigate(window.location.pathname + "?tab=my-team&form=pool");
 							}}
 							// href={`/competitions/${competitionName}/team/new`}
 						>
@@ -78,9 +76,7 @@ const MyTeam: React.FC<Props> = props => {
 							type="primary"
 							style={{ fontWeight: 600 }}
 							onClick={() => {
-								history.push({
-									pathname: window.location.pathname + "?tab=my-team&form=team",
-								});
+								navigate(window.location.pathname + "?tab=my-team&form=team");
 							}}
 						>
 							Create a team
@@ -93,7 +89,7 @@ const MyTeam: React.FC<Props> = props => {
 							<JoinPoolForm
 								competitionName={props.competitionName}
 								onCancel={() => {
-									history.goBack();
+									navigate(-1);
 								}}
 							/>
 							<CreateTeam competitionName={props.competitionName} />

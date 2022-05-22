@@ -9,12 +9,8 @@ import {
 } from "@ant-design/icons";
 import { Alert } from "@arco-design/web-react";
 import {
-	withRouter,
-	RouteComponentProps,
-	useParams,
 	useLocation,
-	useHistory,
-	Redirect,
+	useNavigate,
 } from "react-router-dom";
 import { FIREBASE_ERROR_CODE } from 'firebase';
 import Navbar from "./navbar";
@@ -26,9 +22,10 @@ const SIGNIN = "sign-in";
 const SIGNUP = "sign-up";
 const EMAIL_VERIFICATION = "email-verification";
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 const ResetPassword: React.FC<Props> = props => {
+	const navigate = useNavigate();
 	const auth = useAuth();
 	const state = useLocation().state as { email: string; password: string };
 	const [email, setEmail] = useState<string>();
@@ -59,7 +56,7 @@ const ResetPassword: React.FC<Props> = props => {
 	useEffect(() => {
 		console.log("reloaded: ", state);
 		if (!state) {
-			props.history.push("/page-not-found");
+			navigate("/page-not-found");
 		} else {
 			setEmail(state.email);
 		}
@@ -161,7 +158,7 @@ const ResetPassword: React.FC<Props> = props => {
 							type="text"
 							style={{ color: "GrayText" }}
 							icon={<ArrowLeftOutlined />}
-							onClick={() => {props.history.goBack()}}
+							onClick={() => {navigate(-1)}}
 						>
 							Back to log in
 						</Button>
@@ -172,4 +169,4 @@ const ResetPassword: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(ResetPassword);
+export default ResetPassword;

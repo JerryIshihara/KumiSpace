@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, RouteComponentProps, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { message, Tabs, Button, Space, Select, Input, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -25,7 +25,7 @@ interface Props {
 	competitionName: string;
 }
 const CreatePage: React.FC<Props> = (props: Props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const auth = useAuth();
 	const compContext = useCompetition();
 	const params = new URLSearchParams(window.location.search);
@@ -72,18 +72,18 @@ const CreatePage: React.FC<Props> = (props: Props) => {
 				);
 			},
 			() => {
-				history.goBack();
+				navigate(-1);
 				setConfirmLoading(false);
 			},
 			() => {
-				history.push("/auth/sign-in");
+				navigate("/auth/sign-in");
 			}
 		);
 	};
 
 	const handleCancel = () => {
 		setStatus(undefined);
-		history.goBack();
+		navigate(-1);
 	};
 	return (
 		<Modal

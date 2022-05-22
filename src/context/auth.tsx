@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { login, signup, log_out, refresh } from "api/auth";
 import { AxiosResponse } from "axios";
-import { useHistory } from "react-router-dom";
 import firebase from "firebase";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import { actionCodeSettings } from "firebase";
@@ -56,7 +55,6 @@ export const AuthContext = React.createContext<Partial<AuthContextProps> | any>(
 );
 
 export const AuthContextProvider = (props: any) => {
-	const history = useHistory()
 	const [token, setToken] = useState<string>();
 
 	useEffect(() => {
@@ -156,7 +154,8 @@ export const AuthContextProvider = (props: any) => {
 							onNotVerified && onNotVerified(user);
 							console.log("email not verified");
 						}
-					});
+					}).catch(e => {console.warn(e.response);
+					})
 				});
 
 			})

@@ -10,12 +10,8 @@ import {
 } from "@ant-design/icons";
 import { Alert } from "@arco-design/web-react";
 import {
-	withRouter,
-	RouteComponentProps,
-	useParams,
 	useLocation,
-	useHistory,
-	Redirect,
+	useNavigate,
 } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./navbar";
@@ -23,13 +19,11 @@ import OAuth from "./oauth";
 // import { AuthProps } from "../../redux/lib/auth.type";
 import { useAuth } from "context/auth";
 
-const SIGNIN = "sign-in";
-const SIGNUP = "sign-up";
-const EMAIL_VERIFICATION = "email-verification";
 
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 const EmailVerification: React.FC<Props> = props => {
+	const navigate = useNavigate()
 	const auth = useAuth();
 	const state = useLocation().state as { email: string; password: string };
 	const [email, setEmail] = useState<string>();
@@ -60,7 +54,7 @@ const EmailVerification: React.FC<Props> = props => {
 	useEffect(() => {
 		console.log("reloaded: ", state);
 		if (!state) {
-			props.history.push("/page-not-found");
+			navigate("/page-not-found");
 		} else {
 			setEmail(state.email);
 			setPassword(state.password);
@@ -123,7 +117,7 @@ const EmailVerification: React.FC<Props> = props => {
 												setLoading(false);
 												setDone(true);
 												setTimeout(() => {
-													props.history.push("/");
+													navigate("/");
 												}, 1000);
 											}
 										);
@@ -153,7 +147,7 @@ const EmailVerification: React.FC<Props> = props => {
 												});
 											},
 											() => {
-												props.history.push("/");
+												navigate("/");
 											}
 										);
 								}}
@@ -168,4 +162,4 @@ const EmailVerification: React.FC<Props> = props => {
 	);
 };
 
-export default withRouter(EmailVerification);
+export default EmailVerification;

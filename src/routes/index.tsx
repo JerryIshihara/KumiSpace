@@ -1,8 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PageTitleSetter, PrivateRoute } from "components";
-
 import LoginPage from "./login";
 import UserProfilePage from "./profile";
 import { Competitions } from "./feed";
@@ -11,42 +9,32 @@ import NotificationPage from "./notifications";
 
 const App: React.FC<any> = props => {
 	return (
-		<Router>
+		<BrowserRouter>
 			<PageTitleSetter>
-				<Switch>
-					{/* <Route exact path="/">
-						<Competitions />
-					</Route> */}
-					<Route exact path="/auth/:authMode">
-						<LoginPage {...props} />
-					</Route>
-					<Route exact path="/notifications">
-						<NotificationPage {...props} />
-					</Route>
-					<Route exact path={["/usr/:userId"]}>
-						<PrivateRoute>
-							<UserProfilePage />
-						</PrivateRoute>
-						{/* <UserProfile /> */}
-					</Route>
+				<Routes>
+					<Route path="/" element={<Competitions />} />
+
+					<Route path="/auth/:authMode/*" element={<LoginPage />} />
+					<Route path="/notifications" element={<NotificationPage />} />
 					<Route
-						exact
-						path={[
-							"/competitions/:competitionName",
-							"/competitions/:competitionName/:tab",
-						]}
-					>
-						<Competition />
-					</Route>
-					<Route path="/">
-						{/* <PrivateRoute {...props} altComponent={<LandingPage />}>
-							<StreamingPage {...props} />
-						</PrivateRoute> */}
-						<Competitions {...props} />
-					</Route>
-				</Switch>
+						path={"/usr/:userId/*"}
+						element={
+							<PrivateRoute>
+								<UserProfilePage />
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path="/competitions/:competitionName"
+						element={<Competition />}
+					/>
+					<Route
+						path="/competitions/:competitionName/:tab"
+						element={<Competition />}
+					/>
+				</Routes>
 			</PageTitleSetter>
-		</Router>
+		</BrowserRouter>
 	);
 };
 

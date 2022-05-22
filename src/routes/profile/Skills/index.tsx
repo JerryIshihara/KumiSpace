@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "antd";
 
 import Skill from "./skill";
@@ -7,15 +7,11 @@ import SkillForm from "./skillForm";
 import { UserSkillProps, useUser } from "context/user";
 
 const Skills: React.FC<any> = props => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const userContext = useUser()
 	const skills = useMemo(() => userContext.user?.skills || [], [userContext.user?.skills])
 	const openForm = (skill?: UserSkillProps) => {
-		history.push({
-			pathname:
-				window.location.pathname + `?form=skill${skill ? "&id=" + skill.public_id : "" }`,
-			state: skill,
-		});
+		navigate(window.location.pathname + `?form=skill${skill ? "&id=" + skill.public_id : "" }`, {state: skill});
 	};
     // const handleSubmit = async (skill: SkillType) => {
     //     const params = new URLSearchParams(window.location.search);
@@ -67,7 +63,7 @@ const Skills: React.FC<any> = props => {
 			</Button>
 			<SkillForm
 				onFinish={() => {
-					history.goBack();
+					navigate(-1);
 				}}
 			/>
 		</div>

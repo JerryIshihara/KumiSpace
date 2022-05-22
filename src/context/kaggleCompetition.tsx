@@ -117,7 +117,7 @@ export const CompetitionProvider = (props: any) => {
 	}, [competitionName, auth.token]);
 
 	const fetch_teams = () => {
-		get_teams_by_competition_name(competitionName)
+		competitionName && get_teams_by_competition_name(competitionName)
 		.then(res => {
 			console.log("teams", res.data);
 			setTeams(res.data);
@@ -128,7 +128,7 @@ export const CompetitionProvider = (props: any) => {
 	}
 
 	const fetch_my_team = () => {
-		auth.authorizedAPI(
+		competitionName && auth.authorizedAPI(
 			(token: string) => get_my_team(token, competitionName),
 			(res) => {
 				console.log("my team: ", res.data);
@@ -141,7 +141,7 @@ export const CompetitionProvider = (props: any) => {
 	}
 
 	const fetch_pool = () => {
-		get_pool_by_competition(competitionName)
+		competitionName && get_pool_by_competition(competitionName)
 		.then(res => {
 			setPool(res.data);
 			console.log("pool", res.data);
@@ -163,7 +163,7 @@ export const CompetitionProvider = (props: any) => {
 	};
 
 	const leave_competition = () => {
-		auth.authorizedAPI(
+		competitionName && auth.authorizedAPI(
 			(token) => leave_team(token, competitionName),
 			res => {
 				fetch_my_team()

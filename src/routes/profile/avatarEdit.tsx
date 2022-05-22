@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Avatar, message } from "antd";
 import { UserOutlined, UploadOutlined } from "@ant-design/icons";
 import { Upload } from "@arco-design/web-react";
-import { useHistory, useLocation } from "react-router-dom";
 
 import { FormItem, ImageUploader } from "components";
 import { upload_avatar } from "api/user";
