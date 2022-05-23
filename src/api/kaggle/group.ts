@@ -1,4 +1,5 @@
 import axios from "axios"
+import { withUrl } from "api/constant";
 
 export const create_team = async (
 	token: string,
@@ -13,7 +14,7 @@ export const create_team = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/${competition_name}`,
+		url: withUrl(`/api/kaggle/groups/${competition_name}`),
 		data: {
 			name, 
 			num_members,
@@ -36,7 +37,7 @@ export const edit_team = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/${competition_name}`,
+		url: withUrl(`/api/kaggle/groups/${competition_name}`),
 		data: {
 			name, 
 			num_members,
@@ -55,7 +56,7 @@ export const leave_team = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/${competition_name}/leave`,
+		url: withUrl(`/api/kaggle/${competition_name}/leave`),
 	});
 	return result;
 };
@@ -70,7 +71,7 @@ export const leave_team = async (
 // 		headers: {
 // 			"Authorization": token,
 // 		},
-// 		url: `/api/kaggle/groups`,
+// 		url: witUrl()`/api/kaggle/groups`),
 // 		data: {
 // 			group_pid,
 // 			language
@@ -85,7 +86,7 @@ export const get_teams_by_competition_name = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: `/api/kaggle/groups/${competition_name}`,
+		url: withUrl(`/api/kaggle/groups/${competition_name}`),
 	});
 	return result;
 };
@@ -101,7 +102,7 @@ export const make_join_request_decision = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/join/decision`,
+		url: withUrl(`/api/kaggle/groups/join/decision`),
 		data: {
 			group_pid,
 			requester_pid,
@@ -123,7 +124,7 @@ export const send_join_team_request = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/join`,
+		url: withUrl(`/api/kaggle/groups/join`),
 		data: {
 			group_pid,
 			description,
@@ -142,7 +143,7 @@ export const delete_join_team_request = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/join`,
+		url: withUrl(`/api/kaggle/groups/join`),
 		data: {
 			group_pid,
 		}
@@ -161,7 +162,7 @@ export const edit_join_team_request = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/join`,
+		url: withUrl(`/api/kaggle/groups/join`),
 		data: {
 			group_pid,
 			description,
@@ -181,7 +182,7 @@ export const sent_invite_request = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/invites/${competitionName}`,
+		url: withUrl(`/api/kaggle/groups/invites/${competitionName}`),
 		data: {
 			invitee_pid,
 		},
@@ -199,7 +200,7 @@ export const make_invite_request_decision = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/invites/decision`,
+		url: withUrl(`/api/kaggle/groups/invites/decision`),
 		data: {
 			group_pid,
 			accept,
@@ -218,7 +219,7 @@ export const write_comment = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/groups/comments`,
+		url: withUrl(`/api/kaggle/groups/comments`),
 		data: {
 			group_pid,
 			content,

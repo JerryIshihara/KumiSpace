@@ -1,4 +1,5 @@
 import axios from "axios";
+import { withUrl } from "api/constant";
 
 
 export const join_pool = async (
@@ -12,7 +13,7 @@ export const join_pool = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/pool/${competition_name}`,
+		url: withUrl(`/api/kaggle/pool/${competition_name}`),
 		data: {
 			description,
 			language,
@@ -33,7 +34,7 @@ export const edit_pool = async (
 		headers: {
 			"Authorization": token,
 		},
-		url: `/api/kaggle/pool/${public_id}`,
+		url: withUrl(`/api/kaggle/pool/${public_id}`),
 		data: {
 			description,
 			language,
@@ -48,7 +49,7 @@ export const get_pool_by_competition = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: `/api/kaggle/pool/${competition_name}`,
+		url: withUrl(`/api/kaggle/pool/${competition_name}`),
 	});
 	return result;
 };

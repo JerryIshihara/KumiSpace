@@ -11,8 +11,8 @@ export const IdentityType = {
 export const login = async (idToken: string/* email: string, password: string */) => {
 	const response = await axios({
 		method: "POST",
-		// url: withUrl("/users/login"),
-		url: "/api/users/sessionLogin",
+		// url: withUrl(withUrl("/users/login")),
+		url: withUrl("/api/users/sessionLogin"),
 		data: {
 			idToken
 			// identity_type: IdentityType.email,
@@ -26,8 +26,8 @@ export const login = async (idToken: string/* email: string, password: string */
 export const signup = async (idToken: string, firstName: string, lastName: string) => {
 	const response = await axios({
 		method: "POST",
-		// url: "/api/users/signup",
-		url: "/api/users/sessionSignUp",
+		// url: withUrl("/api/users/signup"),
+		url: withUrl("/api/users/sessionSignUp"),
 		data: {
 			idToken,
 			firstName, 
@@ -41,8 +41,8 @@ export const signup = async (idToken: string, firstName: string, lastName: strin
 export const log_out = async () => {
 	const response = await axios({
 		method: "PUT",
-		// url: withUrl("/users/logout"),
-		url: "/api/users/logout",
+		// url: withUrl(withUrl("/users/logout")),
+		url: withUrl("/api/users/logout"),
 	});
 	return response;
 };
@@ -50,8 +50,8 @@ export const log_out = async () => {
 export const refresh = async (): Promise<AxiosResponse<any, any>> => {
 	const response = await axios({
 		method: "PUT",
-		// url: withUrl("/users/logout"),
-		url: "/api/users/refresh",
+		// url: withUrl(withUrl("/users/logout")),
+		url: withUrl("/api/users/refresh"),
 	});
 	return response;
 };
