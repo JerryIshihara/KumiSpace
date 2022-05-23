@@ -11,7 +11,7 @@ const Competitions: React.FC = () => {
 		get_competitions()
 			.then(res => {
 				console.log(res.data);
-				setCompetitions(res.data);
+				setCompetitions(res.data || []);
 			})
 			.catch(err => {
 				console.warn(err);

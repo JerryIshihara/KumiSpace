@@ -10,9 +10,7 @@ const Feed: React.FC = props => {
 			{/* <Route exact path="/feed/moments">
 				<Moments />
 			</Route> */}
-			<Route path="/feed/competitions">
-				<Competitions />
-			</Route>
+			<Route path="/feed/competitions" element={<Competitions />} />
 		</Routes>
 	);
 };

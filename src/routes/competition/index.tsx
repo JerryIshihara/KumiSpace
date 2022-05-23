@@ -4,7 +4,7 @@ import "./style.less";
 
 import { CompetitionProvider } from "context/kaggleCompetition";
 import Competition from "./competition";
-import { Header } from "components";
+import { Header, MultiRoute } from "components";
 
 interface Props {}
 
@@ -15,16 +15,14 @@ const Content: React.FC<Props> = props => {
 			<div className="strm-body strm-content ">
 				<div className="strm-content-container main-page">
 					<Routes>
-						<Route path="/competitions/:competitionName">
-							<CompetitionProvider>
-								<Competition />
-							</CompetitionProvider>
-						</Route>
-						<Route path="/competitions/:competitionName/:tab">
-							<CompetitionProvider>
-								<Competition />
-							</CompetitionProvider>
-						</Route>
+						{MultiRoute({
+							paths: ["/:competitionName", "/:competitionName/:tab"],
+							element: (
+								<CompetitionProvider>
+									<Competition />
+								</CompetitionProvider>
+							),
+						})}
 					</Routes>
 				</div>
 			</div>

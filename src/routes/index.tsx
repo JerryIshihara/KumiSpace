@@ -25,13 +25,13 @@ const App: React.FC<any> = props => {
 						}
 					/>
 					<Route
-						path="/competitions/:competitionName"
+						path="/competitions/*"
 						element={<Competition />}
 					/>
-					<Route
+					{/* <Route
 						path="/competitions/:competitionName/:tab"
 						element={<Competition />}
-					/>
+					/> */}
 				</Routes>
 			</PageTitleSetter>
 		</BrowserRouter>

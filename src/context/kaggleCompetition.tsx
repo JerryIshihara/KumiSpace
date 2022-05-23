@@ -93,6 +93,8 @@ export const CompetitionProvider = (props: any) => {
 
 	// fetch competition info
 	useEffect(() => {
+		console.log("competitionName", competitionName);
+		
 		if (competitionName) {
 			get_competition(competitionName).then(res => {
 				console.log("competition", res.data);

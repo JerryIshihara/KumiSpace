@@ -10,6 +10,7 @@ import FormItem from "./FormItem";
 import { ImageUploader } from "./Upload";
 import Messages from "./Messages";
 import Header from "./Header";
+import MultiRoute from "./MultiRoute";
 
 export {
 	Logo,
@@ -23,5 +24,6 @@ export {
 	FormItem,
 	ImageUploader,
 	Messages,
-	Header
+	Header,
+	MultiRoute
 };

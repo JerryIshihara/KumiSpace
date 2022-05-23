@@ -111,6 +111,13 @@ const Competition: React.FC<Props> = props => {
 	const [tabs, setTabs] = useState<Array<any>>(tab_constants);
 	const [loading, setLoading] = useState(true);
 
+
+	React.useEffect(() => {
+	  console.log(compContext.competition?.title);
+	}, [compContext])
+	
+	
+
 	return (
 		<div className="main-page">
 			{compContext.competition && (

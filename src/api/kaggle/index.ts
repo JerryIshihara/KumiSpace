@@ -1,3 +1,4 @@
+import { withUrl } from "api/constant";
 import axios from "axios";
 
 
@@ -8,7 +9,7 @@ export const get_competitions = async (): Promise<any> => {
 		// headers: {
 		// 	"x-access-tokens": token,
 		// },
-		url: "/api/kaggle",
+		url: withUrl("/api/kaggle/"),
 	});
 	return result;
 };
@@ -20,7 +21,7 @@ export const get_competition = async (name: string): Promise<any> => {
 		// headers: {
 		// 	"x-access-tokens": token,
 		// },
-		url: "/api/kaggle/" + name,
+		url: withUrl("/api/kaggle/" + name),
 	});
 	return result;
 };
@@ -32,7 +33,7 @@ export const get_my_team = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: `/api/kaggle/${competition_name}/my-team`,
+		url: withUrl(`/api/kaggle/${competition_name}/my-team`),
 		headers: {
 			"Authorization": token,
 		}
@@ -45,7 +46,7 @@ export const get_my_competitions = async (
 ): Promise<any> => {
 	const result = await axios({
 		method: "GET",
-		url: `/api/kaggle/my-competitions`,
+		url: withUrl(`/api/kaggle/my-competitions`),
 		headers: {
 			"Authorization": token
 		}
