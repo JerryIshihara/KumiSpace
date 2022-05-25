@@ -12,11 +12,11 @@ module.exports = {
 			},
 		},
 	],
-	devServer: {
-		proxy: {
-			// use IP address instead of localhost!
-			// "/api": "http://192.168.2.12:8000",
-			"/api": "http://137.184.229.102:8000",
-		},
-	},
+	// devServer: {
+	// 	proxy: {
+	// 		// use IP address instead of localhost!
+	// 		// "/api": "http://192.168.2.12:8000",
+	// 		"/api": "http://137.184.229.102:8000",
+	// 	},
+	// },
 };

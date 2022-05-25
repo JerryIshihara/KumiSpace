@@ -28,7 +28,7 @@ interface Props {
 
 const UserItem: React.FC<Props> = (props: Props) => {
 	const url = useMemo(
-		() => props.url && process.env.REACT_APP_HOST + props.url,
+		() => props.url,
 		[props.url]
 	);
 	return (

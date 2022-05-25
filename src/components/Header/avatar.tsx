@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Menu, Avatar, Button } from "antd";
 import {
@@ -29,6 +29,7 @@ const ManageAccount: React.FC<any> = props => {
 };
 
 const NavBarAvatar: React.FC<any> = props => {
+	const navigate = useNavigate();
 	const auth = useAuth();
 	const userContext = useUser();
 	const [url, setUrl] = useState<string>();
@@ -39,7 +40,6 @@ const NavBarAvatar: React.FC<any> = props => {
 			setUrl(userContext.user?.avatar?.url);
 		}
 	}, [userContext.user]);
-
 
 	return (
 		// <Dropdown
@@ -66,10 +66,19 @@ const NavBarAvatar: React.FC<any> = props => {
 				</Link>
 			) : (
 				<div className="horizontal-center" style={{ gap: "8px" }}>
-					<Button href="/auth/sign-in" type="text" >
+					<Button
+						onClick={() => {
+							navigate("/auth/sign-in");
+						}}
+						type="text"
+					>
 						Sign in
 					</Button>
-					<Button href="/auth/sign-up" >
+					<Button
+						onClick={() => {
+							navigate("/auth/sign-up");
+						}}
+					>
 						Sign up
 					</Button>
 				</div>
