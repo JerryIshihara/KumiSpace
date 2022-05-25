@@ -73,7 +73,7 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 			},
 			e => {
 				setConfirmLoading(false);
-				console.warn(e.response);
+				console.error(e.response);
 				if (e.response.status === 409) {
 					navigate(-1);
 					switch (e.response.data.status) {
