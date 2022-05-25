@@ -12,9 +12,8 @@ jobs:
     steps:
       - name: install yarn
         run: sudo npm install -g yarn
-
       - name: install craco
-        run: yarn install -g craco
+        run: yarn global add craco
       - uses: actions/checkout@v2
       - run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
