@@ -84,7 +84,7 @@ const InviteForm: React.FC<Props> = (props: Props) => {
 							break;
 						case "rejected":
 							message.warn(
-								`${props.user.profile.username} has rejected you invitation already`
+								`${props.user.profile.username} has rejected your invitation already`
 							);
 							break;
 						default:

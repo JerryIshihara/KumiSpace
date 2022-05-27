@@ -278,7 +278,6 @@ export const AuthContextProvider = (props: any) => {
 						callBack && callBack(res);
 					})
 					.catch(e => {
-						console.warn(e.response);
 						if (e.response.status === 401) {
 							refresh().then(res => {
 								storeToken(res.data.token);
@@ -287,13 +286,15 @@ export const AuthContextProvider = (props: any) => {
 										callBack && callBack(res);
 									})
 									.catch(e => {
-										console.warn(e);
+										console.error(e);
 										if (e.response.status === 401) {
 											logout();
 										} else {
 											fallback && fallback(e);
 										}
 									});
+							}).catch(e => {
+								logout();
 							});
 						} else {
 							fallback && fallback(e);

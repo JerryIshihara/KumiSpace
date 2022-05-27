@@ -79,10 +79,10 @@ const JoinPoolForm: React.FC<Props> = (props: Props) => {
 					navigate(-1);
 					switch (e.response.data.status) {
 						case "rejected":
-							message.warn(`${props.team.name} has rejected you join request already`)
+							message.warn(`${props.team.name} has rejected your join request already`)
 							break;
 						default:
-							message.warning(
+							message.warn(
 								"You already created/joined the team: " + props.team.name
 							);
 							break;

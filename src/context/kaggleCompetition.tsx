@@ -88,7 +88,7 @@ export const CompetitionProvider = (props: any) => {
 		const leader = myTeam.team.members.find(
 			(member: MemberProps) => member.role === "leader"
 		);
-		return leader && leader.user.public_id === userContext.user.public_id;
+		return leader && userContext.user && leader.user.public_id === userContext.user.public_id;
 	}, [myTeam, userContext.user]);
 
 	// fetch competition info

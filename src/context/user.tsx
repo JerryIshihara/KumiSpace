@@ -60,12 +60,16 @@ export const UserContextProvider = (props: any) => {
 	}, [auth.token]);
 
 	const getUser = () => {
+		console.log("Getting user");
 		auth.authorizedAPI(
 			token => get_user(token),
 			res => {
+				console.log("User get", res);
 				setUser(res.data);
 			},
 			e => {
+				console.error("User not get", e.reponse);
+				
 				setUser(undefined);
 				setCompetitions([]);
 			}
