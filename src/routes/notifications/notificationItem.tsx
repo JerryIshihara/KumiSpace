@@ -6,6 +6,7 @@ import { UserOutlined, DeleteOutlined } from "@ant-design/icons";
 import { TextEllipsis } from "components";
 import { NotificationProps } from "types/notification";
 import { timePassed } from "utils/time";
+import {utf16ToText} from 'utils/text'
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -44,7 +45,7 @@ const NotificationItem: React.FC<Props> = ({ item, last, onDelete, onRead }) => 
 				<div className="notification-content">
 					<h3>{item.title}</h3>
 					<Link to={redirect} style={{ color: "InfoText" }} onClick={onRead}>
-						<div dangerouslySetInnerHTML={{ __html: item.text }} />
+						<div dangerouslySetInnerHTML={{ __html: utf16ToText(item.text) }} />
 					</Link>
 					<div className="horizontal-center">
 						<span className="notification-date">{timePassed(date)}</span>

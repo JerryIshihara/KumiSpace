@@ -5,6 +5,7 @@ import { SelectOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
 
 import { TextEllipsis } from "components";
 import { timeToDeadline } from "utils/time";
+import { utf16ToText } from 'utils/text'
 import "./style.less";
 
 interface CompetitionProps {
@@ -54,7 +55,7 @@ const Competition: React.FC<Props> = ({ content, last }: Props) => {
 								content.competition.name
 							}
 						>
-							{content.competition.title}
+							{utf16ToText(content.competition.title)}
 						</a>
 					</TextEllipsis>
 					<TextEllipsis style={{ fontSize: 13 }}>
