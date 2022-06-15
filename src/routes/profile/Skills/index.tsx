@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Empty } from "antd";
 
 import Skill from "./skill";
 import SkillForm from "./skillForm";
@@ -44,6 +44,18 @@ const Skills: React.FC<any> = props => {
 
 	return (
 		<div className="main-page-skills">
+			{skills.length === 0 && <Empty
+				style={{ marginBottom: 16 }}
+    image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+    imageStyle={{
+		height: 60,
+    }}
+    description={
+      <span>
+        You have not added any skill yet
+      </span>
+    }
+  />}
 			{skills.map((item: UserSkillProps, index: number) => (
 				<Skill
 					key={index}

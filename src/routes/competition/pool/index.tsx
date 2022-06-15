@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Divider } from "antd";
+import { Button, Empty } from "antd";
 import { IconLanguage } from "@arco-design/web-react/icon";
 import "./style.less";
 
@@ -17,7 +17,17 @@ const Pool: React.FC = (props) => {
 
 	return (
 		<div className="pool-container">
-
+			{compContext.pool && compContext.pool.length === 0 &&   <Empty
+    image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+    imageStyle={{
+      height: 60,
+    }}
+    description={
+      <span>
+        No players in the pool yet
+      </span>
+    }
+  />}
 			{compContext.pool?.map((pool: PoolProps) => (
 				<>
 					<div style={{ display: "flex", flexDirection: "row" }}>
