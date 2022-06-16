@@ -151,6 +151,7 @@ export const delete_join_team_request = async (
 	return result;
 };
 
+
 export const edit_join_team_request = async (
 	token: string,
 	group_pid: string,
@@ -205,6 +206,25 @@ export const make_invite_request_decision = async (
 			group_pid,
 			accept,
 		},
+	});
+	return result;
+};
+
+export const delete_team_invite_request = async (
+	token: string,
+	group_pid: string,
+	invitee_pid: string,
+): Promise<any> => {
+	const result = await axios({
+		method: "DELETE",
+		headers: {
+			"Authorization": token,
+		},
+		url: withUrl(`/api/kaggle/groups/invites`),
+		data: {
+			group_pid,
+			invitee_pid,
+		}
 	});
 	return result;
 };

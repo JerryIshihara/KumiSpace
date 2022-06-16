@@ -6,8 +6,12 @@ import { IconLanguage } from "@arco-design/web-react/icon";
 import { InviteRequestProps, MemberProps, TeamProps } from "types/kaggle";
 import { TextEllipsis, UserItem } from "components";
 import { useCompetition } from "context/kaggleCompetition";
-import { make_invite_request_decision } from "api/kaggle/group";
+import {
+	make_invite_request_decision,
+	delete_team_invite_request,
+} from "api/kaggle/group";
 import { useAuth } from "context/auth";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
 	invites:
@@ -16,17 +20,45 @@ interface Props {
 	admin: boolean;
 }
 const InviteRequests: React.FC<Props> = React.memo(
-    ({ invites, admin }: Props) => {
-        const auth = useAuth()
+	({ invites, admin }: Props) => {
+		const auth = useAuth();
+		const navigate = useNavigate();
 		const compContext = useCompetition();
 		const decide_invite_request = (group_pid: string, accept: boolean) => {
 			auth.authorizedAPI(
-				(token: string) => make_invite_request_decision(token, group_pid, accept),
-				(res) => {
+				(token: string) =>
+					make_invite_request_decision(token, group_pid, accept),
+				res => {
 					compContext.fetch_my_team && compContext.fetch_my_team();
-					message.info(`You have ${accept ? "accepted" : "rejected"} the invitation`)
+					message.info(
+						`You have ${accept ? "accepted" : "rejected"} the invitation`
+					);
+				},
+				e => {
+					console.warn(e);
+				},
+				() => {},
+				() => {
+					navigate("/auth/sign-in");
 				}
-			)
+			);
+		};
+
+		const withdrawInivteRequest = (group_pid: string, invitee_pid: string) => {
+			auth.authorizedAPI(
+				token => delete_team_invite_request(token, group_pid, invitee_pid),
+				res => {
+					compContext.fetch_my_team && compContext.fetch_my_team();
+					message.success("You have withdrawn the invititation.");
+				},
+				e => {
+					console.warn(e.response);
+				},
+				() => {},
+				() => {
+					navigate("/auth/sign-in");
+				}
+			);
 		};
 
 		return invites.length > 0 ? (
@@ -35,9 +67,10 @@ const InviteRequests: React.FC<Props> = React.memo(
 				<div className="my-team-members">
 					{admin
 						? invites.map(({ invite_request, group }: any) => (
-							<div
-							className="strm-card-team-container"
-								style={{ display: "flex", flexDirection: "row" }}>
+								<div
+									className="strm-card-team-container"
+									style={{ display: "flex", flexDirection: "row" }}
+								>
 									<div
 										style={{
 											flex: 1,
@@ -46,7 +79,13 @@ const InviteRequests: React.FC<Props> = React.memo(
 											gap: "4px",
 										}}
 									>
-										<TextEllipsis style={{ fontSize: 20, fontWeight: "bold", marginBottom: '8px' }}>
+										<TextEllipsis
+											style={{
+												fontSize: 20,
+												fontWeight: "bold",
+												marginBottom: "8px",
+											}}
+										>
 											{group.name}
 										</TextEllipsis>
 										{group.members.map((member: MemberProps) => (
@@ -106,54 +145,64 @@ const InviteRequests: React.FC<Props> = React.memo(
 									</div>
 								</div>
 						  ))
-						: invites.map((invite: any) => (
-							invite.status === "pending" && <div style={{ display: "flex", flexDirection: "row" }}>
-									<UserItem
-										style={{ flex: 1 }}
-										profile={invite.user.profile}
-										url={invite.user.avatar?.url}
-										language={invite.language}
-										skills={invite.user.skills}
-										role={invite.role}
-									/>
-									<div style={{ flex: 1 }}>
-										{
-											<div className="horizontal-center">
-												<Tag
-													color={
-														invite.status === "accepted"
-															? "green"
-															: invite.status === "rejected"
-															? "red"
-															: "gold"
-													}
-												>
-													{invite.status}
-												</Tag>
-												{compContext.isLeader && invite.status === "pending" && (
-													<Button
-														style={{ marginLeft: "auto" }}
-														onClick={() => {}}
-													>
-														Withdraw
-													</Button>
+						: invites.map(
+								(invite: any) =>
+									invite.status === "pending" && (
+										<div style={{ display: "flex", flexDirection: "row" }}>
+											<UserItem
+												style={{ flex: 1 }}
+												profile={invite.user.profile}
+												url={invite.user.avatar?.url}
+												language={invite.language}
+												skills={invite.user.skills}
+												role={invite.role}
+											/>
+											<div style={{ flex: 1 }}>
+												{
+													<div className="horizontal-center">
+														<Tag
+															color={
+																invite.status === "accepted"
+																	? "green"
+																	: invite.status === "rejected"
+																	? "red"
+																	: "gold"
+															}
+														>
+															{invite.status}
+														</Tag>
+														{compContext.isLeader &&
+															invite.status === "pending" && (
+																<Button
+																	style={{ marginLeft: "auto" }}
+																	onClick={() => {
+																		compContext.myTeam?.team &&
+																			withdrawInivteRequest(
+																				compContext.myTeam?.team?.public_id,
+																				invite.user.public_id
+																			);
+																	}}
+																>
+																	Withdraw
+																</Button>
+															)}
+													</div>
+												}
+
+												{invite.language && (
+													<TextEllipsis>
+														<IconLanguage /> {invite.language}
+													</TextEllipsis>
+												)}
+												{invite.description && (
+													<p style={{ color: "GrayText", fontSize: 12 }}>
+														{invite.description}
+													</p>
 												)}
 											</div>
-										}
-
-										{invite.language && (
-											<TextEllipsis>
-												<IconLanguage /> {invite.language}
-											</TextEllipsis>
-										)}
-										{invite.description && (
-											<p style={{ color: "GrayText", fontSize: 12 }}>
-												{invite.description}
-											</p>
-										)}
-									</div>
-								</div>
-						  ))}
+										</div>
+									)
+						  )}
 				</div>
 			</>
 		) : (
