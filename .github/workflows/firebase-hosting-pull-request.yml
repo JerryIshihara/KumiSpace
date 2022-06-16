@@ -11,7 +11,7 @@ jobs:
       - name: install yarn
         run: sudo npm install -g yarn
       - name: install craco
-        run: yarn global add craco && yarn
+        run: yarn global add @craco/craco && yarn
       - uses: actions/checkout@v2
       - run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0

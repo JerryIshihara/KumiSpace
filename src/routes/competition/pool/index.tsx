@@ -10,24 +10,22 @@ import InviteForm from "./inviteForm";
 import { useCompetition } from "context/kaggleCompetition";
 import { PoolProps } from "types/kaggle";
 
-const Pool: React.FC = (props) => {
+const Pool: React.FC = props => {
 	const navigate = useNavigate();
 	const userContext = useUser();
-	const compContext = useCompetition()
+	const compContext = useCompetition();
 
 	return (
 		<div className="pool-container">
-			{compContext.pool && compContext.pool.length === 0 &&   <Empty
-    image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-    imageStyle={{
-      height: 60,
-    }}
-    description={
-      <span>
-        No players in the pool yet
-      </span>
-    }
-  />}
+			{compContext.pool && compContext.pool.length === 0 && (
+				<Empty
+					image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+					imageStyle={{
+						height: 60,
+					}}
+					description={<span>No players in the pool yet</span>}
+				/>
+			)}
 			{compContext.pool?.map((pool: PoolProps) => (
 				<>
 					<div style={{ display: "flex", flexDirection: "row" }}>
@@ -45,7 +43,9 @@ const Pool: React.FC = (props) => {
 										type="link"
 										style={{ padding: 0 }}
 										onClick={() => {
-											navigate(window.location.pathname + "?tab=pool&form=invite");
+											navigate(
+												window.location.pathname + "?tab=pool&form=invite"
+											);
 										}}
 									>
 										Invite
