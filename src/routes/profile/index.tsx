@@ -55,7 +55,7 @@ const UserProfile: React.FC<Props> = props => {
 	const onSubmitEditProfile = async (newProfile: ProfileProps) => {};
 	return (
 		<div className="strm-page">
-			<Header />
+			<Header onSearch={() => { }}/>
 			<div className="strm-body strm-content ">
 				<div className="strm-content-container main-page">
 					<div className="main-page">

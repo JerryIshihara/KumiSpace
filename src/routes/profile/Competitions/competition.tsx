@@ -83,8 +83,7 @@ const Competition: React.FC<Props> = ({ content, last }: Props) => {
 								size={{ xs: 30, sm: 30, md: 35, lg: 35, xl: 40, xxl: 40 }}
 								icon={<UserOutlined />}
 								src={
-									member?.user?.avatar &&
-									process.env.REACT_APP_HOST + member?.user?.avatar?.url
+									member?.user?.avatar && member?.user?.avatar?.url
 								}
 							/>
 						))
@@ -93,8 +92,7 @@ const Competition: React.FC<Props> = ({ content, last }: Props) => {
 							size={{ xs: 30, sm: 30, md: 35, lg: 35, xl: 40, xxl: 40 }}
 							icon={<UserOutlined />}
 							src={
-								content?.user?.avatar &&
-								process.env.REACT_APP_HOST + content?.user?.avatar?.url
+								content?.user?.avatar && content?.user?.avatar?.url
 							}
 						/>
 					)}

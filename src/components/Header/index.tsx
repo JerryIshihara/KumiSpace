@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Input, Badge } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import "./style.less";
@@ -10,8 +10,11 @@ import { Link } from "react-router-dom";
 import { useNotification } from "context/notification";
 
 // const { Option } = Select;
+interface Props {
+	onSearch: (keyword: string | undefined) => void;
+}
 
-const Header: React.FC<any> = props => {
+const Header: React.FC<Props> = (props) => {
 	const auth = useAuth();
 	const notification = useNotification();
 	const show = useMemo(() => (auth.token ? true : false), [auth.token]);
@@ -25,7 +28,12 @@ const Header: React.FC<any> = props => {
 						<Option value="All">All</Option>
 						<Option value="Events">Events</Option>
 					</Select> */}
-				<Input.Search placeholder="Search" />
+				<Input.Search
+					placeholder="Search"
+					onSearch={(value, event) => {
+						props.onSearch(value)
+					}}
+				/>
 				{/* </Input.Group> */}
 			</div>
 			<div className="header-icons">

@@ -30,7 +30,7 @@ const Team: React.FC = () => {
 						make_join_request_decision(token, pid, requester_pid, accept),
 					res => {
 						compContext.fetch_my_team && compContext.fetch_my_team();
-						message.info(
+						message.success(
 							`You have ${accept ? "accepted" : "rejected"} the join request`
 						);
 					}

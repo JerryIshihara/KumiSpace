@@ -32,7 +32,7 @@ const PageTitleSetter: React.FC<Props> = props => {
 			name.length === 0
 				? ""
 				: `${name.charAt(0).toUpperCase() + name.slice(1)} - `
-		}Kumi`;
+		}KumiSpace`;
 	};
 	return <>{props.children}</>;
 };

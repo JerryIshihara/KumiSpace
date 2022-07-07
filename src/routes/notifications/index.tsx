@@ -9,7 +9,7 @@ const NotificationPage: React.FC = () => {
 	const notification = useNotification();
 	return (
 		<div className="strm-page body-center">
-			<Header />
+			<Header onSearch={() => { }}/>
 			<div className="notification-container">
 				<h2>Notifications</h2>
 				{notification.unread.map((item: NotificationProps, index: number) => (

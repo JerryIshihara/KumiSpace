@@ -3,7 +3,7 @@ import "./style.less"
 
 import { Header } from "components"
 import { CompetitionCard } from "./Card";
-import { get_competitions } from "api/kaggle";
+import { get_competitions, search_competitions } from "api/kaggle";
 
 const Competitions: React.FC = () => {
 	const [competitions, setCompetitions] = useState([]);
@@ -18,9 +18,18 @@ const Competitions: React.FC = () => {
 			});
 	}, []);
 
+	const onSearch = (keyword: string | undefined) => {
+		search_competitions(keyword).then(res => {
+			console.log(res.data);
+			setCompetitions(res.data || []);
+		}).catch(err => {
+			console.warn((err.response));
+		})
+	}
+
 	return (
 		<div className="strm-page">
-			<Header />
+			<Header onSearch={onSearch}/>
 			<div className="strm-body strm-content">
 				<div className="feed-grid" style={{width: "80%", minWidth: "800px", padding: "20px 0"}}>
 					{competitions.map(

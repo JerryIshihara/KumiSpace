@@ -14,6 +14,20 @@ export const get_competitions = async (): Promise<any> => {
 	return result;
 };
 
+export const search_competitions = async (keyword: string | undefined): Promise<any> => {
+	const result = await axios({
+		method: "PUT",
+		// headers: {
+		// 	"x-access-tokens": token,
+		// },
+		url: withUrl("/api/kaggle/search"),
+		data: {
+			keyword
+		}
+	});
+	return result;
+};
+
 
 export const get_competition = async (name: string): Promise<any> => {
 	const result = await axios({
